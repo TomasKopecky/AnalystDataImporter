@@ -32,7 +32,8 @@
         
         <!-- Záložky - Taby -->
         <TabControl Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
-            <!-- 1. Záložka - Zdroje -->
+            
+            <!-- 1. Záložka - ZDROJE -->
             <TabItem Header="Zdroje" FontWeight="Bold" >
                 <Grid x:Name="grd1Zdroje" ShowGridLines="False">
                     <!--Definice řádků-->
@@ -51,7 +52,8 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!-- 2. Záložka - Importer -->
+            
+            <!-- 2. Záložka - IMPORTER -->
             <TabItem Header="ANALYST DATA Importer" FontWeight="Bold">
                 <Grid x:Name="grd2Import" ShowGridLines="False">
                     <!--Definice řádků-->
@@ -72,18 +74,53 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!-- 3. Záložka - O Programu -->
+            
+            <!-- 3. Záložka - O PROGRAMU -->
             <TabItem Header="O Programu">
-                <Grid x:Name="grd3OProgramu" ShowGridLines="False">
+                <Grid x:Name="grd3OProgramu" ShowGridLines="False" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <!--Definice řádků-->
                     <Grid.RowDefinitions>
                         <!--řádek 0-->
                         <RowDefinition Height="auto"/>
                         <!--řádek 1-->
                         <RowDefinition Height="auto"/>
+                        <!--řádek 2-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 3-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 4-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 5-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 6-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 7-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 8-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 9-->
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    <!--Definice sloupců-->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
                     <!-- informace o Programu -->
-                    <Label Content="autor: Tomáš Kopecký"/>
+                    <Label Content="název Prgoramu:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5,0,15,0"/>
+                    <Label Content="ANALYST DATA Importer" Grid.Column="1" Grid.Row="0" Margin="5,0,15,0"/>
+                    <Label Content="verze Prgoramu:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="5,0,15,0"/>
+                    <Label Content="1.0" Grid.Column="1" Grid.Row="1" Margin="5,0,15,0"/>
+                    <Label Content="Datum verze:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Margin="5,0,15,0"/>
+                    <Label Content="11. 09. 2023" Grid.Column="1" Grid.Row="2" Margin="5,0,15,0"/>
+                    <Label Content="autoři:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5,0,15,0"/>
+                    <Label Content="ktp. Bc. Ing. Tomáš Kopecký" Grid.Column="1" Grid.Row="3" Margin="5,0,15,0"/>
+                    <Label Content="kpt. Ing. Pavel Dvořák" Grid.Column="1" Grid.Row="4" Margin="5,0,15,0"/>
+                    <Label Content="o Programu:" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" Margin="5,0,15,0"/>
+                    <Label Content="Program slouží k importování souborů .CSV do aplikace Analyst Data Importer." Grid.Column="1" Grid.Row="5" Margin="5,0,15,0"/>
+                    <Label Content="Bla bal bla bla bla" Grid.Column="1" Grid.Row="6" Margin="5,0,15,0"/>
                 </Grid>
             </TabItem>
         </TabControl>
