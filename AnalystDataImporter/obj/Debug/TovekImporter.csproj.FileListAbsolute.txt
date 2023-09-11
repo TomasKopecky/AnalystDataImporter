@@ -29,7 +29,5 @@ C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Deb
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.exe
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.pdb
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter_MarkupCompile.lref
-C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\TestWindow.g.cs
-C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\TestWindow.baml
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\PageImport1.g.cs
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\PageImport1.baml

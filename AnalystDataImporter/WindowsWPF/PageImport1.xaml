@@ -8,7 +8,28 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageImport1">
 
-    <Grid>
-        <Button x:Name="btnTestPage" Content=" T E S T "/>
-    </Grid>
+    <Grid AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
+
+        <Label Content="File:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox Name="txtFilePath" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="300" Margin="40,0,0,0"/>
+        <Button Content="Browse..." HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="350,0,0,0" Click="Browse_Click"/>
+
+        <Label Content="Delimiter:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,30,0,0"/>
+        <ComboBox Name="cbxDelimiter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="70,30,0,0">
+            <ComboBoxItem Content="Comma" IsSelected="True"/>
+            <ComboBoxItem Content="Tab"/>
+            <ComboBoxItem Content="Semicolon"/>
+            <!-- Add other delimiters as needed -->
+        </ComboBox>
+
+        <DataGrid Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="400" Margin="0,90,0,0"/>
+
+        <Label Content="TOME - KLID, NEBOJ, TOHLE JE JEN ROZPRACOVANÁ VERZE!!!!! :-D ;-)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0"/>
+        
+        <Button Content="Import" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Click="Import_Click"/>
+
+
+
+
+        </Grid>
 </Page>

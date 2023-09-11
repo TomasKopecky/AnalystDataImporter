@@ -20,104 +20,66 @@ using AnalystDataImporter.WindowsWPF;
 namespace AnalystDataImporter
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interakční logika pro MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Po nacteni Okna:
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Získání výšky monitoru
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            // Výpočet požadované výšky pro okno (2/3 výšky monitoru)
+            double desiredHeight = screenHeight * 2 / 3;
+
+            // Nastavení výšky hlavního okna
+            this.Height = desiredHeight;
+
+
+            // Získání šířky monitoru
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+
+            // Výpočet požadované šířky pro okno (3/4 šířky monitoru)
+            double desiredWidth = screenWidth * 3 / 4;
+
+            // Nastavení šířky hlavního okna
+            this.Width = desiredWidth;
+        }
+
+        // Inicializace komponent
         public MainWindow()
         {
             InitializeComponent();
         }
-        private void Browse_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text files (*.txt)|*.txt";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                txtFilePath.Text = openFileDialog.FileName;
-                LoadFile(openFileDialog.FileName);
-            }
-        }
 
-        private void Import_Click(object sender, RoutedEventArgs e)
+        // 
+        private void Grid_Drop(object sender, DragEventArgs e)
         {
-            // TODO: Odkomentovat a obnovit funkcnost Tomova puvodniho kodu: (Ctrl+K,U)
-            //string filePath = txtFilePath.Text;
-            //// Process the file using the specified mappings and perform the import.
-            //MessageBox.Show("Import complete!");
 
-            TestWindow testWin = new TestWindow();
-            testWin.Show();
         }
 
         private void Grid_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
-                {
-                    e.Effects = DragDropEffects.Copy;
-                }
-                else
-                {
-                    e.Effects = DragDropEffects.None;
-                }
-            }
 
-            e.Handled = true;
         }
 
-        private void Grid_Drop(object sender, DragEventArgs e)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
+            try
+            {            
+                // Získání vybrané záložky
+                TabItem selectedTab = (TabItem)e.AddedItems[0];
+
+                // Podle vybrané záložky načíst příslušnou stránku do Frame
+                if (selectedTab.Header.ToString() == "ANALYST DATA Importer")
                 {
-                    txtFilePath.Text = files[0];
-                    LoadFile(files[0]);
+                    Page page1 = new PageImport1();
+                    frmImporter.Navigate(page1);
                 }
             }
-        }
-
-        private void LoadFile(string filePath)
-        {
-            char delimiter = GetSelectedDelimiter();
-            DataTable dataTable = new DataTable();
-
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                string line = sr.ReadLine();
-                if (line != null)
-                {
-                    string[] headers = line.Split(delimiter);
-                    foreach (string header in headers)
-                    {
-                        dataTable.Columns.Add(header);
-                    }
-
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        dataTable.Rows.Add(line.Split(delimiter));
-                    }
-                }
-            }
-
-            dataGrid.ItemsSource = dataTable.DefaultView;
-        }
-
-        private char GetSelectedDelimiter()
-        {
-            switch (cbxDelimiter.SelectedItem)
-            {
-                case ComboBoxItem item when item.Content.ToString() == "Tab":
-                    return '\t';
-                case ComboBoxItem item when item.Content.ToString() == "Semicolon":
-                    return ';';
-                default: // Default to comma
-                    return ',';
-            }
+            catch (Exception ex)
+            { }
         }
 
     }
