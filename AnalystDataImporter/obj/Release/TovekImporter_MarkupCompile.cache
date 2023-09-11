@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Release\
 AnalystDataImporter
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\App.xaml
 3617826102
 
-8418048810
+7-1794829868
 13-1310406943
 MainWindow.xaml;WindowsWPF\PageImport1.xaml;WindowsWPF\TestWindow.xaml;
 

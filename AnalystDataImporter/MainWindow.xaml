@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Custom Importer" Height="350" Width="525">
     <Grid AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
+        
+        
+        
         <Label Content="File:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox Name="txtFilePath" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="300" Margin="40,0,0,0"/>
         <Button Content="Browse..." HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="350,0,0,0" Click="Browse_Click"/>
-        <Button/>
+        
         <Label Content="Delimiter:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,30,0,0"/>
         <ComboBox Name="cbxDelimiter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="70,30,0,0">
             <ComboBoxItem Content="Comma" IsSelected="True"/>
@@ -18,5 +21,9 @@
         <DataGrid Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="400" Margin="0,90,0,0"/>
 
         <Button Content="Import" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Click="Import_Click"/>
+        
+        
+        
+        
     </Grid>
 </Window>

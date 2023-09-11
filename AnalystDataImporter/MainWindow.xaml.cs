@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Data;
 using System.IO;
-
+using AnalystDataImporter.WindowsWPF;
 
 namespace AnalystDataImporter
 {
@@ -41,9 +41,13 @@ namespace AnalystDataImporter
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = txtFilePath.Text;
-            // Process the file using the specified mappings and perform the import.
-            MessageBox.Show("Import complete!");
+            // TODO: Odkomentovat a obnovit funkcnost Tomova puvodniho kodu: (Ctrl+K,U)
+            //string filePath = txtFilePath.Text;
+            //// Process the file using the specified mappings and perform the import.
+            //MessageBox.Show("Import complete!");
+
+            TestWindow testWin = new TestWindow();
+            testWin.Show();
         }
 
         private void Grid_DragOver(object sender, DragEventArgs e)

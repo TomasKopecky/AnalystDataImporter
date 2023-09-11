@@ -13,3 +13,23 @@ C:\Users\user\source\repos\AnalystDataImporter\AnalystDataImporter\obj\Debug\Ana
 C:\Users\user\source\repos\AnalystDataImporter\AnalystDataImporter\obj\Debug\AnalystDataImporter.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\AnalystDataImporter\AnalystDataImporter\obj\Debug\AnalystDataImporter.exe
 C:\Users\user\source\repos\AnalystDataImporter\AnalystDataImporter\obj\Debug\AnalystDataImporter.pdb
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\bin\Debug\AnalystDataImporter.exe.config
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\bin\Debug\AnalystDataImporter.exe
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\bin\Debug\AnalystDataImporter.pdb
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.csproj.AssemblyReference.cache
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.csproj.SuggestedBindingRedirects.cache
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\MainWindow.baml
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\MainWindow.g.cs
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\App.g.cs
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter_MarkupCompile.cache
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.g.resources
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.Properties.Resources.resources
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.csproj.GenerateResource.cache
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.csproj.CoreCompileInputs.cache
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.exe
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter.pdb
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\AnalystDataImporter_MarkupCompile.lref
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\TestWindow.g.cs
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\TestWindow.baml
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\PageImport1.g.cs
+C:\Users\pd334353\source\repos\Analyst Data_Importer\AnalystDataImporter\obj\Debug\WindowsWPF\PageImport1.baml

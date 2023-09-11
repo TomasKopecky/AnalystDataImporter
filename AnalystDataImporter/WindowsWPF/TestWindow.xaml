@@ -1,0 +1,92 @@
+﻿<Window x:Class="AnalystDataImporter.WindowsWPF.TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
+        mc:Ignorable="d"
+        Title="TestWindow" Loaded="Window_Loaded"
+        MinHeight="350" MinWidth="600">
+    <Grid AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
+
+        <!--Definice sloupců-->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Definice řádků-->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="auto"/>
+            <!--řádek 1-->
+            <RowDefinition />
+            <!--řádek 2-->
+            <RowDefinition Height="auto" /> <!-- nebo Height="50" -->
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar -->
+        <Border Background="Gray" Height="40" VerticalAlignment="Top" Grid.ColumnSpan="3">
+            <TextBlock Text="Analyst Data Importer" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Záložky - Taby -->
+        <TabControl Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+            <!-- 1. Záložka - Zdroje -->
+            <TabItem Header="Zdroje" FontWeight="Bold" >
+                <Grid x:Name="grd1Zdroje" ShowGridLines="False">
+                    <!--Definice řádků-->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition />
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- Seznam zdrojů - tabulka/strom Zdroje -->
+                    <DataGrid Name="dtGrdZdroje"  Margin="5"/>
+                    <!-- Tlacitka -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                    Margin="10,5" Grid.Column="0" Grid.Row="1">
+                        <Button x:Name="btnAktualizovat" Content="Aktualizovat" Width="100" Margin="10" IsEnabled="True"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!-- 2. Záložka - Importer -->
+            <TabItem Header="ANALYST DATA Importer" FontWeight="Bold">
+                <Grid x:Name="grd2Import" ShowGridLines="False">
+                    <!--Definice řádků-->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition />
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- Seznam zdrojů - tabulka/strom Zdroje -->
+                    <DataGrid Name="dtGrdImport"  Margin="5"/>
+                    <!-- Tlacitka -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                    Margin="10,5" Grid.Column="0" Grid.Row="1">
+                        <Button x:Name="btnZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False"/>
+                        <Button x:Name="btnDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True"/>
+                        <Button x:Name="btnImport" Content="Importovat" Width="100" Margin="10"  IsEnabled="False"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!-- 3. Záložka - O Programu -->
+            <TabItem Header="O Programu">
+                <Grid x:Name="grd3OProgramu" ShowGridLines="False">
+                    <!--Definice řádků-->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- informace o Programu -->
+                    <Label Content="autor: Tomáš Kopecký"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
