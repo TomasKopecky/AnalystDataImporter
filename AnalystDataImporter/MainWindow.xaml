@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
         mc:Ignorable="d"
         Title="Custom Importer" Loaded="Window_Loaded"
-        MinHeight="350" MinWidth="600">
-    <Grid AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
+        MinHeight="450" MinWidth="600">
+    <Grid x:Name="grdMainWindow" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
 
         <!--Definice řádků-->
         <Grid.RowDefinitions>
@@ -60,7 +60,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- FRAME - do nej iportuji Page! -->
-                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" /> <!--HorizontalAlignment="Center" VerticalAlignment="Center"-->
 
                     <!-- Tlačítka Zpět,Další a Importovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 

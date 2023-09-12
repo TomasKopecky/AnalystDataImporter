@@ -8,7 +8,17 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageImport1">
 
-    <Grid AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
+    <Grid x:Name="grdPageImport1" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
+
+        <!--Definice sloupců-->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition Width="*"/>
+            <!--sloupec 1-->
+            <ColumnDefinition Width="2*"/>
+            <!--sloupec 2-->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <!--Definice řádků-->
         <Grid.RowDefinitions>
@@ -18,29 +28,28 @@
             <RowDefinition />
             <!--řádek 2-->
             <RowDefinition Height="auto" />
-            <!-- nebo Height="50" -->
+            <!--řádek 3-->
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Content="File:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox Name="txtFilePath" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="300" Margin="40,0,0,0"/>
-        <Button Content="Browse..." HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="350,0,0,0" Click="Browse_Click"/>
+        <DataGrid Name="dataGrid" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
 
-        <Label Content="Delimiter:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,30,0,0"/>
-        <ComboBox Name="cbxDelimiter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="70,30,0,0">
+        <Label Content="Soubor .CSV - cesta:" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        <TextBox Name="txtFilePath"  Height="23" VerticalAlignment="Top" Margin="5" Grid.Column="1"/> <!--HorizontalAlignment="Left"-->
+        <Button Content="Procházet..." HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="5" Click="Browse_Click" Grid.Column="2"/>
+
+        <ComboBox Name="cbxDelimiter" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Margin="70,30,0,0" Grid.Row="2" Grid.ColumnSpan="3">
             <ComboBoxItem Content="Comma" IsSelected="True"/>
             <ComboBoxItem Content="Tab"/>
             <ComboBoxItem Content="Semicolon"/>
             <!-- Add other delimiters as needed -->
         </ComboBox>
 
-        <DataGrid Name="dataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="400" Margin="0,90,0,0"/>
 
-        <Label Content="TOME - KLID, NEBOJ, TOHLE JE JEN ROZPRACOVANÁ VERZE!!!!! :-D ;-)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0"/>
-        
-        <Button Content="Import" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Click="Import_Click"/>
+        <Label Content="TOME - KLID, NEBOJ, TOHLE JE JEN ROZPRACOVANÁ VERZE!!!!! :-D ;-)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Grid.ColumnSpan="3"/>
 
 
 
 
-        </Grid>
+    </Grid>
 </Page>

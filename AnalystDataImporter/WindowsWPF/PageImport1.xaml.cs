@@ -39,13 +39,6 @@ namespace AnalystDataImporter.WindowsWPF
             }
         }
 
-        private void Import_Click(object sender, RoutedEventArgs e)
-        {
-            string filePath = txtFilePath.Text;
-            // Process the file using the specified mappings and perform the import.
-            MessageBox.Show("Import complete!");
-        }
-
         private void Grid_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
