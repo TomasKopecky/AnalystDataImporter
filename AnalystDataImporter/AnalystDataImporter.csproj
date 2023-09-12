@@ -55,7 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Source.cs" />
+    <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\DataSource.cs" />
+    <Compile Include="Classes\DataStructure\Object.cs" />
+    <Compile Include="Classes\DataStructure\Relation.cs" />
+    <Compile Include="Classes\DataStructure\Source.cs" />
+    <Compile Include="Classes\DataStructure\Specification.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,6 +69,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\DataStructure\TableColumn.cs" />
+    <Compile Include="Classes\DataStructure\User.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
