@@ -82,5 +82,41 @@ namespace AnalystDataImporter
             { }
         }
 
+        // Po kliknutí na Tlačítko 'Ďalší'
+        private void btnDalsi_Click(object sender, RoutedEventArgs e)
+        {
+            // Tlačítko 'Ďalší' načte stránku 'PageImport2.xaml' do Frame 'frmImporter'
+            Page page2 = new PageImport2();
+            frmImporter.Navigate(page2);
+
+            // Tlačítka která budou v kroku 'Další' povolena:
+            btnZpet.IsEnabled = true;
+            btnDalsi.IsEnabled = false;
+            btnImport.IsEnabled = true;
+        }
+
+        // Po kliknutí na Tlačítko 'Zpět'
+        private void btnZpet_Click(object sender, RoutedEventArgs e)
+        {
+            // Tlačítko 'Zpět' načte stránku 'PageImport1.xaml' do Frame 'frmImporter'
+            Page page1 = new PageImport1();
+            frmImporter.Navigate(page1);
+
+            // Tlačítka která budou v kroku 'Zpět' zakázána:
+            btnZpet.IsEnabled = false;
+            btnDalsi.IsEnabled = true;
+            btnImport.IsEnabled = false;
+        }
+
+        // Po kliknutí na Tlačítko 'Importovat'
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dodělat funkci Tlačítka 'Importovat'
+
+            // Původní metoda z kódu od Toma:
+            //string filePath = txtFilePath.Text;
+            //// Process the file using the specified mappings and perform the import.
+            //MessageBox.Show("Import complete!");
+        }
     }
 }

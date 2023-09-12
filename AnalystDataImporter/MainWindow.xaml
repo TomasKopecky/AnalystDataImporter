@@ -65,14 +65,21 @@
                     <!-- Tlačítka Zpět,Další a Importovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                     Margin="10,5" Grid.Column="0" Grid.Row="1">
-                        <Button x:Name="btnZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False"/>
-                        <Button x:Name="btnDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True"/>
-                        <Button x:Name="btnImport" Content="Importovat" Width="100" Margin="10"  IsEnabled="False"/>
+                        <Button x:Name="btnZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False" Click="btnZpet_Click"/>
+                        <Button x:Name="btnDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True" Click="btnDalsi_Click"/>
+                        <Button x:Name="btnImport" Content="Importovat" Width="100" Margin="10"  IsEnabled="False" Click="btnImport_Click"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
 
-            <!-- 3. Záložka - O PROGRAMU -->
+            <!-- 3. Záložka - ŠABLONY -->
+            <TabItem x:Name="tbItmSablona" Header="Šablony" FontWeight="Bold">
+                <Grid x:Name="grd2Sablona" ShowGridLines="False">
+                    <!-- TODO: --> 
+                </Grid>
+            </TabItem>
+
+            <!-- 4. Záložka - O PROGRAMU -->
             <TabItem x:Name="tbItmInfo" Header="O Programu">
                 <GroupBox HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid x:Name="grd3Info" ShowGridLines="False" VerticalAlignment="Center" HorizontalAlignment="Center">
