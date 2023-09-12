@@ -22,7 +22,7 @@ namespace AnalystDataImporter.Classes.DataStructure
         // Koncové datum pro objekt
         public DateTime DateTo { get; set; }
         // Ikona reprezentující objekt
-        public string Icon { get; set; }
+        public Constants.Icons Icon { get; set; }
         // Má objekt rámeček?
         public bool HasFrame { get; set; }
     }

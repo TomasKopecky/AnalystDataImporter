@@ -20,7 +20,7 @@ namespace AnalystDataImporter.Classes.DataStructure
         // Barva relace
         public string Color { get; set; }
         // Směr relace (např. od-do)
-        public string Direction { get; set; }
+        public Constants.RelationDirections Direction { get; set; }
         // Objekt, od kterého relace začíná
         public Object ObjectFrom { get; set; }
         // Objekt, ke kterému relace směřuje

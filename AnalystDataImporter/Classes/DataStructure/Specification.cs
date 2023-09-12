@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnalystDataImporter.Classes;
 
 namespace AnalystDataImporter
 {
@@ -16,7 +17,7 @@ namespace AnalystDataImporter
         // Je specifikace veřejná?
         public bool IsPublic { get; set; }
         // Oddělovač pro importovaná data
-        public string Delimiter { get; set; }
+        public Constants.Delimiters Delimiter { get; set; }
         // Je první řádek hlavička?
         public bool IsFirstRowHeading { get; set; }
     }
