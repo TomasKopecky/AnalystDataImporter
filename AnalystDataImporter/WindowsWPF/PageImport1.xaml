@@ -40,70 +40,86 @@
         <!-- TABULKA s náhledem CSV s Oddělovači -->
         <DataGrid x:Name="dtGrdTabulkaCsvSouboru" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
 
-        <!-- ODDĚLOVAČE -->
-        <GroupBox Header="Oddělovače" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
-            <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
-                <!-- Definice sloupců -->
-                <Grid.ColumnDefinitions>
-                    <!--sloupec 0-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 1-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 2-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 3-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 4-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 5-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 6-->
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <!-- Definice řádků -->
-                <Grid.RowDefinitions>
-                    <!--řádek 0-->
-                    <RowDefinition Height="auto"/>
-                    <!--řádek 1-->
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <!-- Čárka -->
-                <CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
-                <!-- Středník -->
-                <CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
-                <!-- Jiný -->
-                <CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Jiný:" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" />
-                <TextBox x:Name="txtkBxJiny" Grid.Row="0" Grid.Column="6" Width="40" Margin="5" VerticalAlignment="Center" TextAlignment="Center" />
-                <!-- Tabulátor -->
-                <CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Tabulátor" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
-                <!-- Mezera -->
-                <CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Mezera" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" />
-            </Grid>
-        </GroupBox>
+        <!-- Pomocný Grid pro Oddělovače a Záhlaví -->
+        <Grid Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3">
+            <!-- Definice sloupců -->
+            <Grid.ColumnDefinitions>
+                <!--sloupec 0-->
+                <ColumnDefinition Width="*"/>
+                <!--sloupec 1-->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- ZÁHLAVÍ -->
-        <GroupBox Header="Záhlaví" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
-            <Grid Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
-                <!-- Definice sloupců -->
-                <Grid.ColumnDefinitions>
-                    <!--sloupec 0-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 1-->
-                    <ColumnDefinition Width="auto"/>
-                    <!--sloupec 2-->
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <CheckBox x:Name="chckBxZahlavi" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
-                <Label Content="Extrahovat záhlaví sloupců z řádku:"  Margin="0,5" Grid.Column="1" VerticalAlignment="Center" />
-                <!--HorizontalAlignment="Right" VerticalAlignment="Top"-->
-                <TextBox x:Name="txtBxCisloRadkuZahlavi" Width="40" Grid.Column="2" Margin="0,5,5,5" VerticalAlignment="Center" TextAlignment="Center" />
-            </Grid>
-        </GroupBox>
+            <!-- ODDĚLOVAČE -->
+            <GroupBox Header="Oddělovače" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"  Margin="5">
+                <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                    <!-- Definice sloupců -->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 3-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 4-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 5-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 6-->
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- Čárka -->
+                    <CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
+                    <!-- Středník -->
+                    <CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
+                    <!-- Jiný -->
+                    <CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Jiný:" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" />
+                    <TextBox x:Name="txtkBxJiny" Grid.Row="0" Grid.Column="6" Width="40" Margin="5" VerticalAlignment="Center" TextAlignment="Center" />
+                    <!-- Tabulátor -->
+                    <CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Tabulátor" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
+                    <!-- Mezera -->
+                    <CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Mezera" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" />
+                </Grid>
+            </GroupBox>
+
+            <!-- ZÁHLAVÍ -->
+            <GroupBox Header="Záhlaví" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5">
+                <Grid Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">
+                    <!-- Definice sloupců -->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="chckBxZahlavi" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <Label Content="Extrahovat záhlaví sloupců z řádku:"  Margin="0,5" Grid.Column="1" VerticalAlignment="Center" />
+                    <!--HorizontalAlignment="Right" VerticalAlignment="Top"-->
+                    <TextBox x:Name="txtBxCisloRadkuZahlavi" Width="40" Grid.Column="2" Margin="0,5,5,5" VerticalAlignment="Center" TextAlignment="Center" />
+                </Grid>
+            </GroupBox>
+
+
+        </Grid>
+        
+        
+        
 
         <!--<ComboBox Name="cbxDelimiter" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Margin="70,30,0,0" Grid.Row="2" Grid.ColumnSpan="3">
             <ComboBoxItem Content="Comma" IsSelected="True"/>
