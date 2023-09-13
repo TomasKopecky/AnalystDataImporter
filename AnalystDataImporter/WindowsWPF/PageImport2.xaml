@@ -40,7 +40,7 @@
             <GroupBox Header="Objekty a Vazby" Grid.RowSpan="2" Margin="0"/>
 
             <!-- Tlačítka Zpět,Další a Importovat -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,10,0,0" Grid.Column="0" Grid.Row="0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,15,0,0" Grid.Column="0" Grid.Row="0">
                 <Button x:Name="btnImportNovyObjekt" Content="Přidat nový objekt" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovyObjekt_Click"/>
                 <Button x:Name="btnImportNovaVazba" Content="Přidat novou vazbu" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovaVazba_Click"/>
                 <Button x:Name="btnImportObjektOdstranit" Content="Odstranit" Width="130" Margin="5"  IsEnabled="False" Click="btnImportObjektOdstranit_Click"/>

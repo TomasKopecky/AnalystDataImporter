@@ -77,22 +77,38 @@
                         <!--řádek 1-->
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+                    
                     <!-- Čárka -->
-                    <CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />
+                    <RadioButton x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />-->
                     <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
+                    
                     <!-- Středník -->
-                    <CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
+                    <RadioButton x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />-->
                     <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
-                    <!-- Jiný -->
-                    <CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" />
-                    <Label Content="Jiný:" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" />
-                    <TextBox x:Name="txtkBxJiny" Grid.Row="0" Grid.Column="6" Width="40" Margin="5" VerticalAlignment="Center" TextAlignment="Center" />
+                    
+                    <!-- Svitlítko -->
+                    <RadioButton x:Name="chckBxSvitlitko" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxSvitlitko_Checked" Unchecked="chckBxSvitlitko_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" />-->
+                    <Label Content="Svislítko |" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" />
+
                     <!-- Tabulátor -->
-                    <CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />
+                    <RadioButton x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />-->
                     <Label Content="Tabulátor" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
+                    
                     <!-- Mezera -->
-                    <CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />
+                    <RadioButton x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />-->
                     <Label Content="Mezera" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" />
+
+                    <!-- Jiný -->
+                    <RadioButton x:Name="chckBxJiny" Grid.Row="1" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" IsEnabled="False" />
+                    <!--<CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" />-->
+                    <Label Content="Jiný:" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" IsEnabled="False" />
+                    <TextBox x:Name="txtkBxJiny" Grid.Row="1" Grid.Column="5" Width="30" Margin="35,5,5,5" VerticalAlignment="Center" TextAlignment="Center" IsEnabled="False" />
+
                 </Grid>
             </GroupBox>
 
@@ -110,9 +126,9 @@
                     </Grid.ColumnDefinitions>
                     <!-- zaškrtni záhlaví -->
                     <CheckBox x:Name="chckBxZahlavi" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxZahlavi_Checked" Unchecked="chckBxZahlavi_Unchecked" />
-                    <Label Content="Extrahovat záhlaví sloupců z řádku:"  Margin="0,5" Grid.Column="1" VerticalAlignment="Center" />
+                    <Label Content="Extrahovat záhlaví sloupců z 1. řádku"  Margin="0,5" Grid.Column="1" VerticalAlignment="Center" />
                     <!-- napiš kolikátý řádek je záhlaví -->
-                    <TextBox x:Name="txtBxCisloRadkuZahlavi" Width="40" Grid.Column="2" Margin="0,5,5,5" VerticalAlignment="Center" TextAlignment="Center" />
+                    <!--<TextBox x:Name="txtBxCisloRadkuZahlavi" Width="40" Grid.Column="2" Margin="0,5,5,5" VerticalAlignment="Center" TextAlignment="Center" />-->
                 </Grid>
             </GroupBox>
 

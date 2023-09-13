@@ -119,14 +119,14 @@ namespace AnalystDataImporter.WindowsWPF
             // TODO: po odškrtnutí políčka pro Oddělovač: Středník
         }
 
-        // Zaškrtávací pole pro Oddělovač: Jiný
-        private void chckBxJiny_Checked(object sender, RoutedEventArgs e)
+        // Zaškrtávací pole pro Oddělovač: Svislítko
+        private void chckBxSvitlitko_Checked(object sender, RoutedEventArgs e)
         {
-            // TODO: po zaškrtnutí políčka pro Oddělovač: Jiný
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Svislítko
         }
-        private void chckBxJiny_Unchecked(object sender, RoutedEventArgs e)
+        private void chckBxSvitlitko_Unchecked(object sender, RoutedEventArgs e)
         {
-            // TODO: po odškrtnutí políčka pro Oddělovač: Jiný
+            // TODO: po odškrtnutí políčka pro Oddělovač: Svislítko
         }
 
         // Zaškrtávací pole pro Oddělovač: Tabulátor
@@ -159,8 +159,16 @@ namespace AnalystDataImporter.WindowsWPF
             // TODO: po odškrtnutí políčka pro Záhlaví: 
         }
 
+        // Zaškrtávací pole pro Oddělovač: Jiný
+        private void chckBxJiny_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Jiný
+        }
+        private void chckBxJiny_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Jiný
+        }
+
         #endregion
-
-
     }
 }
