@@ -53,21 +53,22 @@ namespace AnalystDataImporter
             InitializeComponent();
         }
 
-        // 
+        // DROP do GRIDu
         private void Grid_Drop(object sender, DragEventArgs e)
         {
-
+            // TODO: Grid_Drop
         }
 
+        // DRAG_OVER -- ??
         private void Grid_DragOver(object sender, DragEventArgs e)
         {
-
+            // TODO: Grid_DragOver
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
-            {            
+            {
                 // Získání vybrané záložky
                 TabItem selectedTab = (TabItem)e.AddedItems[0];
 
@@ -82,34 +83,73 @@ namespace AnalystDataImporter
             { }
         }
 
-        // Po kliknutí na Tlačítko 'Ďalší'
-        private void btnDalsi_Click(object sender, RoutedEventArgs e)
+
+        // TLAČÍTKA:
+        #region TLAČÍTKA
+
+        // Záložka ZDROJE:
+        #region ZDROJE
+        // Po kliknutí na Tlačítko 'Aktualizovat' v záložce 'Zdroje'
+        private void btnZdrojeAktualizovat_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: funkce Tlačítka Aktualizovat
+        }
+        #endregion
+
+        // Záložka ŠABLONY:
+        #region 
+        // Po kliknutí na Tlačítko 'Přejmenovat' v záložce 'Šablony'
+        private void btnSablonaPrejmenovat_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: funkce Tlačítka Přejmenovat
+        }
+        // Po kliknutí na Tlačítko 'Upravit' v záložce 'Šablony'
+        private void btnSablonaUpravit_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: funkce Tlačítka Upravit
+        }
+        // Po kliknutí na Tlačítko 'Použít' v záložce 'Šablony'
+        private void btnSablonaPoužít_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: funkce Tlačítka Použít
+        }
+        // Po kliknutí na Tlačítko 'Smazat' v záložce 'Šablony'
+        private void btnSablonaSmazat_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: funkce Tlačítka Smazat
+        }
+        #endregion
+
+        // Záložka IMPORT:
+        #region IMPORT
+        // Po kliknutí na Tlačítko 'Ďalší' v záložce 'ANALYST DATA Import'
+        private void btnImportDalsi_Click(object sender, RoutedEventArgs e)
         {
             // Tlačítko 'Ďalší' načte stránku 'PageImport2.xaml' do Frame 'frmImporter'
             Page page2 = new PageImport2();
             frmImporter.Navigate(page2);
 
-            // Tlačítka která budou v kroku 'Další' povolena:
-            btnZpet.IsEnabled = true;
-            btnDalsi.IsEnabled = false;
-            btnImport.IsEnabled = true;
+            // Tlačítka která budou v kroku 'Další' povolena nebo zakázána:
+            btnImportZpet.IsEnabled = true; // Zpět zakázáno - nejde jít už o krok zpět!
+            btnImportDalsi.IsEnabled = false; // Dlaší povoleno - chceme se dostat na krok dva
+            btnImportImportovat.IsEnabled = true; // Importovat zakázáno - to má jít až ze druhé stránky
         }
 
-        // Po kliknutí na Tlačítko 'Zpět'
-        private void btnZpet_Click(object sender, RoutedEventArgs e)
+        // Po kliknutí na Tlačítko 'Zpět' v záložce 'ANALYST DATA Import'
+        private void btnImportZpet_Click(object sender, RoutedEventArgs e)
         {
             // Tlačítko 'Zpět' načte stránku 'PageImport1.xaml' do Frame 'frmImporter'
             Page page1 = new PageImport1();
             frmImporter.Navigate(page1);
 
-            // Tlačítka která budou v kroku 'Zpět' zakázána:
-            btnZpet.IsEnabled = false;
-            btnDalsi.IsEnabled = true;
-            btnImport.IsEnabled = false;
+            // Tlačítka která budou v kroku 'Zpět' zakázána nebo povolena:
+            btnImportZpet.IsEnabled = false; // Zpět povoleno - chceme se dostat na krok jedna
+            btnImportDalsi.IsEnabled = true; // Dlaší zakázáno - nejde jít už o krok dál!
+            btnImportImportovat.IsEnabled = false; // Importovat povoleno - odtud chceme teprve importovat!
         }
 
-        // Po kliknutí na Tlačítko 'Importovat'
-        private void btnImport_Click(object sender, RoutedEventArgs e)
+        // Po kliknutí na Tlačítko 'Importovat' v záložce 'ANALYST DATA Import'
+        private void btnImportImportovat_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Dodělat funkci Tlačítka 'Importovat'
 
@@ -118,5 +158,8 @@ namespace AnalystDataImporter
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
         }
+        #endregion
+
+        #endregion
     }
 }

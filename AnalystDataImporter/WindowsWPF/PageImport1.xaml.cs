@@ -34,7 +34,7 @@ namespace AnalystDataImporter.WindowsWPF
             openFileDialog.Filter = "Text files (*.txt)|*.txt";
             if (openFileDialog.ShowDialog() == true)
             {
-                txtFilePath.Text = openFileDialog.FileName;
+                txtCestaKSouboru.Text = openFileDialog.FileName;
                 LoadFile(openFileDialog.FileName);
             }
         }
@@ -64,7 +64,7 @@ namespace AnalystDataImporter.WindowsWPF
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files != null && files.Length > 0 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
                 {
-                    txtFilePath.Text = files[0];
+                    txtCestaKSouboru.Text = files[0];
                     LoadFile(files[0]);
                 }
             }
@@ -94,9 +94,73 @@ namespace AnalystDataImporter.WindowsWPF
                 }
             }
 
-            dtGrdTabulkaCsvSouboru.ItemsSource = dataTable.DefaultView;
+            dtGrdTabulkaCsvSouboru1.ItemsSource = dataTable.DefaultView;
         }
 
-        
+        // ZAŠKRTÁVACÍ POLÍČKA:
+        #region
+        // Zaškrtávací pole pro Oddělovač: Čárka ,
+        private void chckBxCarka_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Čárka
+        }
+        private void chckBxCarka_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Čárka
+        }
+
+        // Zaškrtávací pole pro Oddělovač: Středník ;
+        private void chckBxStrednik_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Středník
+        }
+        private void chckBxStrednik_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Středník
+        }
+
+        // Zaškrtávací pole pro Oddělovač: Jiný
+        private void chckBxJiny_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Jiný
+        }
+        private void chckBxJiny_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Jiný
+        }
+
+        // Zaškrtávací pole pro Oddělovač: Tabulátor
+        private void chckBxTabulator_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Tabulátor
+        }
+        private void chckBxTabulator_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Tabulátor
+        }
+
+        // Zaškrtávací pole pro Oddělovač: Mezera
+        private void chckBxMezera_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Oddělovač: Mezera
+        }
+        private void chckBxMezera_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Oddělovač: Mezera
+        }
+
+        // Zaškrtávací pole pro Záhlaví: 
+        private void chckBxZahlavi_Checked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po zaškrtnutí políčka pro Záhlaví: 
+        }
+        private void chckBxZahlavi_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TODO: po odškrtnutí políčka pro Záhlaví: 
+        }
+
+        #endregion
+
+
     }
 }

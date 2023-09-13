@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Custom Importer" Loaded="Window_Loaded"
         MinHeight="450" MinWidth="650">
+
     <Grid x:Name="grdMainWindow" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
 
         <!-- Definice řádků -->
@@ -17,7 +18,6 @@
             <RowDefinition />
             <!--řádek 2-->
             <RowDefinition Height="auto" />
-            <!-- nebo Height="50" -->
         </Grid.RowDefinitions>
 
         <!-- Title Bar -->
@@ -31,19 +31,22 @@
             <!-- 1. Záložka - ZDROJE -->
             <TabItem x:Name="tbItmZdroje" Header="Zdroje" FontWeight="Bold" >
                 <Grid x:Name="grd1Zdroje" ShowGridLines="False">
-                    <!--Definice řádků-->
+                    <!-- Definice řádků -->
                     <Grid.RowDefinitions>
                         <!--řádek 0-->
                         <RowDefinition />
                         <!--řádek 1-->
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+
                     <!-- Seznam zdrojů - tabulka/strom Zdroje -->
-                    <DataGrid Name="dtGrdZdroje"  Margin="10"/>
+                    <TreeView x:Name="trVwZdroje"  Margin="10"/>
+                    <!--<DataGrid x:Name="dtGrdZdroje"  Margin="10"/>-->
+
                     <!-- Tlačítko Aktualizovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                     Margin="10,5" Grid.Column="0" Grid.Row="1">
-                        <Button x:Name="btnAktualizovat" Content="Aktualizovat" Width="100" Margin="10" IsEnabled="True"/>
+                        <Button x:Name="btnZdrojeAktualizovat" Content="Aktualizovat" Width="100" Margin="10" IsEnabled="True" Click="btnZdrojeAktualizovat_Click" />
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -51,8 +54,27 @@
 
             <!-- 2. Záložka - ŠABLONY -->
             <TabItem x:Name="tbItmSablona" Header="Šablony" FontWeight="Bold">
-                <Grid x:Name="grd2Sablona" ShowGridLines="False">
+                <Grid x:Name="grdSablona" ShowGridLines="False">
                     <!-- TODO: -->
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition />
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Seznam Šablon-->
+                    <DataGrid x:Name="dtGrdSablony"  Margin="10"/>
+
+                    <!-- Tlačítka Zpět,Další a Importovat -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,5" Grid.Column="0" Grid.Row="1">
+                        <Button x:Name="btnSablonaPrejmenovat" Content="Přejmenovat" Width="100" Margin="10" IsEnabled="False" Click="btnSablonaPrejmenovat_Click"/>
+                        <Button x:Name="btnSablonaUpravit" Content="Upravit" Width="100" Margin="10" IsEnabled="False" Click="btnSablonaUpravit_Click"/>
+                        <Button x:Name="btnSablonaPoužít" Content="Použít" Width="100" Margin="10"  IsEnabled="False" Click="btnSablonaPoužít_Click"/>
+                        <Button x:Name="btnSablonaSmazat" Content="Smazat" Width="100" Margin="10"  IsEnabled="False" Click="btnSablonaSmazat_Click"/>
+                    </StackPanel>
+
                 </Grid>
             </TabItem>
 
@@ -69,14 +91,13 @@
 
                     <!-- FRAME - do nej iportuji Page! -->
                     <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" />
-                    <!--HorizontalAlignment="Center" VerticalAlignment="Center"-->
 
                     <!-- Tlačítka Zpět,Další a Importovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                     Margin="10,5" Grid.Column="0" Grid.Row="1">
-                        <Button x:Name="btnZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False" Click="btnZpet_Click"/>
-                        <Button x:Name="btnDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True" Click="btnDalsi_Click"/>
-                        <Button x:Name="btnImport" Content="Importovat" Width="100" Margin="10"  IsEnabled="False" Click="btnImport_Click"/>
+                        <Button x:Name="btnImportZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False" Click="btnImportZpet_Click"/>
+                        <Button x:Name="btnImportDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True" Click="btnImportDalsi_Click"/>
+                        <Button x:Name="btnImportImportovat" Content="Importovat" Width="100" Margin="10"  IsEnabled="False" Click="btnImportImportovat_Click"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -85,7 +106,7 @@
             <TabItem x:Name="tbItmInfo" Header="O Programu">
                 <GroupBox Header="informace o Programu" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid x:Name="grd3Info" ShowGridLines="False" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <!--Definice řádků-->
+                        <!-- Definice řádků -->
                         <Grid.RowDefinitions>
                             <!--řádek 0-->
                             <RowDefinition Height="auto"/>
@@ -108,29 +129,33 @@
                             <!--řádek 9-->
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <!--Definice sloupců-->
+                        <!-- Definice sloupců -->
                         <Grid.ColumnDefinitions>
                             <!--sloupec 0-->
                             <ColumnDefinition Width="*"/>
                             <!--sloupec 1-->
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
+
                         <!-- INFORMACE O PROGRAMU -->
+
                         <!-- Název Programu -->
-                        <!--<GroupBox Header="Název Programu" Margin="20,60,20,0">-->
                         <Label Content="název Prgoramu:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5,0,15,0"/>
                         <Label Content="ANALYST DATA Importer" Grid.Column="1" Grid.Row="0" Margin="5,0,15,0"/>
-                        <!--</GroupBox>-->
+
                         <!-- číslo Verze Programu -->
                         <Label Content="verze Prgoramu:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="5,0,15,0"/>
                         <Label Content="1.0" Grid.Column="1" Grid.Row="1" Margin="5,0,15,0"/>
+
                         <!-- Datum Verze -->
                         <Label Content="Datum verze:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Margin="5,0,15,0"/>
                         <Label Content="11. 09. 2023" Grid.Column="1" Grid.Row="2" Margin="5,0,15,0"/>
+
                         <!-- Autoři -->
                         <Label Content="autoři:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5,0,15,0"/>
                         <Label Content="ktp. Ing. Bc. Tomáš Kopecký" Grid.Column="1" Grid.Row="3" Margin="5,0,15,0"/>
                         <Label Content="kpt. Ing. Pavel Dvořák" Grid.Column="1" Grid.Row="4" Margin="5,0,15,0"/>
+
                         <!-- O Programu -->
                         <Label Content="o Programu:" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" Margin="5,0,15,0"/>
                         <Label Content="Program slouží k importování souborů .CSV do aplikace Analyst Data Importer." Grid.Column="1" Grid.Row="5" Margin="5,0,15,0"/>

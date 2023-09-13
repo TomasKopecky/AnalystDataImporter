@@ -24,7 +24,20 @@ namespace AnalystDataImporter.WindowsWPF
         {
             InitializeComponent();
         }
-        
 
+        private void btnImportNovyObjekt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnImportNovaVazba_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnImportObjektOdstranit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

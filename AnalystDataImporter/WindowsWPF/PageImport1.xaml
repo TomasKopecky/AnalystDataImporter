@@ -34,11 +34,11 @@
 
         <!-- Cesta k CsV Souboru a Tlačítko Procházet/Browse -->
         <Label Content="Soubor .csv - Cesta:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,10,5,5" />
-        <TextBox Name="txtFilePath"  Height="23" VerticalAlignment="Bottom" Margin="5,10,5,5" Grid.Column="1"/>
+        <TextBox x:Name="txtCestaKSouboru"  Height="23" VerticalAlignment="Bottom" Margin="5,10,5,5" Grid.Column="1"/>
         <Button Content="Procházet..." HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Margin="5,10,5,5" Click="Browse_Click" Grid.Column="2"/>
 
         <!-- TABULKA s náhledem CSV s Oddělovači -->
-        <DataGrid x:Name="dtGrdTabulkaCsvSouboru" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
+        <DataGrid x:Name="dtGrdTabulkaCsvSouboru1" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
 
         <!-- Pomocný Grid pro Oddělovače a Záhlaví -->
         <Grid Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3">
@@ -78,20 +78,20 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <!-- Čárka -->
-                    <CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />
                     <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
                     <!-- Středník -->
-                    <CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
+                    <CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
                     <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
                     <!-- Jiný -->
-                    <CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" />
+                    <CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" />
                     <Label Content="Jiný:" Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" />
                     <TextBox x:Name="txtkBxJiny" Grid.Row="0" Grid.Column="6" Width="40" Margin="5" VerticalAlignment="Center" TextAlignment="Center" />
                     <!-- Tabulátor -->
-                    <CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />
                     <Label Content="Tabulátor" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
                     <!-- Mezera -->
-                    <CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" />
+                    <CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />
                     <Label Content="Mezera" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" />
                 </Grid>
             </GroupBox>
@@ -108,9 +108,10 @@
                         <!--sloupec 2-->
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="chckBxZahlavi" Grid.Column="0" Margin="5" VerticalAlignment="Center" />
+                    <!-- zaškrtni záhlaví -->
+                    <CheckBox x:Name="chckBxZahlavi" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxZahlavi_Checked" Unchecked="chckBxZahlavi_Unchecked" />
                     <Label Content="Extrahovat záhlaví sloupců z řádku:"  Margin="0,5" Grid.Column="1" VerticalAlignment="Center" />
-                    <!--HorizontalAlignment="Right" VerticalAlignment="Top"-->
+                    <!-- napiš kolikátý řádek je záhlaví -->
                     <TextBox x:Name="txtBxCisloRadkuZahlavi" Width="40" Grid.Column="2" Margin="0,5,5,5" VerticalAlignment="Center" TextAlignment="Center" />
                 </Grid>
             </GroupBox>
