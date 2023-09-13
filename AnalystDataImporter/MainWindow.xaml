@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
         mc:Ignorable="d"
         Title="Custom Importer" Loaded="Window_Loaded"
-        MinHeight="450" MinWidth="600">
+        MinHeight="450" MinWidth="650">
     <Grid x:Name="grdMainWindow" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
 
-        <!--Definice řádků-->
+        <!-- Definice řádků -->
         <Grid.RowDefinitions>
             <!--řádek 0-->
             <RowDefinition Height="auto"/>
@@ -48,7 +48,15 @@
                 </Grid>
             </TabItem>
 
-            <!-- 2. Záložka - IMPORTER -->
+
+            <!-- 2. Záložka - ŠABLONY -->
+            <TabItem x:Name="tbItmSablona" Header="Šablony" FontWeight="Bold">
+                <Grid x:Name="grd2Sablona" ShowGridLines="False">
+                    <!-- TODO: -->
+                </Grid>
+            </TabItem>
+
+            <!-- 3. Záložka - IMPORTER -->
             <TabItem x:Name="tbItmImport" Header="ANALYST DATA Importer" FontWeight="Bold">
                 <Grid x:Name="grd2Import" ShowGridLines="False">
                     <!--Definice řádků-->
@@ -60,7 +68,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- FRAME - do nej iportuji Page! -->
-                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" /> <!--HorizontalAlignment="Center" VerticalAlignment="Center"-->
+                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" />
+                    <!--HorizontalAlignment="Center" VerticalAlignment="Center"-->
 
                     <!-- Tlačítka Zpět,Další a Importovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
@@ -72,16 +81,9 @@
                 </Grid>
             </TabItem>
 
-            <!-- 3. Záložka - ŠABLONY -->
-            <TabItem x:Name="tbItmSablona" Header="Šablony" FontWeight="Bold">
-                <Grid x:Name="grd2Sablona" ShowGridLines="False">
-                    <!-- TODO: --> 
-                </Grid>
-            </TabItem>
-
             <!-- 4. Záložka - O PROGRAMU -->
             <TabItem x:Name="tbItmInfo" Header="O Programu">
-                <GroupBox HorizontalAlignment="Center" VerticalAlignment="Center">
+                <GroupBox Header="informace o Programu" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid x:Name="grd3Info" ShowGridLines="False" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <!--Definice řádků-->
                         <Grid.RowDefinitions>

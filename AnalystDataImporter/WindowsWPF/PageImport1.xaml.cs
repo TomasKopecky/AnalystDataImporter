@@ -72,7 +72,7 @@ namespace AnalystDataImporter.WindowsWPF
 
         private void LoadFile(string filePath)
         {
-            char delimiter = GetSelectedDelimiter();
+            //char delimiter = GetSelectedDelimiter(); // TODO: Opravit Delimiter
             DataTable dataTable = new DataTable();
 
             using (StreamReader sr = new StreamReader(filePath))
@@ -80,33 +80,23 @@ namespace AnalystDataImporter.WindowsWPF
                 string line = sr.ReadLine();
                 if (line != null)
                 {
-                    string[] headers = line.Split(delimiter);
-                    foreach (string header in headers)
-                    {
-                        dataTable.Columns.Add(header);
-                    }
+                    // TODO: Opravit Delimiter a headers:
+                    //string[] headers = line.Split(delimiter); // TODO: Opravit Delimiter
+                    //foreach (string header in headers) // TODO: Opravit headers
+                    //{
+                    //    dataTable.Columns.Add(header); // TODO: Opravit header
+                    //}
 
                     while ((line = sr.ReadLine()) != null)
                     {
-                        dataTable.Rows.Add(line.Split(delimiter));
+                        //dataTable.Rows.Add(line.Split(delimiter)); // TODO: Opravit Delimiter:
                     }
                 }
             }
 
-            dataGrid.ItemsSource = dataTable.DefaultView;
+            dtGrdTabulkaCsvSouboru.ItemsSource = dataTable.DefaultView;
         }
 
-        private char GetSelectedDelimiter()
-        {
-            switch (cbxDelimiter.SelectedItem)
-            {
-                case ComboBoxItem item when item.Content.ToString() == "Tab":
-                    return '\t';
-                case ComboBoxItem item when item.Content.ToString() == "Semicolon":
-                    return ';';
-                default: // Default to comma
-                    return ',';
-            }
-        }
+        
     }
 }
