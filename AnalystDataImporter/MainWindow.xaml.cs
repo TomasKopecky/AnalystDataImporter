@@ -45,6 +45,10 @@ namespace AnalystDataImporter
 
             // Nastavení šířky hlavního okna
             this.Width = desiredWidth;
+
+            // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'
+            Page page1 = new PageImport1();
+            frmImporter.Navigate(page1);
         }
 
         // Inicializace komponent
@@ -65,22 +69,25 @@ namespace AnalystDataImporter
             // TODO: Grid_DragOver
         }
 
+        // Metoda - co se stane po přepnutí záložky
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                // Získání vybrané záložky
-                TabItem selectedTab = (TabItem)e.AddedItems[0];
+            // Pokud bych tu chtěl něco, co se stane po přepnutí záložky...
 
-                // Podle vybrané záložky načíst příslušnou stránku do Frame
-                if (selectedTab.Header.ToString() == "ANALYST DATA Importer")
-                {
-                    Page page1 = new PageImport1();
-                    frmImporter.Navigate(page1);
-                }
-            }
-            catch (Exception ex)
-            { }
+            //try
+            //{
+            //    // Získání vybrané záložky
+            //    TabItem selectedTab = (TabItem)e.AddedItems[0];
+
+            //    // Podle vybrané záložky načíst příslušnou stránku do Frame
+            //    if (selectedTab.Header.ToString() == "ANALYST DATA Importer")
+            //    {
+            //        Page page1 = new PageImport1();
+            //        frmImporter.Navigate(page1);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{ }
         }
 
 
