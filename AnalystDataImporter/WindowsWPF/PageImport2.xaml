@@ -41,14 +41,25 @@
 
             <!-- Tlačítka Zpět,Další a Importovat -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,15,0,0" Grid.Column="0" Grid.Row="0">
-                <Button x:Name="btnImportNovyObjekt" Content="Přidat nový objekt" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovyObjekt_Click"/>
-                <Button x:Name="btnImportNovaVazba" Content="Přidat novou vazbu" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovaVazba_Click"/>
-                <Button x:Name="btnImportObjektOdstranit" Content="Odstranit" Width="130" Margin="5"  IsEnabled="False" Click="btnImportObjektOdstranit_Click"/>
+                <Button x:Name="btnImportNovyObjekt" Content="Přidat nový objekt" Width="130" Margin="5" IsEnabled="True" Click="btnImportNovyObjekt_Click"/>
+                <Button x:Name="btnImportNovaVazba" Content="Přidat novou vazbu" Width="130" Margin="5" IsEnabled="True" Click="btnImportNovaVazba_Click"/>
+                <Button x:Name="btnImportObjektOdstranit" Content="Odstranit" Width="130" Margin="5"  IsEnabled="True" Click="btnImportObjektOdstranit_Click"/>
             </StackPanel>
 
-            <!-- Okno s Kreslením a vytvářením obejktů -->
-            <Canvas x:Name="cnvsKresleniObjektuAVazeb" Background="WhiteSmoke" Grid.Row="1" Margin="7,0,7,10" />
-    
+            <ScrollViewer Name="canvasScrollViewer" IsEnabled="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="7,0,7,10"
+                           >
+                <!-- Okno s Kreslením a vytvářením obejktů -->
+                <Canvas x:Name="cnvsObjekty" Background="WhiteSmoke" MouseLeftButtonDown="cnvsObjekty_MouseLeftButtonDown"  Width="2000" Height="1000"
+                    PreviewMouseRightButtonDown="cnvsObjekty_PreviewMouseRightButtonDown" PreviewMouseMove="cnvsObjekty_PreviewMouseMove" PreviewMouseRightButtonUp="cnvsObjekty_PreviewMouseRightButtonUp" 
+                    PreviewMouseWheel="cnvsObjekty_PreviewMouseWheel">
+                    <!--<Button x:Name="btnImportNovyObjekt2" Content="Přidat nový objekt" Canvas.Left="10" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovyObjekt_Click"/>
+                <Button x:Name="btnImportNovaVazba2" Content="Přidat novou vazbu" Canvas.Left="150" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovaVazba_Click"/>
+                <Button x:Name="btnImportObjektOdstranit2" Content="Odstranit" Canvas.Left="290" Width="130" Margin="5"  IsEnabled="False" Click="btnImportObjektOdstranit_Click"/>-->
+
+                </Canvas>
+                <!--Grid.Row="1"-->
+            </ScrollViewer>
+
 
 
             <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
