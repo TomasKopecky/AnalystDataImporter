@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -14,6 +15,8 @@ namespace AnalystDataImporter.WindowsWPF
         public int ID { get; set; }
         public Ellipse Shape { get; set; }
         public TextBlock Popisek { get; set; }
+
+        public Objekt() { }
 
         public Objekt(int id)
         {

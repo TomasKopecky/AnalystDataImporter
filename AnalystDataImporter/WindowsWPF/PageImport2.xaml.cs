@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,6 +53,9 @@ namespace AnalystDataImporter.WindowsWPF
         // TODO: aktuální ID
         private int aktualniID = 1;
 
+        // pomocná vazba
+        Line line0;
+
 
         // SEZNAMY a LISTY OBJEKTŮ:
 
@@ -100,6 +104,9 @@ namespace AnalystDataImporter.WindowsWPF
         // PO KLIKU NA TLAČÍTKO PRO VYTVOŘENÍ NOVÉ VAZBY:
         private void btnImportNovaVazba_Click(object sender, RoutedEventArgs e)
         {
+            odznacObjekty();
+            odznacVazby();
+
             // Nastavte příznak pro přidávání vazby
             pridavaniVazby = true;
             pridavaniObjektu = false;
@@ -152,7 +159,7 @@ namespace AnalystDataImporter.WindowsWPF
             if (pridavaniObjektu)
             {
                 // Získání pozice kliknutí myší
-                Point position = e.GetPosition(cnvsObjekty);
+                Point position = clickPoint;//e.GetPosition(cnvsObjekty);
 
                 // Přidejte bílý kruh do Canvas na pozici kliknutí
                 Ellipse newCircle = new Ellipse();
@@ -201,11 +208,20 @@ namespace AnalystDataImporter.WindowsWPF
             // Pokud je AKTIVNÍ PŘIDÁVÁNÍ VAZBY
             else if (pridavaniVazby && clickedElement is Ellipse)
             {
+                // přidej pomocnou vazbu
+                line0 = new Line();
+                line0.Stroke = Brushes.Black;
+                line0.X1 = clickPoint.X;
+                line0.Y1 = clickPoint.Y;
+                line0.X2 = clickPoint.X;
+                line0.Y2 = clickPoint.Y;
+                cnvsObjekty.Children.Add(line0);
+
                 // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty
                 vybranyObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == clickedElement);
                 vybranyObjekt.Highlight();
 
-                startVazbyPoint = e.GetPosition(cnvsObjekty); // ulož si startovní bod Vazby
+                startVazbyPoint = clickPoint;//e.GetPosition(cnvsObjekty); // ulož si startovní bod Vazby
                 btnImportObjektOdstranit.IsEnabled = false; // zakázat tlačítko Odstranit - není co odstraňovat
 
                 return; // vyskoč z metody, toto je vše
@@ -214,6 +230,9 @@ namespace AnalystDataImporter.WindowsWPF
             // Pokud Kliknu MIMO Objekt a Vazbu:
             if (!(clickedElement is Ellipse) && !(clickedElement is Line))
             {
+                odznacObjekty();
+                odznacVazby();
+
                 vybranyObjekt = null;
                 vybranaVazba = null;
 
@@ -277,7 +296,7 @@ namespace AnalystDataImporter.WindowsWPF
 
 
                     presouvani = true; // Aktivujte režim přesouvání
-                    posledniPozice = e.GetPosition(cnvsObjekty); // Uložte aktuální pozici myši
+                    posledniPozice = clickPoint;//e.GetPosition(cnvsObjekty); // Uložte aktuální pozici myši
                 }
             }
             // Pokud je VYBRÁNA VAZBA:
@@ -304,14 +323,33 @@ namespace AnalystDataImporter.WindowsWPF
 
         }
 
+        private List<Vazba> listVazbebObjektu = new List<Vazba>(); // vazby objektu
+
+        // fce pro Nalezení Všech Vazeb Objektu
+        private List<Vazba> najdiVazbyObjektu(Objekt obj) //, List<Vazba> listVazbebObjektu)
+        {
+            listVazbebObjektu.Clear(); // pročisti seznam
+
+            foreach (var vazba in vsechnyVazby)
+            {
+                // pokud se shoduje ID obejktu vazby s ID vybraného objektu
+                if (vazba.StartObjekt.ID == obj.ID || vazba.EndObjekt.ID == obj.ID)
+                {
+                    listVazbebObjektu.Add(vazba);
+                }
+            }
+
+            return listVazbebObjektu;
+        }
+
         // METODA PRO PŘESUN OBJEKTU PO PLÁTNĚ:
         private void cnvsObjekty_MouseMove(object sender, MouseEventArgs e)
         {
+            // Získejte novou pozici myši
+            Point novaPozice = e.GetPosition(cnvsObjekty);
+
             if (presouvani && vybranyObjekt != null)
             {
-                // Získejte novou pozici myši
-                Point novaPozice = e.GetPosition(cnvsObjekty);
-
                 // Vypočítejte posun
                 double deltaX = novaPozice.X - posledniPozice.X;
                 double deltaY = novaPozice.Y - posledniPozice.Y;
@@ -328,24 +366,90 @@ namespace AnalystDataImporter.WindowsWPF
 
                 // Aktualizujte poslední pozici pro další pohyb
                 posledniPozice = novaPozice;
+
+                // Najdi všechny Vazby přesouvaného objektu
+                var vazbyVybranéhObjektu = najdiVazbyObjektu(vybranyObjekt);
+                foreach (var vazba in vazbyVybranéhObjektu)
+                {
+                    //vazba.EndPoint = novaPozice;
+                    if (vybranyObjekt.ID == vazba.StartObjekt.ID)
+                    {
+                        vazba.StartPoint = new Point(novaPozice.X, novaPozice.Y);
+                        vazba.Line.X1 = Canvas.GetLeft(vybranyObjekt.Shape) + vybranyObjekt.Shape.Width / 2;
+                        vazba.Line.Y1 = Canvas.GetTop(vybranyObjekt.Shape) + vybranyObjekt.Shape.Height / 2;
+
+                        vazba.Line.Stroke = Brushes.Black;
+                    }
+                    else if (vybranyObjekt.ID == vazba.EndObjekt.ID)
+                    {
+                        vazba.EndPoint = new Point(novaPozice.X, novaPozice.Y);
+                        vazba.Line.X2 = Canvas.GetLeft(vybranyObjekt.Shape) + vybranyObjekt.Shape.Width / 2;
+                        vazba.Line.Y2 = Canvas.GetTop(vybranyObjekt.Shape) + vybranyObjekt.Shape.Height / 2;
+                        vazba.Line.Stroke = Brushes.Black;
+                    }
+                }
+            }
+            else if (!presouvani && startVazbyPoint != null)
+            {
+                // Pomocná vazba:
+                line0.X2 = novaPozice.X; //Canvas.GetLeft(Line.Shape.Width // novaPozice.X);
+                line0.Y2 = novaPozice.Y; //Canvas.GetTop(novaPozice.Y);
             }
         }
 
         // PO PUŠTĚNÍ LEVÉHO TLAČÍTKA MYŠI NA PLÁTNĚ CANVAS:
         private void cnvsObjekty_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            cnvsObjekty.Children.Remove(line0);
+            Objekt endObjekt = new Objekt();
+
+
+
             // ukončIT režim přesouvání:
             presouvani = false; // Deaktivujte režim přesouvání
-            // aktualizuj Start a End Pointy vazby
+                                // aktualizuj Start a End Pointy vazby
             AktualizovatVazbyStartEndPoints();
 
+            // Když přidávám Vazbu a je hodnota Startu_Vazby
             if (pridavaniVazby && startVazbyPoint.HasValue)
             {
-                Objekt endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == e.OriginalSource as Ellipse);
+                //// Původní řešení:
+                //Objekt endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == e.OriginalSource as Ellipse);
 
+                // Vytvoření seznamu pro uložení všech prvků, které byly detekovány
+                List<UIElement> hitObjects = new List<UIElement>();
+
+                // Provedení hittestingu
+                VisualTreeHelper.HitTest(
+                    sender as Canvas,
+                    null,
+                    new HitTestResultCallback(result =>
+                    {
+                        if (result.VisualHit is UIElement element && cnvsObjekty.Children.Contains(element))
+                        {
+                            hitObjects.Add(element);
+                        }
+                        return HitTestResultBehavior.Continue;
+                    }),
+                    new PointHitTestParameters(e.GetPosition((UIElement)sender))
+                );
+
+                // Procházení seznamu a zpracování výsledků
+                foreach (var hit in hitObjects)
+                {
+                    if (hit is Ellipse)
+                    {
+                        endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == hit);
+                        break;
+                    }
+                }
+
+                // Pokud je vybraný objekt:
                 if (vybranyObjekt != null && endObjekt != null && vybranyObjekt != endObjekt)
                 {
-                    // Vytvořte linku mezi objekty
+                    //cnvsObjekty.Children.Remove(line0);
+
+                    //Vytvořte linku mezi objekty
                     Line line = new Line();
                     line.X1 = Canvas.GetLeft(vybranyObjekt.Shape) + vybranyObjekt.Shape.Width / 2;
                     line.Y1 = Canvas.GetTop(vybranyObjekt.Shape) + vybranyObjekt.Shape.Height / 2;
@@ -360,6 +464,10 @@ namespace AnalystDataImporter.WindowsWPF
 
                     odznacObjekty(); // odznač vybraný objekt č.1
                     btnImportObjektOdstranit.IsEnabled = false; // zakázat tlačítko Odstranit - není co odstraňovat
+                }
+                else
+                {
+                    cnvsObjekty.Children.Remove(line0);
                 }
 
                 startVazbyPoint = null;
