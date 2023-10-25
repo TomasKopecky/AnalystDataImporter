@@ -148,14 +148,7 @@ namespace AnalystDataImporter.WindowsWPF
 
             Point clickPoint = e.GetPosition(cnvsObjekty);
 
-            // Pokud je aktivní přidávání vazby
-            if (pridavaniVazby && clickedElement is Ellipse)
-            {
-                startVazbyPoint = e.GetPosition(cnvsObjekty); // ulož si startovní bod Vazby
-                btnImportObjektOdstranit.IsEnabled = false; // zakázat tlačítko Odstranit - není co odstraňovat
-            }
-
-            // POKUD SE PŘIDÁVÁ NOVÝ OBJEKT:
+            // Pokud se PŘIDÁVÁ NOVÝ OBJEKT:
             if (pridavaniObjektu)
             {
                 // Získání pozice kliknutí myší
@@ -202,9 +195,23 @@ namespace AnalystDataImporter.WindowsWPF
                 pridavaniObjektu = false;
                 // Resetuj barvu tlačítka
                 btnImportNovyObjekt.Background = Brushes.LightGray;
+
+                return; // vyskoč z metody, toto je vše
+            }
+            // Pokud je AKTIVNÍ PŘIDÁVÁNÍ VAZBY
+            else if (pridavaniVazby && clickedElement is Ellipse)
+            {
+                // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty
+                vybranyObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == clickedElement);
+                vybranyObjekt.Highlight();
+
+                startVazbyPoint = e.GetPosition(cnvsObjekty); // ulož si startovní bod Vazby
+                btnImportObjektOdstranit.IsEnabled = false; // zakázat tlačítko Odstranit - není co odstraňovat
+
+                return; // vyskoč z metody, toto je vše
             }
 
-            // POKUD KLIKNU MIMO OBJEKT A VAZBU:
+            // Pokud Kliknu MIMO Objekt a Vazbu:
             if (!(clickedElement is Ellipse) && !(clickedElement is Line))
             {
                 vybranyObjekt = null;
@@ -228,51 +235,52 @@ namespace AnalystDataImporter.WindowsWPF
                 }
 
             }
-            // POKUD KLIKNU NA OBJEKT (ELIPSU):
-            else if (clickedElement is Ellipse) // Zkontrolujte, zda kliknutý element je elipsa
+
+            // Pokud je VYBRÁN OBJEKT (Elipsa) a NENÍ Zvoleno PŘIDÁVÁNÍ VAZBY:
+            if (clickedElement is Ellipse clickedEllipse && !pridavaniVazby) //(e.OriginalSource is Ellipse clickedEllipse && !pridavaniVazby)
             {
-                // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty
-                vybranyObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == clickedElement);
+                // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty na základě kliknuté elipsy
+                vybranyObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == clickedEllipse);
 
                 // Označte vybraný objekt (nějakým způsobem, např. změnou barvy)
                 if (vybranyObjekt != null)
                 {
+                    #region OLD
+                    //// pro všechny objekty v Canvas
+                    //foreach (var obj in cnvsObjekty.Children)
+                    //{
+                    //    if (obj is Ellipse ellipse)
+                    //    {
+                    //        // Restartuje vlastnosti ostatních objektů:
+                    //        ellipse.Fill = Brushes.White; // Resetuj barvu výplně
+                    //        ellipse.Stroke = Brushes.Black; // Resetuj barvu okraje
+                    //        ellipse.StrokeThickness = 1; // Resetuj tloušťku okraje
+                    //                                     // Resetuj vazby
+                    //        odznacVazby();
+                    //    }
+                    //}
+                    //// Označení objektu
+                    //clickedEllipse.Fill = Brushes.LightCyan;
+                    //clickedEllipse.Stroke = Brushes.DodgerBlue;
+                    //clickedEllipse.StrokeThickness = 3;
+                    //
+                    #endregion
+                    //// NAHRAZENO:
+                    odznacObjekty(); // fce pro odznačení všech objektů
+                    odznacVazby();   // fce pro odznačení všech vazeb
+
                     vybranyObjekt.Highlight();
                     // nastav vybranou vazbu na null
                     vybranaVazba = null;
                     // povolit tlačítko odstranit
                     btnImportObjektOdstranit.IsEnabled = true;
+
+
+                    presouvani = true; // Aktivujte režim přesouvání
+                    posledniPozice = e.GetPosition(cnvsObjekty); // Uložte aktuální pozici myši
                 }
             }
-
-            // POKUD JE VYBRÁN OBJEKT (ELIPSA) A NENÍ ZVNOLENO PŘIDÁVÁNÍ VAZBY:
-            if (clickedElement is Ellipse clickedEllipse && !pridavaniVazby) //(e.OriginalSource is Ellipse clickedEllipse && !pridavaniVazby)
-            {
-                foreach (var obj in cnvsObjekty.Children)
-                {
-                    if (obj is Ellipse ellipse)
-                    {
-                        // Restartuje vlastnosti ostatních objektů:
-                        ellipse.Fill = Brushes.White; // Resetuj barvu výplně
-                        ellipse.Stroke = Brushes.Black; // Resetuj barvu okraje
-                        ellipse.StrokeThickness = 1; // Resetuj tloušťku okraje
-                        // Resetuj vazby
-                        odznacVazby();
-                    }
-                }
-
-                // Označení objektu
-                clickedEllipse.Fill = Brushes.LightCyan;
-                clickedEllipse.Stroke = Brushes.DodgerBlue;
-                clickedEllipse.StrokeThickness = 3;
-
-                // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty na základě kliknuté elipsy
-                vybranyObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == clickedEllipse);
-
-                presouvani = true; // Aktivujte režim přesouvání
-                posledniPozice = e.GetPosition(cnvsObjekty); // Uložte aktuální pozici myši
-            }
-            // POKUD JE VYBRÁNA VAZBA
+            // Pokud je VYBRÁNA VAZBA:
             else if (clickedElement is Line) // pokud je vybrána vazba
             {
                 // Vyhledejte odpovídající objekt v seznamu vsechnyObjekty
