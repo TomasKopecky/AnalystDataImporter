@@ -84,9 +84,9 @@ namespace AnalystDataImporter.WindowsWPF
             }
         }
         // HIT TEST - najdi, na který prvek v Canvas se kliklo
-        private Objekt MyHitTest(object sender, MouseButtonEventArgs e, Shape shape)
+        private Objekt MyHitTest(object sender, MouseButtonEventArgs e, Type shape)
         {
-            Objekt endObjekt = new Objekt();
+            Objekt endObjekt = null;
 
             // Vytvoření seznamu pro uložení všech prvků, které byly detekovány
             List<UIElement> hitObjects = new List<UIElement>();
@@ -109,7 +109,7 @@ namespace AnalystDataImporter.WindowsWPF
             // Procházení seznamu a zpracování výsledků
             foreach (var hit in hitObjects)
             {
-                if (hit is shape.Shape)
+                if (hit.GetType() == shape)
                 {
                     endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == hit);
                     break;
@@ -433,11 +433,6 @@ namespace AnalystDataImporter.WindowsWPF
         // PO PUŠTĚNÍ LEVÉHO TLAČÍTKA MYŠI NA PLÁTNĚ CANVAS:
         private void cnvsObjekty_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            cnvsObjekty.Children.Remove(line0);
-            //
-            // naplň endObjekt objektem, na který se kliklo v Canvas
-            Objekt endObjekt = MyHitTest(sender, e, Ellipse);
-
             // ukončIT režim přesouvání:
             presouvani = false; // Deaktivujte režim přesouvání
                                 // aktualizuj Start a End Pointy vazby
@@ -446,36 +441,40 @@ namespace AnalystDataImporter.WindowsWPF
             // Když přidávám Vazbu a je hodnota Startu_Vazby
             if (pridavaniVazby && startVazbyPoint.HasValue)
             {
+                cnvsObjekty.Children.Remove(line0);
+                //
+                // naplň endObjekt objektem, na který se kliklo v Canvas
+                Objekt endObjekt = MyHitTest(sender, e, typeof(Ellipse));
                 //// Původní řešení:
                 //Objekt endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == e.OriginalSource as Ellipse);
 
-                // Vytvoření seznamu pro uložení všech prvků, které byly detekovány
-                List<UIElement> hitObjects = new List<UIElement>();
+                //// Vytvoření seznamu pro uložení všech prvků, které byly detekovány
+                //List<UIElement> hitObjects = new List<UIElement>();
 
-                // Provedení hittestingu
-                VisualTreeHelper.HitTest(
-                    sender as Canvas,
-                    null,
-                    new HitTestResultCallback(result =>
-                    {
-                        if (result.VisualHit is UIElement element && cnvsObjekty.Children.Contains(element))
-                        {
-                            hitObjects.Add(element);
-                        }
-                        return HitTestResultBehavior.Continue;
-                    }),
-                    new PointHitTestParameters(e.GetPosition((UIElement)sender))
-                );
+                //// Provedení hittestingu
+                //VisualTreeHelper.HitTest(
+                //    sender as Canvas,
+                //    null,
+                //    new HitTestResultCallback(result =>
+                //    {
+                //        if (result.VisualHit is UIElement element && cnvsObjekty.Children.Contains(element))
+                //        {
+                //            hitObjects.Add(element);
+                //        }
+                //        return HitTestResultBehavior.Continue;
+                //    }),
+                //    new PointHitTestParameters(e.GetPosition((UIElement)sender))
+                //);
 
-                // Procházení seznamu a zpracování výsledků
-                foreach (var hit in hitObjects)
-                {
-                    if (hit is Ellipse)
-                    {
-                        endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == hit);
-                        break;
-                    }
-                }
+                //// Procházení seznamu a zpracování výsledků
+                //foreach (var hit in hitObjects)
+                //{
+                //    if (hit is Ellipse)
+                //    {
+                //        endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == hit);
+                //        break;
+                //    }
+                //}
 
                 // Pokud je vybraný objekt:
                 if (vybranyObjekt != null && endObjekt != null && vybranyObjekt != endObjekt)
