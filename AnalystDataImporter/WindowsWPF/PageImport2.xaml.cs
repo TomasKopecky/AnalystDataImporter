@@ -39,7 +39,6 @@ namespace AnalystDataImporter.WindowsWPF
 
         // aktuálně vybraný objekt
         private Objekt vybranyObjekt = null;
-
         // aktuálně vybraná vazba
         private Vazba vybranaVazba = null;
 
@@ -50,7 +49,7 @@ namespace AnalystDataImporter.WindowsWPF
         private bool presouvani = false;
         private Point posledniPozice;
 
-        // TODO: aktuální ID
+        // aktuální ID
         private int aktualniID = 1;
 
         // pomocná vazba
@@ -61,7 +60,6 @@ namespace AnalystDataImporter.WindowsWPF
 
         // seznam uložených Objektů
         private List<Objekt> vsechnyObjekty = new List<Objekt>();
-
         // seznam uložených Vazeb
         private List<Vazba> vsechnyVazby = new List<Vazba>();
 
@@ -70,7 +68,7 @@ namespace AnalystDataImporter.WindowsWPF
         // POMOCNÉ METODY a FUNKCE:
 
         // Odznačí všechny Objekty
-        private void odznacObjekty()
+        private void OdznacObjekty()
         {
             foreach (var objekt in vsechnyObjekty)
             {
@@ -78,12 +76,47 @@ namespace AnalystDataImporter.WindowsWPF
             }
         }
         // Odznačí všechny Vazby
-        private void odznacVazby()
+        private void OdznacVazby()
         {
             foreach (var vazba in vsechnyVazby)
             {
                 vazba.ResetAppearance(); // Restartuje vlastnosti všech vazeb
             }
+        }
+        // HIT TEST - najdi, na který prvek v Canvas se kliklo
+        private Objekt MyHitTest(object sender, MouseButtonEventArgs e, Shape shape)
+        {
+            Objekt endObjekt = new Objekt();
+
+            // Vytvoření seznamu pro uložení všech prvků, které byly detekovány
+            List<UIElement> hitObjects = new List<UIElement>();
+
+            // Provedení hittestingu
+            VisualTreeHelper.HitTest(
+                sender as Canvas,
+                null,
+                new HitTestResultCallback(result =>
+                {
+                    if (result.VisualHit is UIElement element && cnvsObjekty.Children.Contains(element))
+                    {
+                        hitObjects.Add(element);
+                    }
+                    return HitTestResultBehavior.Continue;
+                }),
+                new PointHitTestParameters(e.GetPosition((UIElement)sender))
+            );
+
+            // Procházení seznamu a zpracování výsledků
+            foreach (var hit in hitObjects)
+            {
+                if (hit is shape.Shape)
+                {
+                    endObjekt = vsechnyObjekty.FirstOrDefault(obj => obj.Shape == hit);
+                    break;
+                }
+            }
+
+            return endObjekt;
         }
 
         // TLAČÍTKA:
@@ -104,8 +137,8 @@ namespace AnalystDataImporter.WindowsWPF
         // PO KLIKU NA TLAČÍTKO PRO VYTVOŘENÍ NOVÉ VAZBY:
         private void btnImportNovaVazba_Click(object sender, RoutedEventArgs e)
         {
-            odznacObjekty();
-            odznacVazby();
+            OdznacObjekty();
+            OdznacVazby();
 
             // Nastavte příznak pro přidávání vazby
             pridavaniVazby = true;
@@ -230,8 +263,8 @@ namespace AnalystDataImporter.WindowsWPF
             // Pokud Kliknu MIMO Objekt a Vazbu:
             if (!(clickedElement is Ellipse) && !(clickedElement is Line))
             {
-                odznacObjekty();
-                odznacVazby();
+                OdznacObjekty();
+                OdznacVazby();
 
                 vybranyObjekt = null;
                 vybranaVazba = null;
@@ -285,8 +318,8 @@ namespace AnalystDataImporter.WindowsWPF
                     //
                     #endregion
                     //// NAHRAZENO:
-                    odznacObjekty(); // fce pro odznačení všech objektů
-                    odznacVazby();   // fce pro odznačení všech vazeb
+                    OdznacObjekty(); // fce pro odznačení všech objektů
+                    OdznacVazby();   // fce pro odznačení všech vazeb
 
                     vybranyObjekt.Highlight();
                     // nastav vybranou vazbu na null
@@ -309,9 +342,9 @@ namespace AnalystDataImporter.WindowsWPF
 
                 if (clickedVazba != null)
                 {
-                    odznacVazby(); // Restartuje vlastnosti všech vazeb
+                    OdznacVazby(); // Restartuje vlastnosti všech vazeb
 
-                    odznacObjekty(); // Restartuje vlastnosti všech objektů
+                    OdznacObjekty(); // Restartuje vlastnosti všech objektů
 
                     clickedVazba.Highlight(); // Označí kliknutou vazbu
 
@@ -401,9 +434,9 @@ namespace AnalystDataImporter.WindowsWPF
         private void cnvsObjekty_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             cnvsObjekty.Children.Remove(line0);
-            Objekt endObjekt = new Objekt();
-
-
+            //
+            // naplň endObjekt objektem, na který se kliklo v Canvas
+            Objekt endObjekt = MyHitTest(sender, e, Ellipse);
 
             // ukončIT režim přesouvání:
             presouvani = false; // Deaktivujte režim přesouvání
@@ -447,8 +480,6 @@ namespace AnalystDataImporter.WindowsWPF
                 // Pokud je vybraný objekt:
                 if (vybranyObjekt != null && endObjekt != null && vybranyObjekt != endObjekt)
                 {
-                    //cnvsObjekty.Children.Remove(line0);
-
                     //Vytvořte linku mezi objekty
                     Line line = new Line();
                     line.X1 = Canvas.GetLeft(vybranyObjekt.Shape) + vybranyObjekt.Shape.Width / 2;
@@ -462,7 +493,7 @@ namespace AnalystDataImporter.WindowsWPF
                     Vazba newVazba = new Vazba(aktualniID++, vybranyObjekt, endObjekt, line);
                     vsechnyVazby.Add(newVazba);
 
-                    odznacObjekty(); // odznač vybraný objekt č.1
+                    OdznacObjekty(); // odznač vybraný objekt č.1
                     btnImportObjektOdstranit.IsEnabled = false; // zakázat tlačítko Odstranit - není co odstraňovat
                 }
                 else
