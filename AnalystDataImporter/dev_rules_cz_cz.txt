@@ -1,0 +1,64 @@
+﻿C# .NET WPF Pravidla pro pojmenování a osvědčené postupy
+-------------------------------------------------------
+
+1. Obecná pravidla:
+   - Používejte jasné a popisné názvy. Vyhněte se zkratkám, pokud nejsou běžně známy.
+   - Upřednostněte čitelnost před stručností.
+   - Používejte PascalCase pro názvy typů a metod.
+   - Používejte camelCase pro lokální proměnné a parametry.
+   - Vyhněte se podtržítkům (_) nebo pomlčkám (-) v názvech identifikátorů.
+
+2. Třídy a struktury:
+   - Používejte podstatná jména nebo fráze: např., Uzivatel, KolekcePolozek.
+   - Používejte PascalCase: např., DetailProduktu, HistorieObjednavky.
+
+3. Rozhraní:
+   - Začněte písmenem 'I': např., IPorovnatelny, ISeznam.
+
+4. Metody:
+   - Používejte slovesa nebo páry sloveso-objekt: např., ZiskatData, ZpracovatObjednavku.
+   - Používejte PascalCase.
+
+5. Proměnné:
+   - Používejte camelCase pro lokální proměnné: např., pocetPolozek, seznamPolozek.
+   - Používejte popisné názvy: např., místo 's' použijte 'student'.
+
+6. Vlastnosti:
+   - Používejte PascalCase: např., CelkovaCastka, PocetPolozek.
+   - Používejte podstatná jména nebo fráze: např., BarvaPozadi, JmenoUzivatele.
+
+7. Události a delegáti:
+   - Používejte PascalCase.
+   - Používejte 'EventHandler' pro delegáty: např., KliknutiEventHandler.
+   - Používejte 'EventArgs' pro argumenty události: např., MysoveEventArgs.
+   - Vyhněte se předponě "On" u událostí: např., Kliknuti (nikoli OnKliknuti).
+
+8. Konstanty:
+   - Používejte PascalCase.
+   - Upřednostněte významné názvy: např., MaximalniPolozky (nikoli MaxPolozky).
+
+9. Výčty:
+   - Používejte PascalCase pro názvy typů výčtů a hodnot.
+   - Vyhněte se příponě Enum nebo Type: např., Barvy (nikoli BarvyEnum).
+
+10. Jmenné prostory:
+   - Následujte vzor: např., Microsoft.VisualC.Diagnostika.
+
+11. Specifika pojmenování ve WPF:
+   - Pojmenovávejte prvky XAML podle jejich role: např., TlacitkoZrusit (nikoli TlacitkoZrusit1).
+   - Používejte předponu "On" pro události ve WPF: např., OnKliknuti.
+
+12. Zkratky a akronymy:
+   - Pro známé akronymy používejte velká písmena: ID, XML, SQL.
+   - Jinak používejte PascalCase nebo camelCase.
+
+13. Vyhněte se:
+   - Maďarské notaci.
+   - Názvům proměnných s jedním znakem: např., i, n (s výjimkou čítačů smyček).
+   - Prefixu podtržítka u polí.
+
+14. Komentáře a dokumentace:
+   - Používejte XML dokumentaci (///) pro veřejné členy.
+
+15. Názvy souborů:
+   - Názvy souborů by měly odpovídat názvům tříd: např., HistorieObjednavky -> HistorieObjednavky.cs.
