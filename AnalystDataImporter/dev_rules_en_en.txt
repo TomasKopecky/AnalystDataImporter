@@ -1,0 +1,66 @@
+﻿C# .NET WPF Naming Conventions & Best Practices
+------------------------------------------------
+
+1. General Rules:
+   - Use clear and descriptive names. Avoid abbreviations unless they are commonly known.
+   - Choose readability over brevity.
+   - Use PascalCase for type names and method names.
+   - Use camelCase for local variables and parameters.
+   - Avoid underscores (_) or hyphens (-) in identifier names.
+
+2. Classes and Structures:
+   - Use nouns or noun phrases: e.g., User, ItemCollection.
+   - Use PascalCase: e.g., ProductDetail, OrderHistory.
+
+3. Interfaces:
+   - Start with the letter 'I': e.g., IComparable, IEnumerable.
+
+4. Methods:
+   - Use verbs or verb-object pairs: e.g., GetData, ProcessOrder.
+   - Use PascalCase.
+
+5. Variables:
+   - Use camelCase for local variables: e.g., itemCount, listItems.
+   - Use descriptive names: e.g., instead of 's', use 'student'.
+
+6. Properties:
+   - Use PascalCase: e.g., TotalAmount, ItemCount.
+   - Use nouns or noun phrases: e.g., BackgroundColor, UserName.
+
+7. Events and Delegates:
+   - Use PascalCase.
+   - Use 'EventHandler' for delegates: e.g., ClickEventHandler.
+   - Use 'EventArgs' for event args: e.g., MouseEventArgs.
+   - Avoid "On" prefix for events: e.g., Click (not OnClick).
+
+8. Constants:
+   - Use PascalCase.
+   - Prefer meaningful names: e.g., MaximumItems (not MaxItems).
+
+9. Enumerations:
+   - Use PascalCase for enum type and value names.
+   - Avoid Enum or Type suffix: e.g., Colors (not ColorsEnum).
+
+10. Namespaces:
+   - Follow the pattern: e.g., Microsoft.VisualC.Diagnostics.
+
+11. WPF Specific Naming:
+   - Name XAML elements by their role: e.g., CancelButton (not CancelButton1).
+   - Use "On" prefix for WPF events: e.g., OnClick.
+
+12. Abbreviations and Acronyms:
+   - For known acronyms use upper case: ID, XML, SQL.
+   - Otherwise, use PascalCase or camelCase.
+
+13. Avoid:
+   - Hungarian notation.
+   - Single char variable names: e.g., i, n (except loop counters).
+   - Field prefix underscores.
+
+14. Comments and Documentation:
+   - Use XML documentation (///) for public members.
+
+15. File Names:
+   - File names should match class names: e.g., OrderHistory -> OrderHistory.cs.
+
+Note: Consistency is key. Adapt to the conventions of your team or project. Tools like StyleCop or ReSharper can help maintain standards.

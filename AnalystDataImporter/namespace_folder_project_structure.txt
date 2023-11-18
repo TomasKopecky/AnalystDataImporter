@@ -1,0 +1,38 @@
+﻿AnalystDataImporter (Root of your project)
+│
+├── DI (For Dependency Injection related classes)
+│   ├── ServiceProvider.cs
+│
+├── Models
+│   ├── Element.cs
+│   ├── Relation.cs
+│   ├── Source.cs
+│   ├── Specification.cs
+│   ├── TableColumn.cs
+│   ├── User.cs
+│   ├── DataSource.cs
+│
+├── ViewModels
+│   ├── ElementViewModel.cs
+│   ├── RelationViewModel.cs
+│   ├── SourceViewModel.cs
+│   ├── SpecificationViewModel.cs
+│   ├── TableColumnViewModel.cs
+│   ├── UserViewModel.cs
+│   ├── DataSourceViewModel.cs
+│
+├── Globals
+│   ├── GlobalObjectManager.cs
+│   ├── Constants.cs
+│
+├── Views (For your XAML views)
+│   ├── ElementView.xaml
+│   ├── RelationView.xaml
+│   └── ... (other views)
+│
+├── Utilities (Or Helpers or Common - for utility classes)
+│   ├── Constants.cs
+│   └── ... (other utility classes)
+│
+├── App.xaml
+└── MainWindow.xaml
