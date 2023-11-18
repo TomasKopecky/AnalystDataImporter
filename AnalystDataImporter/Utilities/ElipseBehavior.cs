@@ -124,19 +124,11 @@ namespace AnalystDataImporter.Utilities
 
             if (IsDrawingEnabled)
             {
-                if (_mouseHandlingService.IsMouseInCanvas(mousePosition,ParentCanvas))
+                _isDrawing = false;
+                _mouseHandlingService.EndDragOperation();
+                if (FinishDrawingElement.CanExecute(null))
                 {
-                    _isDrawing = false;
-                    _mouseHandlingService.EndDragOperation();
-                    if (FinishDrawingElement.CanExecute(null))
-                    {
-                        FinishDrawingElement.Execute(null);
-                    }
-                }
-                else
-                {
-                    _mouseHandlingService.CurrentElement();
-                    //_mouseHandlingService.CheckDraggingDrawnElementOutsideCanvas();
+                    FinishDrawingElement.Execute(null);
                 }
                 e.Handled = true;
             }

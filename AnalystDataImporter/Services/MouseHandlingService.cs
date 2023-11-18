@@ -17,7 +17,7 @@ namespace AnalystDataImporter.Services
         //private Point _startPosition;
         private Point _anchorPoint; // Position where the drag started
         private BaseDiagramItemViewModel _currentViewModelElement;
-        bool _isBeingUsed;
+        private bool _isInUse = false;
 
         public UIElement CurrentElement()
         {
@@ -25,41 +25,42 @@ namespace AnalystDataImporter.Services
         }
 
 
-    public bool IsMouseOverElement(UIElement element, Point mousePosition)
-    {
-        return true;
-        // Implement hit testing logic
-        // Return true if the mouse is over the element
-    }
+        public bool IsMouseOverElement(UIElement element, Point mousePosition)
+        {
+            return true;
+            // Implement hit testing logic
+            // Return true if the mouse is over the element
+        }
 
-    public bool IsMouseInCanvas(Point mousePosition, Canvas canvas)
-    {
+        public bool IsMouseInCanvas(Point mousePosition, Canvas canvas)
+        {
             if (mousePosition.X >= 0 && mousePosition.X <= canvas.ActualWidth &&
                 mousePosition.Y >= 0 && mousePosition.Y <= canvas.ActualHeight)
                 return true;
 
             return false;
-    }
-
-
-    public void CheckDraggingDrawnElementOutsideCanvas()
-        {
-                if (_currentElement != null)
-                {
-                    _currentElement.CaptureMouse();
-                }
         }
 
-    public void StartDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
-    {
+
+        public void CheckDraggingDrawnElementOutsideCanvas()
+        {
+            if (_currentElement != null)
+            {
+                _currentElement.CaptureMouse();
+            }
+        }
+
+        public void StartDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
+        {
             Debug.WriteLine("MouseHandlingService: StartDragOrSelectOperation");
 
-            if (_currentElement == null)
-            { 
+            if (_currentElement == null && !_isInUse)
+            {
 
-            _currentElement = element;
-        _currentViewModelElement = itemViewModel;
-        if (startPosition != null) _anchorPoint = (Point)startPosition;
+                _currentElement = element;
+                _currentViewModelElement = itemViewModel;
+                _isInUse = true;
+                if (startPosition != null) _anchorPoint = (Point)startPosition;
 
                 // Start capturing the mouse on the element
                 if (_currentElement != null)
@@ -72,28 +73,29 @@ namespace AnalystDataImporter.Services
                         _currentElement.CaptureMouse();
                     }
                 }
+            }
         }
-    }
 
-    public void EndDragOperation()
-    {
+        public void EndDragOperation()
+        {
             Debug.WriteLine("MouseHandlingService: EndDragOperation");
             // Release mouse capture
             if (_currentElement != null)
-        {
-            _currentElement.ReleaseMouseCapture();
-            _currentElement = null;
+            {
+                _currentElement.ReleaseMouseCapture();
+                _currentElement = null;
+                _isInUse = false;
+            }
         }
-    }
 
         public void UpdateDragOperationWhenDrawing(Point currentPosition, Canvas parentCanvas)
         {
-            if (_currentElement == null) return;
+            if (_currentElement == null || !_isInUse) return;
 
 
             if (_currentElement is FrameworkElement associatedElement && associatedElement.DataContext is ElementViewModel viewModel)
             {
-                if (IsMouseInCanvas(currentPosition,parentCanvas))
+                if (IsMouseInCanvas(currentPosition, parentCanvas))
                 {
                     Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
                     //tempElement.XPosition = mousePosition.X;
@@ -107,15 +109,15 @@ namespace AnalystDataImporter.Services
         }
 
         public void UpdateDragOperationWhenDragging(Point currentPosition, Canvas parentCanvas, Grid parentGrid)
-    {
-        if (_currentElement == null) return;
-
-        if (_currentElement is FrameworkElement associatedElement && associatedElement.DataContext is ElementViewModel viewModel)
         {
+            if (_currentElement == null | !_isInUse) return;
 
-            bool isInsideCanvas = currentPosition.X >= 0 && currentPosition.Y >= 0 &&
-                                  currentPosition.X <= parentCanvas.ActualWidth &&
-                                  currentPosition.Y <= parentCanvas.ActualHeight;
+            if (_currentElement is FrameworkElement associatedElement && associatedElement.DataContext is ElementViewModel viewModel)
+            {
+
+                bool isInsideCanvas = currentPosition.X >= 0 && currentPosition.Y >= 0 &&
+                                      currentPosition.X <= parentCanvas.ActualWidth &&
+                                      currentPosition.Y <= parentCanvas.ActualHeight;
 
 
 
@@ -146,13 +148,13 @@ namespace AnalystDataImporter.Services
                     // Update the anchor point to the center of the ellipse
                     _anchorPoint = new Point(viewModel.XCenter, viewModel.YCenter);
                 }
-        }
+            }
         }
 
-    private void SelectElement()
-    {
-        _currentViewModelElement.IsSelected = true;
-    }
+        private void SelectElement()
+        {
+            _currentViewModelElement.IsSelected = true;
+        }
 
 
     }
