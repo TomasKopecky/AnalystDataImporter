@@ -20,6 +20,12 @@ namespace AnalystDataImporter.Utilities
             set { SetValue(ElementViewModelProperty, value); }
         }
 
+        public Canvas ParentCanvas
+        {
+            get { return SharedBehaviorProperties.GetParentCanvas(this); }
+            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
+        }
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -38,7 +44,33 @@ namespace AnalystDataImporter.Utilities
             {
                 ElementViewModel.Width = grid.ActualWidth;
                 ElementViewModel.Height = grid.ActualHeight;
+
+                if (!ElementViewModel.temporary)
+                {
+                    // úprava pozice při změně velikosti, pokud je grid mimo canvas - typicky při vytvoření nové elementu s částí elipsy mimo canvas
+                    if (ElementViewModel.XPosition < 0)
+                    {
+                        ElementViewModel.XPosition = 0;
+                    }
+
+                    if (ElementViewModel.XPosition + ElementViewModel.Width > ParentCanvas.ActualWidth)
+                    {
+                        ElementViewModel.XPosition = ParentCanvas.ActualWidth - ElementViewModel.Width;
+                    }
+
+                    if (ElementViewModel.YPosition < 0)
+                    {
+                        ElementViewModel.YPosition = 0;
+                    }
+
+                    if (ElementViewModel.YPosition + ElementViewModel.Height > ParentCanvas.ActualHeight)
+                    {
+                        ElementViewModel.YPosition = ParentCanvas.ActualHeight - ElementViewModel.Height;
+                    }
+                }
             }
+
+            var i = ParentCanvas;
         }
     }
 }

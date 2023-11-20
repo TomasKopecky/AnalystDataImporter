@@ -53,30 +53,23 @@ namespace AnalystDataImporter.Utilities
             typeof(ElipseBehavior),
             new PropertyMetadata(null)); //new PropertyMetadata(true, OnIsEnabledChanged));
 
-        public static readonly DependencyProperty ParentCanvasProperty = DependencyProperty.Register(
-            nameof(ParentCanvas),
-            typeof(Canvas),
-            typeof(ElipseBehavior),
-            new PropertyMetadata(null));
-
         public Canvas ParentCanvas
         {
-            get => (Canvas)GetValue(ParentCanvasProperty);
-            set => SetValue(ParentCanvasProperty, value);
+            get { return SharedBehaviorProperties.GetParentCanvas(this); }
+            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
         }
 
-        public static readonly DependencyProperty IsDrawingEnabledProperty = DependencyProperty.Register(
-            nameof(IsDrawingEnabled),
+        public static readonly DependencyProperty IsDrawingElementEnabledProperty = DependencyProperty.Register(
+            nameof(IsDrawingElementEnabled),
             typeof(bool),
             typeof(ElipseBehavior),
             new PropertyMetadata(null)); // new PropertyMetadata(true, OnIsEnabledChanged));
 
-        public static readonly DependencyProperty GridProperty =
-            DependencyProperty.Register(
-                nameof(ParentGrid),
-                typeof(Grid),
-                typeof(ElipseBehavior),
-                new PropertyMetadata(null));
+        public static readonly DependencyProperty GridProperty = DependencyProperty.Register(
+            nameof(ParentGrid),
+            typeof(Grid),
+            typeof(ElipseBehavior),
+            new PropertyMetadata(null));
 
         public Grid ParentGrid
         {
@@ -90,10 +83,10 @@ namespace AnalystDataImporter.Utilities
             set => SetValue(IsEnabledProperty, value);
         }
 
-        public bool IsDrawingEnabled
+        public bool IsDrawingElementEnabled
         {
-            get => (bool)GetValue(IsDrawingEnabledProperty);
-            set => SetValue(IsDrawingEnabledProperty, value);
+            get => (bool)GetValue(IsDrawingElementEnabledProperty);
+            set => SetValue(IsDrawingElementEnabledProperty, value);
         }
 
         protected override void OnAttached()
@@ -108,7 +101,7 @@ namespace AnalystDataImporter.Utilities
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("Element MouseLeftButtonDown");
-            if (!IsDraggingEnabled && !IsDrawingEnabled) return;
+            if (!IsDraggingEnabled && !IsDrawingElementEnabled) return;
 
             Point mousePosition = e.GetPosition(ParentCanvas);
 
@@ -122,7 +115,7 @@ namespace AnalystDataImporter.Utilities
                 e.Handled = true;
             }
 
-            if (IsDrawingEnabled)
+            if (IsDrawingElementEnabled)
             {
                 _isDrawing = false;
                 _mouseHandlingService.EndDragOperation();
@@ -136,11 +129,6 @@ namespace AnalystDataImporter.Utilities
 
         private void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (IsDrawingEnabled && _isDrawing)
-            {
-                _mouseHandlingService.CheckDraggingDrawnElementOutsideCanvas();
-            }
-
             if (IsDraggingEnabled)
             {
                 _mouseHandlingService.EndDragOperation();
@@ -151,26 +139,46 @@ namespace AnalystDataImporter.Utilities
 
         private void MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_isDragging && !IsDraggingEnabled && !IsDrawingEnabled) return;
+            if (!IsDraggingEnabled && !IsDrawingElementEnabled) return;
 
-            if (IsDrawingEnabled)
+            if (IsDrawingElementEnabled)
             {
                 Debug.WriteLine("Element MouseMove - IsDrawingEnabled = true");
                 Point mousePosition = e.GetPosition(ParentCanvas);
-                if (!_isDrawing)
+                if (!_isDrawing && !_mouseHandlingService.IsInUse)
                 {
                     Debug.WriteLine("Element MouseMove - _isDrawing = false");
                     FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
-                    BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
-                    _isDrawing = true;
-                    _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                    ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
+                    if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                    {
+                        _isDrawing = true;
+                        _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                    }
+
                 }
 
-                if (_isDrawing)
+                else if (_isDrawing)
                 {
+                    string cursorType;
                     Debug.WriteLine("Element MouseMove - _isDrawing = true");
-                    //_mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
-                    _mouseHandlingService.UpdateDragOperationWhenDrawing(mousePosition, ParentCanvas);
+                    if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                    {
+                        cursorType = "EllipseDrawingInsideCanvasCursor";
+                        if (ChangeCursorCommand.CanExecute(cursorType))
+                        {
+                            ChangeCursorCommand.Execute(cursorType);
+                        }
+                        _mouseHandlingService.UpdateDragOperationWhenDrawing(mousePosition, ParentCanvas);
+                    }
+                    else
+                    {
+                        cursorType = "EllipseDrawingOutsideCanvasCursor";
+                        if (ChangeCursorCommand.CanExecute(cursorType))
+                        {
+                            ChangeCursorCommand.Execute(cursorType);
+                        }
+                    }
                 }
             }
 
@@ -180,7 +188,7 @@ namespace AnalystDataImporter.Utilities
                 if (ChangeCursorCommand != null)
                 {
                     // Determine cursor type based on your logic
-                    string cursorType = "dragging"; // Example
+                    string cursorType = "EllipseDraggingCursor"; // Example
                     if (ChangeCursorCommand.CanExecute(cursorType))
                     {
                         ChangeCursorCommand.Execute(cursorType);
@@ -194,16 +202,7 @@ namespace AnalystDataImporter.Utilities
                     _mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
                 }
                 e.Handled = true;
-                //Mouse.OverrideCursor = Cursors.Hand;
-                // Command pro změnu kurzoru myši
             }
-
-            //if (_isDragging && IsDraggingEnabled)
-            //{
-            //    Debug.WriteLine("Element MouseMove - _isDragging and IsDraggingEnabled true");
-            //    var mousePosition = e.GetPosition(ParentCanvas);
-            //    _mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
-            //}
         }
 
         protected override void OnDetaching()

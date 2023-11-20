@@ -185,12 +185,22 @@ namespace AnalystDataImporter.ViewModels
             IsDrawingElement = false;
             IsDrawingElementModeActive = false;
             IsDraggingElementModeActive = true;
+            OnPropertyChanged(nameof(CanvasCursor));
         }
 
         private void ChangeCursorByElemment(string operation)
         {
-            if (operation == "dragging")
+            if (operation == "EllipseDraggingCursor")
+            {
+                _isAddingElementOutsideCanvas = false;
                 _mouseOnElement = true;
+            }
+
+            else if (operation == "EllipseDrawingInsideCanvasCursor")
+                _isAddingElementOutsideCanvas = false;
+
+            else if (operation == "EllipseDrawingOutsideCanvasCursor")
+                _isAddingElementOutsideCanvas = true;
 
             OnPropertyChanged(nameof(CanvasCursor));
         }
@@ -201,7 +211,7 @@ namespace AnalystDataImporter.ViewModels
             {
                 if (SelectedSingleItem != null)
                 {
-                    
+
                     if (SelectedSingleItem is ElementViewModel element)
                     {
                         IList<RelationViewModel> connectedRelations = _relationManager.GetRelationsConnectedToElement(element);
@@ -222,7 +232,7 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        
+
 
         public object SelectedSingleItem
         {
@@ -445,14 +455,14 @@ namespace AnalystDataImporter.ViewModels
                 Debug.WriteLine("Hit Test Ellise ");
                 Debug.WriteLine("Starting coordinates: " + elementViewModel.XPosition + ", " + elementViewModel.YPosition);
                 Debug.WriteLine("Ending coordinates: " + (elementViewModel.XPosition + ellipse.Width) + ", " + (elementViewModel.YPosition + ellipse.Height));
-                return (ellipse,elementViewModel);
+                return (ellipse, elementViewModel);
             }
             else
             {
                 Debug.WriteLine("Hit Test Not Ellise: " + hitTestResult?.VisualHit);
             }
 
-            return (null,null);
+            return (null, null);
         }
 
         private void AddNewElementToCanvas(Point mousePosition)
@@ -461,6 +471,7 @@ namespace AnalystDataImporter.ViewModels
 
             _tempElement = CreateNewElement(mousePosition); // A method that creates and configures the new element
             _elementManager.AddElement(_tempElement); // Assuming an element manager or similar mechanism
+            //_mouseHandlingService.StartDragWhenDrawingOperation(mousePosition,_tempElement,true);
             //_tempElement = null;
             //SetAddingElementMode(false); // Consolidate state updates
         }
@@ -578,26 +589,22 @@ namespace AnalystDataImporter.ViewModels
         {
             //Debug.WriteLine("CanvasViewModel: Mouse move");
 
-            if (!(parameter is Canvas)) return;
+            if (!(parameter is Canvas canvas)) return;
 
-            Canvas canvas = (Canvas)parameter;
+            //Canvas canvas = (Canvas)parameter;
 
             Point mousePosition = Mouse.GetPosition(canvas);
 
             if (IsDraggingElementModeActive)
             {
                 _mouseOnElement = false;
-                OnPropertyChanged(nameof(CanvasCursor)); 
+                OnPropertyChanged(nameof(CanvasCursor));
             }
 
-            if (IsDrawingElementModeActive)
+            // Dodána kontrola, jestli je mouse point v canvas, protože jinak zakládal elipsu (elementViewModel) i při pohybu přes jinou elipsu, která přečnívá přes okraj canvas 
+            if (IsDrawingElementModeActive && _mouseHandlingService.IsMouseInCanvas(mousePosition,canvas))
             {
-                if (_tempElement != null)
-                {
-                    Debug.WriteLine("CanvasViewModel: Mouse move - moving temp element");
-                    //_mouseHandlingService.CheckDraggingDrawnElementOutsideCanvas();
-                }
-                else
+                if (_tempElement == null)
                 {
                     Debug.WriteLine("CanvasViewModel: Mouse Move - Adding element");
                     IsDrawingElement = true;
@@ -695,13 +702,12 @@ namespace AnalystDataImporter.ViewModels
         {
             get
             {
-                if (_isAddingElementOutsideCanvas)
+                if (IsDrawingElement)
                 {
-                    _canvasCursor = "Arrow";
-                }
-                else if (IsDrawingElement)
-                {
-                    _canvasCursor = "None";
+                    if (_isAddingElementOutsideCanvas)
+                        _canvasCursor = "Arrow";
+                    else
+                        _canvasCursor = "None";
                 }
                 else if (IsRelationDrawingModeActive)
                 {
@@ -745,9 +751,9 @@ namespace AnalystDataImporter.ViewModels
             IsDrawingElementModeActive = false;
             IsDraggingElementModeActive = false;
             //IsAddingElement = false;
-            OnPropertyChanged(nameof(IsRelationDrawingModeActive));
-            OnPropertyChanged(nameof(IsDrawingElementModeActive));
-            OnPropertyChanged(nameof(IsDraggingElementModeActive));
+            //OnPropertyChanged(nameof(IsRelationDrawingModeActive));
+            //OnPropertyChanged(nameof(IsDrawingElementModeActive));
+            //OnPropertyChanged(nameof(IsDraggingElementModeActive));
             OnPropertyChanged(nameof(CanvasCursor)); // Notify that the cursor might need to change
         }
 
@@ -759,8 +765,8 @@ namespace AnalystDataImporter.ViewModels
             IsDrawingElementModeActive = true;
             IsRelationDrawingModeActive = false;
             IsDraggingElementModeActive = false;
-            OnPropertyChanged(nameof(IsDrawingElementModeActive));
-            OnPropertyChanged(nameof(IsDraggingElementModeActive));
+            //OnPropertyChanged(nameof(IsDrawingElementModeActive));
+            //OnPropertyChanged(nameof(IsDraggingElementModeActive));
             //OnPropertyChanged(nameof(IsRelationDrawingModeActive));
             //OnPropertyChanged(nameof(CanvasCursor)); // Notify that the cursor might need to change
         }
@@ -783,7 +789,7 @@ namespace AnalystDataImporter.ViewModels
         public void AddTestingRelation(ElementViewModel fromElement, ElementViewModel toElement)
         {
             //RelationViewModel relationViewModel = _relationViewModelFactory.Create(_fromElement, _toElement);
-            RelationViewModel relationViewModel = _relationViewModelFactory.Create(new Point(fromElement.XCenter,fromElement.YCenter), new Point (toElement.XCenter, toElement.YCenter));
+            RelationViewModel relationViewModel = _relationViewModelFactory.Create(new Point(fromElement.XCenter, fromElement.YCenter), new Point(toElement.XCenter, toElement.YCenter));
             //relationViewModel.IsFinished = true;
             _relationManager.AddRelation(relationViewModel);
             relationViewModel.ZIndex = 0;
@@ -791,7 +797,7 @@ namespace AnalystDataImporter.ViewModels
             relationViewModel.ObjectFrom = fromElement;
             relationViewModel.ObjectTo = toElement;
             relationViewModel.IsFinished = true;
-            
+
             // TODO: Po přidání vazby se nepřipojí do středu elipsy - někde bude problém v nastavení XCenter a YCenter ElementViewModelu
         }
     }

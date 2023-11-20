@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using AnalystDataImporter.Models;
 using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.Services
@@ -19,11 +20,11 @@ namespace AnalystDataImporter.Services
         private BaseDiagramItemViewModel _currentViewModelElement;
         private bool _isInUse = false;
 
-        public UIElement CurrentElement()
-        {
-            return _currentElement;
-        }
+        public UIElement CurrentElement { get { return _currentElement; } }
 
+        public BaseDiagramItemViewModel CurrentViewModelElement { get { return _currentViewModelElement; } }
+
+        public bool IsInUse { get { return _isInUse; } }
 
         public bool IsMouseOverElement(UIElement element, Point mousePosition)
         {
@@ -50,18 +51,36 @@ namespace AnalystDataImporter.Services
             }
         }
 
+        public void CaptureMouseOnDrawnElement()
+        {
+            if (_currentElement != null)
+            {
+                _currentElement.CaptureMouse();
+            }
+        }
+
+        public void StartDragWhenDrawingOperation(Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
+        {
+            if (!_isInUse && _currentViewModelElement == null)
+            {
+                if (startPosition != null) _anchorPoint = (Point)startPosition;
+
+                _currentViewModelElement = itemViewModel;
+                _isInUse = true;
+            }
+        }
+
         public void StartDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
         {
             Debug.WriteLine("MouseHandlingService: StartDragOrSelectOperation");
 
-            if (_currentElement == null && !_isInUse)
+            if (_currentElement == null)
             {
+                if (startPosition != null) _anchorPoint = (Point)startPosition;
 
                 _currentElement = element;
                 _currentViewModelElement = itemViewModel;
                 _isInUse = true;
-                if (startPosition != null) _anchorPoint = (Point)startPosition;
-
                 // Start capturing the mouse on the element
                 if (_currentElement != null)
                 {
@@ -90,22 +109,18 @@ namespace AnalystDataImporter.Services
 
         public void UpdateDragOperationWhenDrawing(Point currentPosition, Canvas parentCanvas)
         {
-            if (_currentElement == null || !_isInUse) return;
+            if (_currentViewModelElement == null || !_isInUse) return;
 
 
-            if (_currentElement is FrameworkElement associatedElement && associatedElement.DataContext is ElementViewModel viewModel)
+            if (IsMouseInCanvas(currentPosition, parentCanvas) && _currentViewModelElement is ElementViewModel element)
             {
-                if (IsMouseInCanvas(currentPosition, parentCanvas))
-                {
-                    Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
-                    //tempElement.XPosition = mousePosition.X;
-                    //tempElement.YPosition = mousePosition.Y;
-                    viewModel.XCenter = currentPosition.X;
-                    viewModel.YCenter = currentPosition.Y;
-                }
-                else
-                    Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing outside canvas");
+                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
+                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
+                element.XCenter = currentPosition.X;
+                element.YCenter = currentPosition.Y;
             }
+            else
+                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing outside canvas");
         }
 
         public void UpdateDragOperationWhenDragging(Point currentPosition, Canvas parentCanvas, Grid parentGrid)

@@ -106,6 +106,7 @@
     <Compile Include="Utilities\MousePositionInvokeCommandAction.cs" />
     <Compile Include="Utilities\MyTemplateSelector.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\SharedBehaviorProperties.cs" />
     <Compile Include="ViewModels\BaseDiagramItemViewModel.cs" />
     <Compile Include="ViewModels\CanvasViewModel.cs" />
     <Compile Include="ViewModels\DataSourceViewModel.cs" />

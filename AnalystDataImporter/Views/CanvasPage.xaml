@@ -12,11 +12,17 @@
       Title="Canvas">
 
     <Page.Resources>
+        <Style x:Key="ToggleButtonBaseStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
         <DataTemplate x:Key="ElementTemplate" DataType="{x:Type viewModel:ElementViewModel}">
             <Grid>
                 <!-- Interaction Behavior for Grid Size -->
                 <b:Interaction.Behaviors>
-                    <utilities:GridSizeBehavior ElementViewModel="{Binding}" />
+                    <utilities:GridSizeBehavior ElementViewModel="{Binding}"
+                                                utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"/>
                 </b:Interaction.Behaviors>
 
                 <!-- Border inside the Grid -->
@@ -45,13 +51,13 @@
                             <b:Interaction.Behaviors>
                                 <utilities:ElipseBehavior IsDraggingEnabled="{Binding DataContext.IsDraggingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                            IsDrawingEnabled="{Binding DataContext.IsDrawingElementModeActive,
+                            IsDrawingElementEnabled="{Binding DataContext.IsDrawingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             ChangeCursorCommand="{Binding DataContext.ChangeCursorWhenOperatingElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             FinishDrawingElement="{Binding DataContext.FinishDrawingElemmentCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                            ParentCanvas="{Binding ElementName=ElementCanvas}"
+                            utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
                             ParentGrid="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" />
                                 <!--ElementSelectedCommand="{Binding DataContext.SelectElementCommand, ElementName=ElementCanvas}"-->
                             </b:Interaction.Behaviors>
@@ -95,10 +101,19 @@
             <StackPanel Width="590">
                 <!-- Tlačítko pro přidání prvku na plátno -->
             <!--<Button Content="Add Element" Width="120" Margin="10" Command="{Binding StartAddingElementCommand}" />-->
-            <Button Content="Add Element" Width="120" Margin="10" Command="{Binding StartAddingElementCommand}" />
-            <!--IsEnabled="{Binding IsAddingElementModeActive}-->
-
-            <!-- Tlačítko pro zahájení kreslení vazby -->
+                <Button Width="120" Margin="10"  Content="Add Element" Command="{Binding StartAddingElementCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDrawingElementModeActive}" Value="True">
+                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <!-- Tlačítko pro zahájení kreslení vazby -->
             <Button Content="Start Relation" Width="120" Margin="10" Command="{Binding StartRelationCreatingCommand}" />
             <!--IsEnabled="{Binding IsRelationDrawingModeActive}"-->
 

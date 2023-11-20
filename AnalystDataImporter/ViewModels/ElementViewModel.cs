@@ -46,9 +46,9 @@ namespace AnalystDataImporter.ViewModels
 
         public void ConfigureTempElement(double x, double y)
         {
+            temporary = true;
             XCenter = x;
             YCenter = y;
-            temporary = true;
             ZIndex = 2;
             //IsSelected = true;
         }
@@ -166,7 +166,8 @@ namespace AnalystDataImporter.ViewModels
             {
                 //if (!temporary) return;
                 _xCenter = value;
-                XPosition = _xCenter - (_width / 2);
+                if (temporary)
+                    XPosition = _xCenter - (_width / 2);
             }
         }
 
@@ -177,7 +178,8 @@ namespace AnalystDataImporter.ViewModels
             {
                 //if (!temporary) return;
                 _yCenter = value;
-                YPosition = _yCenter - (Constants.ellipseWidth / 2);
+                if (temporary)
+                    YPosition = _yCenter - (Constants.ellipseWidth / 2);
             }
         }
 

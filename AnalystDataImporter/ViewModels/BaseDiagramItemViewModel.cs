@@ -14,6 +14,8 @@ namespace AnalystDataImporter.ViewModels
 
         protected BaseDiagramItem _model;
 
+        protected bool _isTemporary;
+
         // Common properties and methods for view models, such as IsSelected, PropertyChanged, etc.
         public bool IsSelected
         {
