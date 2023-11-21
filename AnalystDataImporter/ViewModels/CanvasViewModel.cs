@@ -38,23 +38,23 @@ namespace AnalystDataImporter.ViewModels
 
         private RelationViewModel _selectedSingleRelation;
 
-        public ICommand DeleteSelectionCommand { get; }
+        public ICommand DeleteSelectionCommand { get; private set; }
 
-        public ObservableCollection<object> CanvasItems { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> CanvasItems { get; private set; }
 
-        public ObservableCollection<object> SelectedItems { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> SelectedItems;
 
-        private bool _isAddingElementOutsideCanvas = false;
+        private bool _isAddingElementOutsideCanvas;
 
-        private bool _isMultipleSelectionActivated = false;
+        private bool _isMultipleSelectionActivated;
 
         private Canvas _canvasReference;
 
         private string _canvasCursor;
 
-        private readonly bool _testingMode = true;
+        //private readonly bool _testingMode;
 
-        private bool _mouseOnElement = false;
+        private bool _mouseOnElement;
 
         private ElementViewModel _fromElement;
         //private ElementViewModel _toElement;
@@ -78,22 +78,13 @@ namespace AnalystDataImporter.ViewModels
         //public RelayCommand<Point> MouseMovedDuringRelationDrawingCommand { get; private set; }
         public RelationViewModel TemporaryRelation { get; private set; }
 
-        public ICommand CanvasMouseLeftButtonDownCommand { get; }
-        public ICommand CanvasMouseMoveCommand { get; }
+        public ICommand CanvasMouseLeftButtonDownCommand { get; private set; }
+        public ICommand CanvasMouseMoveCommand { get; private set; }
 
-        public ICommand RelationDeleteWhenOutsideCanvasCommand { get; }
+        public ICommand RelationDeleteWhenOutsideCanvasCommand { get; private set; }
         public ICommand CanvasMouseLeftButtonUpCommand { get; private set; }
 
-        private bool _isDrawingElement = false;
-
-        //public enum DrawingRelationState
-        //{
-        //    NotDrawing,
-        //    SelectingStart,
-        //    SelectingEnd
-        //}
-
-        //public DrawingRelationState CurrentState { get; private set; } = DrawingRelationState.NotDrawing;
+        private bool _isDrawingElement;
 
         public ElementViewModel StartingElement { get; private set; }
 
@@ -148,7 +139,8 @@ namespace AnalystDataImporter.ViewModels
         /// <param name="elementManager">Správce prvků pro manipulaci a získání informací o prvcích.</param>
         /// <param name="relationViewModelFactory"></param>
         /// <param name="relationManager"></param>
-        public CanvasViewModel(IElementViewModelFactory elementViewModelFactory, IElementManager elementManager, IRelationViewModelFactory relationViewModelFactory, IRelationManager relationManager, IMouseHandlingService mouseHandlingService/*IDrawnItemsModeService elementModeService*/ /*IMessageService messageService*/)
+        /// <param name="mouseHandlingService"></param>
+        public CanvasViewModel(IElementViewModelFactory elementViewModelFactory, IElementManager elementManager, IRelationViewModelFactory relationViewModelFactory, IRelationManager relationManager, IMouseHandlingService mouseHandlingService)
         {
 
             _elementViewModelFactory = elementViewModelFactory ?? throw new ArgumentNullException(nameof(elementViewModelFactory));
@@ -157,8 +149,8 @@ namespace AnalystDataImporter.ViewModels
             _relationManager = relationManager ?? throw new ArgumentNullException(nameof(relationManager));
             _mouseHandlingService = mouseHandlingService ?? throw new ArgumentNullException(nameof(mouseHandlingService));
 
-            StartAddingElementCommand = new RelayCommand(StartAddingElement, CanStartAddingElement);
-            StartRelationCreatingCommand = new RelayCommand(ToggleRelationDrawingMode, CanToggleRelationDrawingMode);
+            StartAddingElementCommand = new RelayCommand(StartAddingElement);
+            StartRelationCreatingCommand = new RelayCommand(ToggleRelationDrawingMode);
             CanvasMouseLeftButtonDownCommand = new RelayCommand<object>(CanvasMouseLeftButtonDownExecute);
             CanvasMouseMoveCommand = new RelayCommand<object>(CanvasMouseMoveExecute);
             CanvasMouseLeftButtonUpCommand = new RelayCommand<object>(CanvasMouseLeftButtonUpExecute);
@@ -167,9 +159,8 @@ namespace AnalystDataImporter.ViewModels
 
             DeleteSelectionCommand = new RelayCommand(DeleteSelectionExecute);
 
-            // uvodní řešení ro sdílení aktivních modu v samostatne service třídě, tedy kdy je aktivní mod kreslení vazby, atd.
-            //_elementModeService = elementModeService;
-            //_elementModeService.ElementOrRelationModeChanged += OnElementModeChanged;
+            CanvasItems = new ObservableCollection<object>();
+            SelectedItems = new ObservableCollection<object>();
 
             Elements.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
             Relations.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
@@ -177,12 +168,8 @@ namespace AnalystDataImporter.ViewModels
             FinishDrawingElemmentCommand = new RelayCommand(FinishElementDrawing);
             RelationDeleteWhenOutsideCanvasCommand = new RelayCommand(RemoveRelationWhenDrawnOutsideCanvas);
 
-            // uvodni řešení, zasílání zráv mezi třídami
-            //_messageService = messageService;
-            //_messageService.Register<ElementMessage>(this, OnElementViewModelReceived);
-
-            if (_testingMode)
-                AddTestingElementsAndRelation();
+            _isMultipleSelectionActivated = false;
+            //AddTestingElementsAndRelation();
         }
 
         private void FinishElementDrawing()
@@ -394,88 +381,6 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        private bool IsTheOperationInsideCanvas(Point mousePosition, Canvas canvas)
-        {
-            // Perform the hit test.
-            var hitTestResult = VisualTreeHelper.HitTest(canvas, mousePosition);
-            Debug.WriteLine("hitresult first: " + hitTestResult?.VisualHit);
-
-            // If nothing was hit, we're not over the canvas.
-            if (hitTestResult == null)
-                return false;
-
-            // Check if the hit visual is the canvas itself.
-            if (hitTestResult.VisualHit == canvas)
-                return true;
-
-            // Walk up the visual tree to find if the canvas is a parent of the hit visual.
-            DependencyObject current = hitTestResult.VisualHit;
-            while (current != null)
-            {
-                //Debug.WriteLine("hitresult second: " + current);
-                if (current == canvas)
-                    return true;
-
-                current = VisualTreeHelper.GetParent(current);
-            }
-
-            // If we walked up the tree and didn't find the canvas, we're not over it.
-            return false;
-        }
-
-        private ElementViewModel GetElementUnderMousePointerNew(Point mousePosition, Canvas canvas)
-        {
-            ElementViewModel foundElement = null;
-            HitTestFilterBehavior FilterCallback(DependencyObject potentialHitTestTarget)
-            {
-                if (potentialHitTestTarget is Line)
-                {
-                    // Skip the line
-                    return HitTestFilterBehavior.ContinueSkipSelf;
-                }
-                return HitTestFilterBehavior.Continue;
-            }
-
-            HitTestResultBehavior ResultCallback(HitTestResult result)
-            {
-                if (result.VisualHit is Ellipse ellipse)
-                {
-                    foundElement = ellipse.DataContext as ElementViewModel;
-                    return HitTestResultBehavior.Stop;
-                }
-                return HitTestResultBehavior.Continue;
-            }
-
-            VisualTreeHelper.HitTest(
-                canvas,
-                new HitTestFilterCallback(FilterCallback),
-                new HitTestResultCallback(ResultCallback),
-                new PointHitTestParameters(mousePosition));
-
-            Debug.WriteLine("New Hit test result: " + foundElement);
-            return foundElement;
-        }
-
-        private (UIElement, ElementViewModel) GetElementUnderMousePointer(Point mousePosition, Canvas canvas)
-        {
-            var hitTestResult = VisualTreeHelper.HitTest(canvas, mousePosition);
-            Debug.WriteLine("Hit Test coordinates: " + mousePosition);
-            if (hitTestResult?.VisualHit is Ellipse ellipse)
-            {
-                ElementViewModel elementViewModel = ellipse.DataContext as ElementViewModel;
-                Debug.WriteLine("Hit Test Ellise ");
-                Debug.WriteLine("Starting coordinates: " + elementViewModel.XPosition + ", " + elementViewModel.YPosition);
-                Debug.WriteLine("Ending coordinates: " + (elementViewModel.XPosition + ellipse.Width) + ", " + (elementViewModel.YPosition + ellipse.Height));
-                return (ellipse, elementViewModel);
-            }
-            else
-            {
-                Debug.WriteLine("Hit Test Not Ellise: " + hitTestResult?.VisualHit);
-            }
-
-            return (null, null);
-        }
-
         private void AddNewElementToCanvas(Point mousePosition)
         {
             Debug.WriteLine("CanvasViewModel: Adding new element to canvas");
@@ -663,33 +568,6 @@ namespace AnalystDataImporter.ViewModels
                     RemoveDrawnRelation();
                     FinishRelationDrawing();
                 }
-                //_toElement = GetElementUnderMousePointerNew(mousePosition, canvas);
-                //Debug.WriteLine("CanvasViewModel: ButtonUp drawing");
-                ////Point mousePosition = Mouse.GetPosition(canvas);
-                ////var hitTestResult = VisualTreeHelper.HitTest(canvas, mousePosition);
-                ////ElementViewModel element = GetElementUnderMousePointer(mousePosition, canvas);
-                //if (_fromElement != null && _toElement != null && _fromElement != _toElement && !RelationAlreadyExists(_fromElement, _toElement))
-                //{
-                //    //_toElement = element;
-                //    Debug.WriteLine("CanvasViewModel: FinishRelation");
-                //    _tempRelation.ObjectFrom = _fromElement;
-                //    _tempRelation.ObjectTo = _toElement;
-                //    _tempRelation.ZIndex = 0;
-                //    _tempRelation.Title = "vazba";
-                //    _tempRelation.IsFinished = true;
-                //}
-                //else
-                //{
-                //    _relationManager.Relations.RemoveAt(_relationManager.Relations.Count - 1);
-                //}
-                //IsRelationDrawingModeActive = false;
-                //IsDraggingElementModeActive = true;
-                //OnPropertyChanged(nameof(IsDraggingElementModeActive));
-                //OnPropertyChanged(nameof(IsRelationDrawingModeActive));
-                //OnPropertyChanged(nameof(CanvasCursor));
-                //_fromElement = null;
-                //_toElement = null;
-                //canvas.ReleaseMouseCapture();
             }
         }
 
@@ -737,23 +615,12 @@ namespace AnalystDataImporter.ViewModels
 
                 //Debug.WriteLine("Getting cursor: " + _canvasCursor);
                 return _canvasCursor;
-                //return IsRelationDrawingModeActive ? "Cross" : "Arrow";
             }
             set
             {
                 _canvasCursor = value;
                 OnPropertyChanged(nameof(CanvasCursor));
             }
-        }
-
-        private bool CanToggleRelationDrawingMode()
-        {
-            return true; // You can adjust this logic later based on your requirements
-        }
-
-        private bool CanStartAddingElement()
-        {
-            return true; // You can adjust this logic later based on your requirements
         }
 
         private void ToggleRelationDrawingMode()
