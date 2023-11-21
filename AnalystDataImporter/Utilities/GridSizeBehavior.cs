@@ -69,8 +69,6 @@ namespace AnalystDataImporter.Utilities
                     }
                 }
             }
-
-            var i = ParentCanvas;
         }
     }
 }

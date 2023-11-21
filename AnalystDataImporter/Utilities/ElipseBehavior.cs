@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
+using System.Collections.Generic;
 
 namespace AnalystDataImporter.Utilities
 {
@@ -29,35 +30,40 @@ namespace AnalystDataImporter.Utilities
             set { SetValue(ChangeCursorCommandProperty, value); }
         }
 
-        public ICommand FinishDrawingElement
+        public ICommand FinishDrawingElementCommand
         {
             get { return (ICommand)GetValue(ChangeFinishDrawingElementProperty); }
             set { SetValue(ChangeFinishDrawingElementProperty, value); }
         }
 
+        public ICommand RelationStartOrEndElementSetCommand
+        {
+            get { return (ICommand)GetValue(GetStartingOrEndingElementCommandProperty); }
+            set { SetValue(GetStartingOrEndingElementCommandProperty, value); }
+        }
+
         public static readonly DependencyProperty ChangeFinishDrawingElementProperty = DependencyProperty.Register(
-            nameof(FinishDrawingElement), typeof(ICommand), typeof(ElipseBehavior),
+            nameof(FinishDrawingElementCommand), typeof(ICommand),
+            typeof(ElipseBehavior),
             new PropertyMetadata(null));
 
         public static readonly DependencyProperty ChangeCursorCommandProperty = DependencyProperty.Register(
             nameof(ChangeCursorCommand), typeof(ICommand),
             typeof(ElipseBehavior), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty GetStartingOrEndingElementCommandProperty = DependencyProperty.Register(
+            nameof(RelationStartOrEndElementSetCommand), typeof(ICommand),
+            typeof(ElipseBehavior), new PropertyMetadata(null));
+
         public static readonly DependencyProperty ElementSelectedCommandProperty = DependencyProperty.Register(
             nameof(ElementSelectedCommand), typeof(ICommand), typeof(ElipseBehavior),
             new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            nameof(IsDraggingEnabled),
+        public static readonly DependencyProperty IsDraggingElementEnabledProperty = DependencyProperty.Register(
+            nameof(IsDraggingElementEnabled),
             typeof(bool),
             typeof(ElipseBehavior),
             new PropertyMetadata(null)); //new PropertyMetadata(true, OnIsEnabledChanged));
-
-        public Canvas ParentCanvas
-        {
-            get { return SharedBehaviorProperties.GetParentCanvas(this); }
-            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
-        }
 
         public static readonly DependencyProperty IsDrawingElementEnabledProperty = DependencyProperty.Register(
             nameof(IsDrawingElementEnabled),
@@ -71,22 +77,40 @@ namespace AnalystDataImporter.Utilities
             typeof(ElipseBehavior),
             new PropertyMetadata(null));
 
+        public static readonly DependencyProperty IsDrawingRelationEnabledProperty = DependencyProperty.Register(
+           nameof(IsDrawingRelationEnabled),
+           typeof(bool),
+           typeof(ElipseBehavior),
+           new PropertyMetadata(null));
+
+        public Canvas ParentCanvas
+        {
+            get { return SharedBehaviorProperties.GetParentCanvas(this); }
+            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
+        }
+
         public Grid ParentGrid
         {
             get => (Grid)GetValue(GridProperty);
             set => SetValue(GridProperty, value);
         }
 
-        public bool IsDraggingEnabled
+        public bool IsDraggingElementEnabled
         {
-            get => (bool)GetValue(IsEnabledProperty);
-            set => SetValue(IsEnabledProperty, value);
+            get => (bool)GetValue(IsDraggingElementEnabledProperty);
+            set => SetValue(IsDraggingElementEnabledProperty, value);
         }
 
         public bool IsDrawingElementEnabled
         {
             get => (bool)GetValue(IsDrawingElementEnabledProperty);
             set => SetValue(IsDrawingElementEnabledProperty, value);
+        }
+
+        public bool IsDrawingRelationEnabled
+        {
+            get => (bool)GetValue(IsDrawingRelationEnabledProperty);
+            set => SetValue(IsDrawingRelationEnabledProperty, value);
         }
 
         protected override void OnAttached()
@@ -101,27 +125,38 @@ namespace AnalystDataImporter.Utilities
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("Element MouseLeftButtonDown");
-            if (!IsDraggingEnabled && !IsDrawingElementEnabled) return;
+            //if (!IsDraggingElementEnabled && !IsDrawingElementEnabled) return;
 
             Point mousePosition = e.GetPosition(ParentCanvas);
 
-            if (IsDraggingEnabled)
+            if (IsDraggingElementEnabled || IsDrawingRelationEnabled)
             {
                 FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
                 BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
 
-                _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, false);
-                _isDragging = true;
+                if (IsDraggingElementEnabled)
+                {
+                    _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, false);
+                    _isDragging = true;
+                }
+
+                else if (IsDrawingRelationEnabled)
+                {
+                    if (RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
+                    {
+                        RelationStartOrEndElementSetCommand.Execute(new List<object> { elementViewModel, mousePosition, "start" });
+                    }
+                }
                 e.Handled = true;
             }
 
-            if (IsDrawingElementEnabled)
+            else if (IsDrawingElementEnabled)
             {
                 _isDrawing = false;
                 _mouseHandlingService.EndDragOperation();
-                if (FinishDrawingElement.CanExecute(null))
+                if (FinishDrawingElementCommand.CanExecute(null))
                 {
-                    FinishDrawingElement.Execute(null);
+                    FinishDrawingElementCommand.Execute(null);
                 }
                 e.Handled = true;
             }
@@ -129,17 +164,33 @@ namespace AnalystDataImporter.Utilities
 
         private void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (IsDraggingEnabled)
+            Debug.WriteLine("Element MouseButtonUp");
+            if (IsDrawingElementEnabled) return;
+
+            if (IsDraggingElementEnabled)
             {
                 _mouseHandlingService.EndDragOperation();
                 _isDragging = false;
             }
+
+            else if (IsDrawingRelationEnabled)
+            {
+                Point mousePosition = e.GetPosition(ParentCanvas);
+                FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
+                BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
+                if (RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
+                {
+                    RelationStartOrEndElementSetCommand.Execute(new List<object> { elementViewModel, mousePosition, "end" });
+                }
+            }
+
             e.Handled = true;
         }
 
         private void MouseMove(object sender, MouseEventArgs e)
         {
-            if (!IsDraggingEnabled && !IsDrawingElementEnabled) return;
+            Debug.WriteLine("Element MouseMove");
+            //if (!IsDraggingElementEnabled && !IsDrawingElementEnabled) return;
 
             if (IsDrawingElementEnabled)
             {
@@ -182,7 +233,7 @@ namespace AnalystDataImporter.Utilities
                 }
             }
 
-            if (IsDraggingEnabled)
+            else if (IsDraggingElementEnabled)
             {
                 Debug.WriteLine("Element MouseMove - dragging enabled");
                 if (ChangeCursorCommand != null)

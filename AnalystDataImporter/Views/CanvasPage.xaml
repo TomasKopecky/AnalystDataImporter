@@ -49,13 +49,17 @@
                         <!-- Ellipse centered in the Inner Grid -->
                         <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center">
                             <b:Interaction.Behaviors>
-                                <utilities:ElipseBehavior IsDraggingEnabled="{Binding DataContext.IsDraggingElementModeActive,
+                                <utilities:ElipseBehavior IsDraggingElementEnabled="{Binding DataContext.IsDraggingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             IsDrawingElementEnabled="{Binding DataContext.IsDrawingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                            IsDrawingRelationEnabled="{Binding DataContext.IsDrawingRelationModeActive,
+                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             ChangeCursorCommand="{Binding DataContext.ChangeCursorWhenOperatingElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                            FinishDrawingElement="{Binding DataContext.FinishDrawingElemmentCommand, 
+                            FinishDrawingElementCommand="{Binding DataContext.FinishDrawingElemmentCommand, 
+                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                            RelationStartOrEndElementSetCommand="{Binding DataContext.GetRelationStartOrEndElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
                             ParentGrid="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" />
@@ -87,7 +91,10 @@
                 </Line.Style>
                 <b:Interaction.Behaviors>
                     <utilities:LineBehavior IsEnabled="{Binding DataContext.IsDraggingElementModeActive,
-                    RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
+                    RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                    RelationDeleteWhenOutsideCanvasCommand="{Binding DataContext.RelationDeleteWhenOutsideCanvasCommand, 
+                    RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                    utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"/>
                 </b:Interaction.Behaviors>
             </Line>
         </DataTemplate>
@@ -100,7 +107,7 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel Width="590">
                 <!-- Tlačítko pro přidání prvku na plátno -->
-            <!--<Button Content="Add Element" Width="120" Margin="10" Command="{Binding StartAddingElementCommand}" />-->
+                <!--<Button Content="Add Element" Width="120" Margin="10" Command="{Binding StartAddingElementCommand}" />-->
                 <Button Width="120" Margin="10"  Content="Add Element" Command="{Binding StartAddingElementCommand}">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
@@ -114,51 +121,51 @@
                     </Button.Style>
                 </Button>
                 <!-- Tlačítko pro zahájení kreslení vazby -->
-            <Button Content="Start Relation" Width="120" Margin="10" Command="{Binding StartRelationCreatingCommand}" />
-            <!--IsEnabled="{Binding IsRelationDrawingModeActive}"-->
+                <Button Content="Start Relation" Width="120" Margin="10" Command="{Binding StartRelationCreatingCommand}" />
+                <!--IsEnabled="{Binding IsRelationDrawingModeActive}"-->
 
                 <Button Content="Delete" Width="120" Margin="10" Command="{Binding DeleteSelectionCommand}" />
 
                 <!--<Button Content="Kreslit vazbu" Width="120" Margin="10" Command="{Binding AddRelationCommand}" />-->
-            <Border BorderBrush="Black" BorderThickness="2" Height="301" Margin="0,0,0.4,0">
-                <!-- Plátno pro zobrazení prvků -->
-                <Canvas Cursor="{Binding CanvasCursor}" Name="ElementCanvas" Background="Transparent" Margin="0.4,0.4,-0.2,8.6">
+                <Border BorderBrush="Black" BorderThickness="2" Height="301" Margin="0,0,0.4,0">
+                    <!-- Plátno pro zobrazení prvků -->
+                    <Canvas Cursor="{Binding CanvasCursor}" Name="ElementCanvas" Background="Transparent" Margin="0.4,0.4,-0.2,8.6">
 
-                    <!-- Interaction triggers -->
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="MouseLeftButtonDown">
-                            <utilities:MousePositionInvokeCommandAction
+                        <!-- Interaction triggers -->
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="MouseLeftButtonDown">
+                                <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasMouseLeftButtonDownCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                        </b:EventTrigger>
-                        <b:EventTrigger EventName="MouseLeftButtonUp">
-                            <utilities:MousePositionInvokeCommandAction
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="MouseLeftButtonUp">
+                                <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasMouseLeftButtonUpCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                        </b:EventTrigger>
-                        <b:EventTrigger EventName="MouseMove">
-                            <utilities:MousePositionInvokeCommandAction
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="MouseMove">
+                                <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasMouseMoveCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
 
-                    <ItemsControl ItemsSource="{Binding CanvasItems}" ItemTemplateSelector="{StaticResource myTemplateSelector}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas IsItemsHost="True" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="{Binding XPosition}" />
-                                <Setter Property="Canvas.Top" Value="{Binding YPosition}" />
-                                <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
-                            </Style>
-                        </ItemsControl.ItemContainerStyle>
-                    </ItemsControl>
-                </Canvas>
-            </Border>
+                        <ItemsControl ItemsSource="{Binding CanvasItems}" ItemTemplateSelector="{StaticResource myTemplateSelector}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="ContentPresenter">
+                                    <Setter Property="Canvas.Left" Value="{Binding XPosition}" />
+                                    <Setter Property="Canvas.Top" Value="{Binding YPosition}" />
+                                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                        </ItemsControl>
+                    </Canvas>
+                </Border>
             </StackPanel>
             <StackPanel Width="200" Margin="10">
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
