@@ -13,7 +13,7 @@ namespace AnalystDataImporter.Factories
     public interface IElementViewModelFactory
     {
         /// <summary>
-        /// Metoda pro vytváření nové instance ViewModel pro prvek.
+        /// Metoda pro vytváření nové instance ViewModel pro element.
         /// </summary>
         /// <returns>Nová instance třídy ElementViewModel.</returns>
         ElementViewModel Create();

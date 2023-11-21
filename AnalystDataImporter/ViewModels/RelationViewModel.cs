@@ -49,27 +49,6 @@ namespace AnalystDataImporter.ViewModels
 
         public int _zIndex { get; set; }
 
-        //public RelationViewModel(Relation relation, ElementViewModel objectFrom, ElementViewModel objectTo)
-        //{
-        //    // Ověřte, zda poskytnutý relation není null a inicializujte interní _relation
-        //    _relation = relation ?? throw new ArgumentNullException(nameof(relation));
-
-        //    this._x1 = objectFrom.XCenter;
-        //    this._y1 = objectFrom.YCenter;
-
-        //    this._x2 = objectTo.XCenter;
-        //    this._y2 = objectTo.YCenter;
-
-        //    this.ObjectFrom = objectFrom;
-        //    this.ObjectTo = objectTo;
-        //    //_objectFrom = objectFrom;
-        //    //_objectTo = objectTo;
-        //    _model = _relation;
-
-        //    //_objectFrom.PropertyChanged += ObjectFrom_PropertyChanged;
-        //    //_objectTo.PropertyChanged += ObjectTo_PropertyChanged;
-        //}
-
         public RelationViewModel(Relation relation, Point fromPoint, Point toPoint)
         {
             // Ověřte, zda poskytnutý relation není null a inicializujte interní _relation

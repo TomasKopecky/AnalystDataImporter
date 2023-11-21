@@ -169,6 +169,7 @@ namespace AnalystDataImporter.ViewModels
             RelationDeleteWhenOutsideCanvasCommand = new RelayCommand(RemoveRelationWhenDrawnOutsideCanvas);
 
             _isMultipleSelectionActivated = false;
+            _isDraggingElementModeActive = true;
             //AddTestingElementsAndRelation();
         }
 
@@ -362,15 +363,6 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        private void AddTestingElementsAndRelation()
-        {
-            ElementViewModel fromElement = AddTestingElementToCanvas(new Point(200, 200), "First element", "identita není nastavena");
-            ElementViewModel toElement = AddTestingElementToCanvas(new Point(400, 100), "Second element", "identita není");
-            AddTestingElementToCanvas(new Point(2, 2), "Third element", "identita");
-            AddTestingRelationToCanvas(fromElement, toElement);
-            IsDraggingElementModeActive = true;
-        }
-
         public Canvas CanvasReference
         {
             get { return _canvasReference; }
@@ -476,7 +468,7 @@ namespace AnalystDataImporter.ViewModels
 
         private void CanvasMouseMoveExecute(object parameter)
         {
-            //Debug.WriteLine("CanvasViewModel: Mouse move");
+            Debug.WriteLine("CanvasViewModel: Mouse move");
 
             if (!(parameter is Canvas canvas)) return;
 
@@ -491,7 +483,7 @@ namespace AnalystDataImporter.ViewModels
             }
 
             // Dodána kontrola, jestli je mouse point v canvas, protože jinak zakládal elipsu (elementViewModel) i při pohybu přes jinou elipsu, která přečnívá přes okraj canvas 
-            if (IsDrawingElementModeActive && _mouseHandlingService.IsMouseInCanvas(mousePosition, canvas))
+            if (IsDrawingElementModeActive)
             {
                 if (_tempElement == null)
                 {
@@ -500,6 +492,10 @@ namespace AnalystDataImporter.ViewModels
                     OnPropertyChanged(nameof(CanvasCursor));
                     AddNewElementToCanvas(mousePosition);
                     Debug.WriteLine("CanvasViewModel: Now elements count: " + _elementManager.Elements.Count);
+                }
+                else
+                {
+
                 }
             }
 
@@ -680,34 +676,5 @@ namespace AnalystDataImporter.ViewModels
             IsDraggingElementModeActive = false;
         }
 
-        private ElementViewModel AddTestingElementToCanvas(Point position, string title, string label)
-        {
-            var newElement = _elementViewModelFactory.Create();
-            //newElement.temporary = true;
-            newElement.XPosition = position.X;
-            newElement.YPosition = position.Y;
-            newElement.Title = title;
-            newElement.ZIndex = 1;
-            newElement.Label = label;
-            //newElement.temporary = false;
-            _elementManager.AddElement(newElement);
-            //CanvasItems.Add(newElement);
-            return newElement;
-        }
-
-        public void AddTestingRelationToCanvas(ElementViewModel fromElement, ElementViewModel toElement)
-        {
-            //RelationViewModel relationViewModel = _relationViewModelFactory.Create(_fromElement, _toElement);
-            RelationViewModel relationViewModel = _relationViewModelFactory.Create(new Point(fromElement.XCenter, fromElement.YCenter), new Point(toElement.XCenter, toElement.YCenter));
-            //relationViewModel.IsFinished = true;
-            relationViewModel.ZIndex = 0;
-            relationViewModel.Title = "vazba";
-            relationViewModel.ObjectFrom = fromElement;
-            relationViewModel.ObjectTo = toElement;
-            relationViewModel.IsFinished = true;
-            _relationManager.AddRelation(relationViewModel);
-
-            // TODO: Po přidání vazby se nepřipojí do středu elipsy - někde bude problém v nastavení XCenter a YCenter ElementViewModelu
-        }
     }
 }
