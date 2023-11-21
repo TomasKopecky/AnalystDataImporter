@@ -17,22 +17,22 @@ namespace AnalystDataImporter.ViewModels
         public bool temporary = false;
 
         //// Pozice prvku na plátně
-        public new double _xPosition { get; set; }
+        public new double _xPosition;
 
-        public new double _yPosition { get; set; }
+        public new double _yPosition;
 
-        public double _xCenter { get; set; }
-        public double _yCenter { get; set; }
+        public double _xCenter;
+        public double _yCenter;
 
         // Poslední známá pozice myši (může být užitečné pro drag & drop operace)
         public double LastMouseX { get; set; }
 
         public double LastMouseY { get; set; }
 
-        public int _zIndex { get; set; }
+        public int _zIndex;
 
-        public double _width { get; set; }
-        public double _height { get; set; }
+        public double _width;
+        public double _height;
 
         /// <summary>
         /// Konstruktor třídy ElementViewModel. Přijímá instanci prvku, který má reprezentovat.

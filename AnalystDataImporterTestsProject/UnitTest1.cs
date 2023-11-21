@@ -91,11 +91,13 @@ namespace AnalystDataImporterTestsProject
         private ElementViewModel CreateTestElementViewModel(double xPosition, double yPosition, string title, string label)
         {
             var element = new Element(); // Create a new Element instance
-            var elementViewModel = new ElementViewModel(element);
-            elementViewModel.XPosition = xPosition;
-            elementViewModel.YPosition = yPosition;
-            elementViewModel.Title = title;
-            elementViewModel.Label = label;
+            var elementViewModel = new ElementViewModel(element)
+            {
+                XPosition = xPosition,
+                YPosition = yPosition,
+                Title = title,
+                Label = label
+            };
             return elementViewModel;
         }
 

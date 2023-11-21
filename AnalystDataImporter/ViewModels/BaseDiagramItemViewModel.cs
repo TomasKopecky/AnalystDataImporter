@@ -8,9 +8,9 @@ namespace AnalystDataImporter.ViewModels
     {
         protected bool _isSelected;
         // Pozice prvku na plátně
-        protected double _xPosition { get; set; }
+        protected double _xPosition;
 
-        protected double _yPosition { get; set; }
+        protected double _yPosition;
 
         protected BaseDiagramItem _model;
 

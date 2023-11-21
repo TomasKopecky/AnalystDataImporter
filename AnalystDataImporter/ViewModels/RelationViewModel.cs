@@ -20,34 +20,34 @@ namespace AnalystDataImporter.ViewModels
         /// <summary>
         /// Element, od kterého vazba začíná.
         /// </summary>
-        private ElementViewModel _objectFrom { get; set; }
+        private ElementViewModel _objectFrom;
 
         /// <summary>
         /// Element, ke kterému vazba směřuje.
         /// </summary>
-        private ElementViewModel _objectTo { get; set; }
+        private ElementViewModel _objectTo;
 
         /// <summary>
         /// X-ová souřadnice počátečního bodu vazby.
         /// </summary>
-        public double _x1 { get; set; }
+        public double _x1;
 
         /// <summary>
         /// Y-ová souřadnice počátečního bodu vazby.
         /// </summary>
-        public double _y1 { get; set; }
+        public double _y1;
 
         /// <summary>
         /// X-ová souřadnice koncového bodu vazby.
         /// </summary>
-        public double _x2 { get; set; }
+        public double _x2;
 
         /// <summary>
         /// Y-ová souřadnice koncového bodu vazby.
         /// </summary>
-        public double _y2 { get; set; }
+        public double _y2;
 
-        public int _zIndex { get; set; }
+        public int _zIndex;
 
         public RelationViewModel(Relation relation, Point fromPoint, Point toPoint)
         {

@@ -175,7 +175,7 @@ namespace AnalystDataImporter.ViewModels
 
         private void FinishElementDrawing()
         {
-            Debug.WriteLine("CanvasViewModel: MouseButtoDown - Adding new element to canvas");
+            Debug.WriteLine("CanvasViewModel: MouseButtoDown - finishing new element in canvas");
             _tempElement.FinishTempElement();
             _tempElement = null;
             IsDrawingElement = false;

@@ -120,6 +120,20 @@ namespace AnalystDataImporter.Utilities
             this.AssociatedObject.MouseLeftButtonDown += MouseLeftButtonDown;
             this.AssociatedObject.MouseLeftButtonUp += MouseLeftButtonUp;
             this.AssociatedObject.MouseMove += MouseMove;
+
+            Point mousePosition = Mouse.GetPosition(ParentCanvas);
+            if (!_isDrawing && !_mouseHandlingService.IsInUse)
+            {
+                Debug.WriteLine("Element MouseMove - _isDrawing = false");
+                FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
+                ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
+                if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                {
+                    _isDrawing = true;
+                    _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                }
+
+            }
         }
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -196,20 +210,21 @@ namespace AnalystDataImporter.Utilities
             {
                 Debug.WriteLine("Element MouseMove - IsDrawingEnabled = true");
                 Point mousePosition = e.GetPosition(ParentCanvas);
-                if (!_isDrawing && !_mouseHandlingService.IsInUse)
-                {
-                    Debug.WriteLine("Element MouseMove - _isDrawing = false");
-                    FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
-                    ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
-                    if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
-                    {
-                        _isDrawing = true;
-                        _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
-                    }
+                //Point mousePosition = e.GetPosition(ParentCanvas);
+                //if (!_isDrawing && !_mouseHandlingService.IsInUse)
+                //{
+                //    Debug.WriteLine("Element MouseMove - _isDrawing = false");
+                //    FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
+                //    ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
+                //    if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                //    {
+                //        _isDrawing = true;
+                //        _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                //    }
 
-                }
+                //}
 
-                else if (_isDrawing)
+                if (_isDrawing)
                 {
                     string cursorType;
                     Debug.WriteLine("Element MouseMove - _isDrawing = true");
@@ -252,8 +267,9 @@ namespace AnalystDataImporter.Utilities
                     var mousePosition = e.GetPosition(ParentCanvas);
                     _mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
                 }
-                e.Handled = true;
+                
             }
+            e.Handled = true;
         }
 
         protected override void OnDetaching()
