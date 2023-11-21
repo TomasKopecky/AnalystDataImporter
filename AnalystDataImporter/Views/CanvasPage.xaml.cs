@@ -16,6 +16,8 @@ namespace AnalystDataImporter.Views
         {
             InitializeComponent();
             DataContext = viewModel;
+            viewModel.TestingMode = false;
+            viewModel.AddTestingElementsAndRelation();
         }
     }
 }

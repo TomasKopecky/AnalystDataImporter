@@ -210,19 +210,6 @@ namespace AnalystDataImporter.Utilities
             {
                 Debug.WriteLine("Element MouseMove - IsDrawingEnabled = true");
                 Point mousePosition = e.GetPosition(ParentCanvas);
-                //Point mousePosition = e.GetPosition(ParentCanvas);
-                //if (!_isDrawing && !_mouseHandlingService.IsInUse)
-                //{
-                //    Debug.WriteLine("Element MouseMove - _isDrawing = false");
-                //    FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
-                //    ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
-                //    if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
-                //    {
-                //        _isDrawing = true;
-                //        _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
-                //    }
-
-                //}
 
                 if (_isDrawing)
                 {
