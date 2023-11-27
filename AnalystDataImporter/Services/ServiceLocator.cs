@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 
 namespace AnalystDataImporter.Services
 {
     public static class ServiceLocator
     {
-        public static IServiceProvider ServiceProvider;
+        public static IServiceProvider _serviceProvider;
 
         public static void SetLocatorProvider(IServiceProvider serviceProvider)
         {
-            ServiceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
         }
 
-        public static IServiceProvider Current => ServiceProvider;
+        public static IServiceProvider Current => _serviceProvider;
 
         public static T GetService<T>()
         {
-            return ServiceProvider.GetService<T>();
+            return _serviceProvider.GetService<T>();
         }
     }
 

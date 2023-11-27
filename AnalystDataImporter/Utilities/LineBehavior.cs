@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
@@ -35,21 +34,20 @@ namespace AnalystDataImporter.Utilities
 
         public ICommand RelationDeleteWhenOutsideCanvasCommand
         {
-            get { return (ICommand)GetValue(RelationDeleteWhenOutsideCanvasCommandProperty); }
-            set { SetValue(RelationDeleteWhenOutsideCanvasCommandProperty, value); }
+            get => (ICommand)GetValue(RelationDeleteWhenOutsideCanvasCommandProperty);
+            set => SetValue(RelationDeleteWhenOutsideCanvasCommandProperty, value);
         }
 
         public Canvas ParentCanvas
         {
-            get { return SharedBehaviorProperties.GetParentCanvas(this); }
-            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
+            get => SharedBehaviorProperties.GetParentCanvas(this);
+            set => SharedBehaviorProperties.SetParentCanvas(this, value);
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
             this.AssociatedObject.MouseLeftButtonDown += MouseLeftButtonDown;
-            this.AssociatedObject.MouseLeftButtonUp += MouseLeftButtonUp;
             this.AssociatedObject.PreviewMouseLeftButtonUp += MouseLeftButtonPreviewUp;
             this.AssociatedObject.MouseMove += MouseMove;
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
@@ -63,7 +61,6 @@ namespace AnalystDataImporter.Utilities
         {
             base.OnDetaching();
             this.AssociatedObject.MouseLeftButtonDown -= MouseLeftButtonDown;
-            this.AssociatedObject.MouseLeftButtonUp -= MouseLeftButtonUp;
             this.AssociatedObject.PreviewMouseLeftButtonUp -= MouseLeftButtonPreviewUp;
             this.AssociatedObject.MouseMove -= MouseMove;
         }
@@ -75,9 +72,6 @@ namespace AnalystDataImporter.Utilities
             {
                 FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
                 BaseDiagramItemViewModel relationViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
-
-                //TODO: Opravit metodu StartDragOrSelectOperation pro LineBehavior - ať to není IsInUse, když se jen označuje
-
                 _mouseHandlingService.StartDragOrSelectOperation(associatedElement, null, relationViewModel, false);
                 e.Handled = true;
             }
@@ -96,23 +90,10 @@ namespace AnalystDataImporter.Utilities
                     Debug.WriteLine("Relation MouseLeftButtonPreviewUp inside canvas");
                     RelationDeleteWhenOutsideCanvasCommand.Execute(null);
                 } 
-                //else
-                //    Debug.WriteLine("Relation MouseLeftButtonPreviewUp outside canvas");
                 _mouseHandlingService.EndDragOperation();
-                //associatedElement.IsHitTestVisible = true;
             }
         }
 
-        private void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine("Relation MouseLeftButtonUp");
-            //FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
-            //RelationViewModel relationViewModel = (RelationViewModel)associatedElement.DataContext;
-            //if (_mouseHandlingService.IsInUse && _mouseHandlingService.CurrentViewModelElement == relationViewModel && !relationViewModel.IsFinished)
-            //{
-            //    _mouseHandlingService.EndDragOperation();
-            //}
-        }
 
         private void MouseMove(object sender, MouseEventArgs e)
         {

@@ -14,7 +14,7 @@ namespace AnalystDataImporter.ViewModels
 
         //private bool _isSelected;
 
-        public bool temporary = false;
+        public bool _temporary;
 
         //// Pozice prvku na plátně
         public new double _xPosition;
@@ -46,29 +46,28 @@ namespace AnalystDataImporter.ViewModels
 
         public void ConfigureTempElement(double x, double y)
         {
-            temporary = true;
+            _temporary = true;
             XCenter = x;
             YCenter = y;
             ZIndex = 2;
-            //IsSelected = true;
         }
 
         public void FinishTempElement(Point point)
         {
             XCenter = point.X;
             YCenter = point.Y;
-            Label = Constants.defaultElementLabel;
-            Title = Constants.defaultElementTitle;
-            temporary = false;
+            Label = Constants.DefaultElementLabel;
+            Title = Constants.DefaultElementTitle;
+            _temporary = false;
             ZIndex = 1;
             IsSelected = true;
         }
 
         public void FinishTempElement()
         {
-            Label = Constants.defaultElementLabel;
-            Title = Constants.defaultElementTitle;
-            temporary = false;
+            Label = Constants.DefaultElementLabel;
+            Title = Constants.DefaultElementTitle;
+            _temporary = false;
             ZIndex = 1;
             IsSelected = true;
         }
@@ -133,13 +132,13 @@ namespace AnalystDataImporter.ViewModels
             set
             {
                 _xPosition = value;
-                if (!temporary)
+                if (!_temporary)
                 {
                     if (_width > 0)
                         _xCenter = _xPosition + (_width / 2.0); 
                     
                     else
-                        _xCenter = _xPosition + Constants.ellipseWidth / 2;
+                        _xCenter = _xPosition + Constants.EllipseWidth / 2;
                 }
 
                 OnPropertyChanged(nameof(XPosition));
@@ -152,8 +151,8 @@ namespace AnalystDataImporter.ViewModels
             set
             {
                 _yPosition = value;
-                if (!temporary)
-                    _yCenter = _yPosition + (Constants.ellipseWidth / 2) + Constants.selectBorderThickness;
+                if (!_temporary)
+                    _yCenter = _yPosition + (Constants.EllipseWidth / 2) + Constants.SelectBorderThickness;
 
                 OnPropertyChanged(nameof(YPosition));
             }
@@ -166,7 +165,7 @@ namespace AnalystDataImporter.ViewModels
             {
                 //if (!temporary) return;
                 _xCenter = value;
-                if (temporary)
+                if (_temporary)
                     XPosition = _xCenter - (_width / 2);
             }
         }
@@ -178,8 +177,8 @@ namespace AnalystDataImporter.ViewModels
             {
                 //if (!temporary) return;
                 _yCenter = value;
-                if (temporary)
-                    YPosition = _yCenter - (Constants.ellipseWidth / 2);
+                if (_temporary)
+                    YPosition = _yCenter - (Constants.EllipseWidth / 2);
             }
         }
 
@@ -217,17 +216,5 @@ namespace AnalystDataImporter.ViewModels
                 OnPropertyChanged(nameof(Height));
             }
         }
-
-        // Událost, která se vyvolá při změně vlastnosti
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        ///// <summary>
-        ///// Metoda pro oznamování změn vlastností.
-        ///// </summary>
-        ///// <param name="propertyName">Jméno vlastnosti, která se změnila.</param>
-        //protected virtual void OnPropertyChanged(string propertyName)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
     }
 }

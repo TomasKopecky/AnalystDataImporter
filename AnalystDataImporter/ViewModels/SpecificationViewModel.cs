@@ -10,7 +10,7 @@ namespace AnalystDataImporter.ViewModels
     /// </summary>
     public class SpecificationViewModel : INotifyPropertyChanged
     {
-        private Specification _specification;
+        private readonly Specification _specification;
 
         public SpecificationViewModel(Specification specification)
         {

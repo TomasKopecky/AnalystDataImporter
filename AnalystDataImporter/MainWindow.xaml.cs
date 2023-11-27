@@ -1,9 +1,8 @@
-﻿using System.Windows;
-using AnalystDataImporter.Views;
+﻿using AnalystDataImporter.Views;
 
 namespace AnalystDataImporter
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {

@@ -1,13 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.ObjectModel;
 using System.Windows;
 using AnalystDataImporter.Factories;
 using AnalystDataImporter.Managers;
 using AnalystDataImporter.Models;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
-using System;
-using System.Collections.ObjectModel;
 
 namespace AnalystDataImporterTestsProject
 {

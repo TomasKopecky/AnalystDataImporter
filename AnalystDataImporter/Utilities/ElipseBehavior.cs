@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
@@ -14,8 +12,8 @@ namespace AnalystDataImporter.Utilities
 {
     public class ElipseBehavior : Behavior<UIElement>
     {
-        private bool _isDragging = false;
-        private bool _isDrawing = false;
+        private bool _isDragging;
+        private bool _isDrawing;
         private IMouseHandlingService _mouseHandlingService;
 
         public ICommand ElementSelectedCommand
@@ -26,20 +24,20 @@ namespace AnalystDataImporter.Utilities
 
         public ICommand ChangeCursorCommand
         {
-            get { return (ICommand)GetValue(ChangeCursorCommandProperty); }
-            set { SetValue(ChangeCursorCommandProperty, value); }
+            get => (ICommand)GetValue(ChangeCursorCommandProperty);
+            set => SetValue(ChangeCursorCommandProperty, value);
         }
 
         public ICommand FinishDrawingElementCommand
         {
-            get { return (ICommand)GetValue(ChangeFinishDrawingElementProperty); }
-            set { SetValue(ChangeFinishDrawingElementProperty, value); }
+            get => (ICommand)GetValue(ChangeFinishDrawingElementProperty);
+            set => SetValue(ChangeFinishDrawingElementProperty, value);
         }
 
         public ICommand RelationStartOrEndElementSetCommand
         {
-            get { return (ICommand)GetValue(GetStartingOrEndingElementCommandProperty); }
-            set { SetValue(GetStartingOrEndingElementCommandProperty, value); }
+            get => (ICommand)GetValue(GetStartingOrEndingElementCommandProperty);
+            set => SetValue(GetStartingOrEndingElementCommandProperty, value);
         }
 
         public static readonly DependencyProperty ChangeFinishDrawingElementProperty = DependencyProperty.Register(
@@ -85,8 +83,8 @@ namespace AnalystDataImporter.Utilities
 
         public Canvas ParentCanvas
         {
-            get { return SharedBehaviorProperties.GetParentCanvas(this); }
-            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
+            get => SharedBehaviorProperties.GetParentCanvas(this);
+            set => SharedBehaviorProperties.SetParentCanvas(this, value);
         }
 
         public Grid ParentGrid
@@ -127,7 +125,7 @@ namespace AnalystDataImporter.Utilities
                 Debug.WriteLine("Element MouseMove - _isDrawing = false");
                 FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
                 ElementViewModel elementViewModel = (ElementViewModel)associatedElement.DataContext;
-                if (elementViewModel.temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                if (elementViewModel._temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
                 {
                     _isDrawing = true;
                     _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);

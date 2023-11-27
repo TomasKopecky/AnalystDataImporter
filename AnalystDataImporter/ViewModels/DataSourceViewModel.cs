@@ -10,7 +10,7 @@ namespace AnalystDataImporter.ViewModels
     /// </summary>
     public class DataSourceViewModel : INotifyPropertyChanged
     {
-        private DataSource _dataSource;
+        private readonly DataSource _dataSource;
 
         public DataSourceViewModel(DataSource dataSource)
         {

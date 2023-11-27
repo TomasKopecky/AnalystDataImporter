@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.Managers
@@ -20,7 +16,6 @@ namespace AnalystDataImporter.Managers
         /// <summary>
         /// Metoda pro přidání prvku do kolekce prvků.
         /// </summary>
-        /// <param name="element">Prvek, který chceme přidat.</param>
         /// <param name="relationViewModel"></param>
         void AddRelation(RelationViewModel relationViewModel);
 

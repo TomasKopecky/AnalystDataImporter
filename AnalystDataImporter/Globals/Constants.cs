@@ -10,13 +10,13 @@ namespace AnalystDataImporter.Globals
         // Indexová cesta
         public string IndexPath { get; set; }
 
-        public const double ellipseWidth = 50;
+        public const double EllipseWidth = 50;
 
-        public const int selectBorderThickness = 2;
+        public const int SelectBorderThickness = 2;
 
-        public const string defaultElementLabel = "(identita není nastavena)";
+        public const string DefaultElementLabel = "(identita není nastavena)";
 
-        public const string defaultElementTitle = "(identita není nastavena)";
+        public const string DefaultElementTitle = "(identita není nastavena)";
 
         // Slovník ikon a tříd
         //public Dictionary<Icon, Class> IconClass { get; set; }
@@ -65,7 +65,7 @@ namespace AnalystDataImporter.Globals
     }
 
     // pomocná třída pro možnost uchování oddělovačů v datové struktuře Enum
-    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     internal sealed class EnumStringAttribute : Attribute
     {
         public string Value { get; }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnalystDataImporter.Services
 {
@@ -47,13 +44,10 @@ namespace AnalystDataImporter.Services
         public void Send<TMessage>(TMessage message)
         {
             var messageType = typeof(TMessage);
-            if (_listeners.ContainsKey(messageType))
+            if (!_listeners.TryGetValue(messageType, out var listener)) return;
+            foreach (var action in listener.Select(del => del as Action<TMessage>))
             {
-                foreach (Delegate del in _listeners[messageType])
-                {
-                    var action = del as Action<TMessage>;
-                    action?.Invoke(message);
-                }
+                action?.Invoke(message);
             }
         }
     }

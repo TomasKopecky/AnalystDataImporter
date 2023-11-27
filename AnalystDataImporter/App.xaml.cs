@@ -14,17 +14,17 @@ namespace AnalystDataImporter
     /// <summary>
     /// Hlavní třída aplikace, která nastavuje závislostní injekci a inicializuje hlavní okno aplikace.
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private readonly IServiceProvider _serviceProvider;
 
         public App()
         {
             ServiceCollection serviceCollection = new ServiceCollection();
-            ConfigureDI(serviceCollection);
+            ConfigureDi(serviceCollection);
             _serviceProvider = serviceCollection.BuildServiceProvider();
             ServiceLocator.SetLocatorProvider(_serviceProvider);
-            ServiceLocator.ServiceProvider = _serviceProvider;
+            ServiceLocator._serviceProvider = _serviceProvider;
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -39,7 +39,7 @@ namespace AnalystDataImporter
         /// Nastavení závislostní injekce.
         /// </summary>
         //TODO: V případě, že aplikace bude růst, tak je vhodné převést DI logiku do samostatné třídy - ServiceProvider() např.
-        private void ConfigureDI(IServiceCollection services)
+        private void ConfigureDi(IServiceCollection services)
         {
             // Registrace továrny a manažera v kontejneru DI.
             services.AddSingleton<IElementViewModelFactory, ElementViewModelFactory>();

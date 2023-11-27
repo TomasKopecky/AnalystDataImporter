@@ -9,7 +9,7 @@ namespace AnalystDataImporter.ViewModels
     /// </summary>
     public class TableColumnViewModel : INotifyPropertyChanged
     {
-        private TableColumn _tableColumn;
+        private readonly TableColumn _tableColumn;
 
         public TableColumnViewModel(TableColumn tableColumn)
         {

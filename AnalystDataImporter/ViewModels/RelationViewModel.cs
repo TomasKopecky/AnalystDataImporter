@@ -53,8 +53,6 @@ namespace AnalystDataImporter.ViewModels
         {
             // Ověřte, zda poskytnutý relation není null a inicializujte interní _relation
             _relation = relation ?? throw new ArgumentNullException(nameof(relation));
-            //_objectFrom = objectFrom;
-            //_objectTo = objectTo;
 
             this._x1 = fromPoint.X;
             this._y1 = fromPoint.Y;
@@ -199,14 +197,7 @@ namespace AnalystDataImporter.ViewModels
             }
             set
             {
-                if (_objectTo == null)
-                {
-                    _x2 = value;
-                }
-                else
-                {
-                    _x2 = _objectTo._xCenter;
-                }
+                _x2 = _objectTo?._xCenter ?? value;
                 OnPropertyChanged(nameof(X2));
             }
         }
@@ -226,14 +217,7 @@ namespace AnalystDataImporter.ViewModels
             }
             set
             {
-                if (_objectTo == null)
-                {
-                    _y2 = value;
-                }
-                else
-                {
-                    _y2 = _objectTo._yCenter;
-                }
+                _y2 = _objectTo?._yCenter ?? value;
                 OnPropertyChanged(nameof(Y2));
             }
         }
@@ -263,29 +247,5 @@ namespace AnalystDataImporter.ViewModels
                 }
             }
         }
-
-        //public bool IsSelected
-        //{
-        //    get { return _isSelected; }
-        //    set
-        //    {
-        //        _isSelected = value;
-        //        OnPropertyChanged(nameof(IsSelected));
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Událost, která se vyvolá, pokud se změní některá z vlastností ViewModelu.
-        ///// </summary>
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        ///// <summary>
-        ///// Metoda vyvolává událost PropertyChanged.
-        ///// </summary>
-        ///// <param name="propertyName">Název změněné vlastnosti.</param>
-        //protected virtual void OnPropertyChanged(string propertyName)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
     }
 }

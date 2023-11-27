@@ -10,7 +10,7 @@ namespace AnalystDataImporter.ViewModels
     /// </summary>
     public class UserViewModel : INotifyPropertyChanged
     {
-        private User _user;
+        private readonly User _user;
 
         public UserViewModel(User user)
         {

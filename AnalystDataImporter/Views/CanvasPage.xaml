@@ -6,7 +6,6 @@
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:viewModel="clr-namespace:AnalystDataImporter.ViewModels"
       xmlns:utilities="clr-namespace:AnalystDataImporter.Utilities"
-      xmlns:services="clr-namespace:AnalystDataImporter.Services"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Canvas">
@@ -57,7 +56,7 @@
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             ChangeCursorCommand="{Binding DataContext.ChangeCursorWhenOperatingElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-                            FinishDrawingElementCommand="{Binding DataContext.FinishDrawingElemmentCommand, 
+                            FinishDrawingElementCommand="{Binding DataContext.FinishDrawingElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             RelationStartOrEndElementSetCommand="{Binding DataContext.GetRelationStartOrEndElementCommand, 
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
@@ -99,7 +98,7 @@
             </Line>
         </DataTemplate>
 
-        <utilities:MyTemplateSelector x:Key="myTemplateSelector" ElementTemplate="{StaticResource ElementTemplate}" RelationTemplate="{StaticResource RelationTemplate}" />
+        <utilities:MyTemplateSelector x:Key="MyTemplateSelector" ElementTemplate="{StaticResource ElementTemplate}" RelationTemplate="{StaticResource RelationTemplate}" />
     </Page.Resources>
 
     <!-- Hlavní kontejner pro obsah stránky -->
@@ -150,7 +149,7 @@
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
 
-                        <ItemsControl ItemsSource="{Binding CanvasItems}" ItemTemplateSelector="{StaticResource myTemplateSelector}">
+                        <ItemsControl ItemsSource="{Binding CanvasItems}" ItemTemplateSelector="{StaticResource MyTemplateSelector}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Canvas IsItemsHost="True" />

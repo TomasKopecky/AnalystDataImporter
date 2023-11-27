@@ -9,21 +9,21 @@ namespace AnalystDataImporter.Utilities
     {
         public static readonly DependencyProperty ElementViewModelProperty =
             DependencyProperty.Register(
-                "ElementViewModel",
+                nameof(ElementViewModel),
                 typeof(ElementViewModel),
                 typeof(GridSizeBehavior),
                 new PropertyMetadata(null));
 
         public ElementViewModel ElementViewModel
         {
-            get { return (ElementViewModel)GetValue(ElementViewModelProperty); }
-            set { SetValue(ElementViewModelProperty, value); }
+            get => (ElementViewModel)GetValue(ElementViewModelProperty);
+            set => SetValue(ElementViewModelProperty, value);
         }
 
         public Canvas ParentCanvas
         {
-            get { return SharedBehaviorProperties.GetParentCanvas(this); }
-            set { SharedBehaviorProperties.SetParentCanvas(this, value); }
+            get => SharedBehaviorProperties.GetParentCanvas(this);
+            set => SharedBehaviorProperties.SetParentCanvas(this, value);
         }
 
         protected override void OnAttached()
@@ -45,7 +45,7 @@ namespace AnalystDataImporter.Utilities
                 ElementViewModel.Width = grid.ActualWidth;
                 ElementViewModel.Height = grid.ActualHeight;
 
-                if (!ElementViewModel.temporary)
+                if (!ElementViewModel._temporary)
                 {
                     // úprava pozice při změně velikosti, pokud je grid mimo canvas - typicky při vytvoření nové elementu s částí elipsy mimo canvas
                     if (ElementViewModel.XPosition < 0)

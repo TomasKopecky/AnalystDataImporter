@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnalystDataImporter.Models
+﻿namespace AnalystDataImporter.Models
 {
     /// <summary>
     /// Třída reprezentující model zdroje. Definuje vlastnosti jako ID, hlavičku, podnázvy a název.

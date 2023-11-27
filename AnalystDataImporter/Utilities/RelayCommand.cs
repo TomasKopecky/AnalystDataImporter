@@ -11,23 +11,14 @@ namespace AnalystDataImporter.Utilities
 
         private readonly Action<T> _execute;
         private readonly Predicate<T> _canExecute;
-        /// <summary>
-        /// Akce, která se má provést při spuštění příkazu.
-        /// </summary>
-        //private readonly Action _execute;
-
-        ///// <summary>
-        ///// Funkce, která určuje, zda lze příkaz spustit.
-        ///// </summary>
-        //private readonly Func<bool> _canExecute;
-
+        
         /// <summary>
         /// Událost, která se vyvolá, když se změní možnost spuštění příkazu.
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         /// <summary>

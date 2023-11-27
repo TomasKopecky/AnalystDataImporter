@@ -9,7 +9,7 @@ namespace AnalystDataImporter.ViewModels
     /// </summary>
     public class SourceViewModel : INotifyPropertyChanged
     {
-        private Source _source;
+        private readonly Source _source;
 
         public SourceViewModel(Source source)
         {

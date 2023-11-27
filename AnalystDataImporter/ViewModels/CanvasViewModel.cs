@@ -1,5 +1,4 @@
-﻿using Microsoft.Xaml.Behaviors.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -9,12 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using AnalystDataImporter.Factories;
-using AnalystDataImporter.Globals;
 using AnalystDataImporter.Managers;
-using AnalystDataImporter.Models;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.Utilities;
 
@@ -30,7 +25,7 @@ namespace AnalystDataImporter.ViewModels
 
         public ICommand ChangeCursorWhenOperatingElementCommand { get; private set; }
 
-        public ICommand FinishDrawingElemmentCommand { get; private set; }
+        public ICommand FinishDrawingElementCommand { get; private set; }
 
         public ICommand GetRelationStartOrEndElementCommand { get; private set; }
 
@@ -40,19 +35,15 @@ namespace AnalystDataImporter.ViewModels
 
         public ICommand DeleteSelectionCommand { get; private set; }
 
-        public ObservableCollection<object> CanvasItems { get; private set; }
+        public ObservableCollection<object> CanvasItems { get;}
 
-        public ObservableCollection<object> SelectedItems;
+        public ObservableCollection<object> SelectedItems { get; }
 
         private bool _isAddingElementOutsideCanvas;
 
         private bool _isMultipleSelectionActivated;
 
-        private Canvas _canvasReference;
-
         private string _canvasCursor;
-
-        private bool _testingMode;
 
         private bool _mouseOnElement;
 
@@ -70,8 +61,6 @@ namespace AnalystDataImporter.ViewModels
 
         private bool _isDraggingElementModeActive;
 
-        public RelationViewModel TemporaryRelation { get; private set; }
-
         public ICommand CanvasMouseLeftButtonDownCommand { get; private set; }
         public ICommand CanvasMouseMoveCommand { get; private set; }
 
@@ -79,8 +68,6 @@ namespace AnalystDataImporter.ViewModels
         public ICommand CanvasMouseLeftButtonUpCommand { get; private set; }
 
         private bool _isDrawingElement;
-
-        public ElementViewModel StartingElement { get; private set; }
 
         /// <summary>
         /// Factory pro vytváření ViewModelů prvků element.
@@ -114,17 +101,12 @@ namespace AnalystDataImporter.ViewModels
 
         public RelayCommand StartAddingElementCommand { get; private set; }
 
-        public RelayCommand<object> CanvasClickedCommand { get; private set; }
-
         /// <summary>
         /// Příkaz pro zahájení kreslení vazby.
         /// </summary>
         public ICommand StartRelationCreatingCommand { get; private set; }
 
-        /// <summary>
-        /// Příkaz pro zahájení kreslení vazby.
-        /// </summary>
-        public ICommand AddRelationCommand { get; private set; }
+        public bool TestingMode { get; set; }
 
         /// <summary>
         /// Konstruktor třídy CanvasViewModel. Přijímá závislosti potřebné pro tuto třídu.
@@ -158,13 +140,13 @@ namespace AnalystDataImporter.ViewModels
 
             Elements.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
             Relations.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
-            ChangeCursorWhenOperatingElementCommand = new RelayCommand<string>(ChangeCursorByElemment);
-            FinishDrawingElemmentCommand = new RelayCommand(FinishElementDrawing);
+            ChangeCursorWhenOperatingElementCommand = new RelayCommand<string>(ChangeCursorByElement);
+            FinishDrawingElementCommand = new RelayCommand(FinishElementDrawing);
             RelationDeleteWhenOutsideCanvasCommand = new RelayCommand(RemoveRelationWhenDrawnOutsideCanvas);
 
             _isMultipleSelectionActivated = false;
             _isDraggingElementModeActive = true;
-            _testingMode = false;
+            TestingMode = false;
         }
 
         public void AddTestingElementsAndRelation()
@@ -202,12 +184,6 @@ namespace AnalystDataImporter.ViewModels
             _relationManager.AddRelation(relationViewModel);
         }
 
-        public bool TestingMode
-        {
-            get => _testingMode;
-            set => _testingMode = value;
-        }
-
         private void FinishElementDrawing()
         {
             Debug.WriteLine("CanvasViewModel: MouseButtoDown - finishing new element in canvas");
@@ -219,7 +195,7 @@ namespace AnalystDataImporter.ViewModels
             OnPropertyChanged(nameof(CanvasCursor));
         }
 
-        private void ChangeCursorByElemment(string operation)
+        private void ChangeCursorByElement(string operation)
         {
             if (operation == "EllipseDraggingCursor")
             {
@@ -379,7 +355,7 @@ namespace AnalystDataImporter.ViewModels
                             baseDiagramItemViewModel.PropertyChanged += RelationOrElementViewModel_PropertyChanged;
                         }
                         canvasItems.Add(item);
-                        Debug.WriteLine("Adding object to the canvasCollection: " + item.ToString());
+                        Debug.WriteLine("Adding object to the canvasCollection: " + item);
                     }
                     break;
 
@@ -395,16 +371,6 @@ namespace AnalystDataImporter.ViewModels
                     break;
 
                     // Handle other cases if necessary
-            }
-        }
-
-        public Canvas CanvasReference
-        {
-            get { return _canvasReference; }
-            set
-            {
-                _canvasReference = value;
-                OnPropertyChanged(nameof(CanvasReference));
             }
         }
 
@@ -478,10 +444,10 @@ namespace AnalystDataImporter.ViewModels
 
         private void CanvasMouseLeftButtonDownExecute(object parameter)
         {
-            Debug.WriteLine("CanvasViewModel: MouseButtoDown");
+            Debug.WriteLine("CanvasViewModel: MouseButtonDown");
             if (!(parameter is Canvas canvas)) return;
 
-            else if (IsDrawingRelationModeActive)
+            if (IsDrawingRelationModeActive)
             {
                 Point mousePosition = Mouse.GetPosition(canvas);
                 if (_mouseHandlingService.IsMouseInCanvas(mousePosition, canvas))
@@ -513,7 +479,6 @@ namespace AnalystDataImporter.ViewModels
                 OnPropertyChanged(nameof(CanvasCursor));
             }
 
-            // Dodána kontrola, jestli je mouse point v canvas, protože jinak zakládal elipsu (elementViewModel) i při pohybu přes jinou elipsu, která přečnívá přes okraj canvas 
             if (IsDrawingElementModeActive)
             {
                 if (_tempElement == null)
@@ -523,10 +488,6 @@ namespace AnalystDataImporter.ViewModels
                     OnPropertyChanged(nameof(CanvasCursor));
                     AddNewElementToCanvas(mousePosition);
                     Debug.WriteLine("CanvasViewModel: Now elements count: " + _elementManager.Elements.Count);
-                }
-                else
-                {
-
                 }
             }
         }
@@ -539,8 +500,7 @@ namespace AnalystDataImporter.ViewModels
 
         private void FinishRelationDrawing()
         {
-            if (_fromElement != null)
-                _fromElement = null;
+            _fromElement = null;
             _tempRelation = null;
             IsDrawingRelationModeActive = false;
             IsDraggingElementModeActive = true;
@@ -599,10 +559,7 @@ namespace AnalystDataImporter.ViewModels
             {
                 if (IsDrawingElement)
                 {
-                    if (_isAddingElementOutsideCanvas)
-                        _canvasCursor = "Arrow";
-                    else
-                        _canvasCursor = "None";
+                    _canvasCursor = _isAddingElementOutsideCanvas ? "Arrow" : "None";
                 }
                 else if (IsDrawingRelationModeActive)
                 {
