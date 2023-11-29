@@ -9,7 +9,6 @@ namespace AnalystDataImporter.Services
         //UIElement CurrentElement { get; set; }
         BaseDiagramItemViewModel CurrentViewModelElement { get; }
         bool IsInUse { get; }
-        string LastItemTypeInUse { get; }
         bool IsMouseInCanvas(Point mousePosition, Canvas canvas);
         void StartRelationDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary);
         void StartDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary);

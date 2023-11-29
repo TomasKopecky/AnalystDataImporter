@@ -87,8 +87,6 @@
     <Compile Include="Models\Source.cs" />
     <Compile Include="Models\Specification.cs" />
     <Compile Include="Services\BehaviorServices.cs" />
-    <Compile Include="Services\DrawnItemsModeService.cs" />
-    <Compile Include="Services\IDrawnItemsModeService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\IMouseHandlingService.cs" />
     <Compile Include="Services\MessageService.cs" />

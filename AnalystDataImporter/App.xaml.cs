@@ -60,7 +60,7 @@ namespace AnalystDataImporter
             services.AddTransient<ElementPage>();
             services.AddTransient<MainWindow>(); // Registrace hlavního okna.
 
-            services.AddSingleton<IDrawnItemsModeService, DrawnItemsModeService>();
+            
 
             services.AddTransient<MousePositionInvokeCommandAction>();
 
