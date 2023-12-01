@@ -120,7 +120,7 @@ namespace AnalystDataImporter.Utilities
             this.AssociatedObject.MouseMove += MouseMove;
 
             Point mousePosition = Mouse.GetPosition(ParentCanvas);
-            if (!_isDrawing && !_mouseHandlingService.IsInUse)
+            if (!_isDrawing)
             {
                 Debug.WriteLine("Element MouseMove - _isDrawing = false");
                 FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
@@ -128,7 +128,8 @@ namespace AnalystDataImporter.Utilities
                 if (elementViewModel._temporary && _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
                 {
                     _isDrawing = true;
-                    _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                    //_mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, true);
+                    _mouseHandlingService.StartOperation(associatedElement, mousePosition, elementViewModel,"drawing"); //, true);
                 }
 
             }
@@ -148,7 +149,8 @@ namespace AnalystDataImporter.Utilities
 
                 if (IsDraggingElementEnabled)
                 {
-                    _mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, false);
+                    //_mouseHandlingService.StartDragOrSelectOperation(associatedElement, mousePosition, elementViewModel, false);
+                    _mouseHandlingService.StartOperation(associatedElement, mousePosition, elementViewModel,"dragging");//, false);
                     _isDragging = true;
                 }
 
@@ -220,7 +222,8 @@ namespace AnalystDataImporter.Utilities
                         {
                             ChangeCursorCommand.Execute(cursorType);
                         }
-                        _mouseHandlingService.UpdateDragOperationWhenDrawing(mousePosition, ParentCanvas);
+                        //_mouseHandlingService.UpdateDragOperationWhenDrawing(mousePosition, ParentCanvas);
+                        _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
                     }
                     else
                     {
@@ -250,7 +253,8 @@ namespace AnalystDataImporter.Utilities
                 {
                     Debug.WriteLine("Element MouseMove - _isDragging and IsDraggingEnabled true");
                     var mousePosition = e.GetPosition(ParentCanvas);
-                    _mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
+                    //_mouseHandlingService.UpdateDragOperationWhenDragging(mousePosition, ParentCanvas, ParentGrid);
+                    _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, ParentGrid);
                 }
                 
             }

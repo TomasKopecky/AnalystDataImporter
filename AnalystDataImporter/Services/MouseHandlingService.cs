@@ -1,183 +1,178 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.Services
 {
+    /// <summary>
+    /// Služba pro manipulaci s myší a interakci s UI prvky na plátně.
+    /// </summary>
     public class MouseHandlingService : IMouseHandlingService
     {
         private UIElement _currentElement;
-        private Point _anchorPoint; // Position where the drag started
-        private BaseDiagramItemViewModel _currentViewModelElement;
-        private bool _isInUse;
-        private string _lastItemTypeInUse;
+        private Point _anchorPoint;
+        private string _operationType; // "dragging" nebo "drawing"
 
-        public BaseDiagramItemViewModel CurrentViewModelElement => _currentViewModelElement;
+        /// <summary>
+        /// Aktuální ViewModel prvku, s kterým je prováděna operace.
+        /// </summary>
+        public BaseDiagramItemViewModel CurrentViewModelElement { get; private set; }
 
-        public bool IsInUse => _isInUse;
+        /// <summary>
+        /// Indikátor, zda je služba v procesu použití.
+        /// </summary>
+        public bool IsInUse { get; private set; }
 
-        public string LastItemTypeInUse => _lastItemTypeInUse;
+        /// <summary>
+        /// Inicializuje operaci s myší v canvas s prvky elementViewModel (elipsa) a relationViewModel (line), jako je tažení nebo kreslení.
+        /// </summary>
+        /// <param name="element">Element, který bude ovládán.</param>
+        /// <param name="startPosition">Počáteční pozice operace.</param>
+        /// <param name="itemViewModel">ViewModel prvku, který je ovládán.</param>
+        /// <param name="operationType">Typ operace ("dragging" nebo "drawing").</param>
 
-        public bool IsMouseInCanvas(Point mousePosition, Canvas canvas)
+        /// <summary>
+        /// Inicializuje operaci s myší, jako je tažení nebo kreslení.
+        /// </summary>
+        /// <param name="element">Element, který bude ovládán.</param>
+        /// <param name="startPosition">Počáteční pozice operace.</param>
+        /// <param name="itemViewModel">ViewModel prvku, který je ovládán.</param>
+        /// <param name="operationType">Typ operace ("dragging" nebo "drawing").</param>
+        public void StartOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, string operationType)//, bool temporary)
         {
-            if (mousePosition.X >= 0 && mousePosition.X <= canvas.ActualWidth &&
-                mousePosition.Y >= 0 && mousePosition.Y <= canvas.ActualHeight)
-                return true;
-
-            return false;
-        }
-
-        public void StartDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
-        {
-            Debug.WriteLine("MouseHandlingService: StartDragOrSelectOperation");
-
-            if (startPosition != null) _anchorPoint = (Point)startPosition;
-
+            //Debug.WriteLine("MouseHandlingService: StartOperation - " + operationType);
+            _operationType = operationType;
+            _anchorPoint = startPosition ?? default(Point);
             _currentElement = element;
-            _currentViewModelElement = itemViewModel;
-            _isInUse = true;
-            if (_currentElement != null)
-            {
-                if (!temporary)
-                    SelectElement();
+            CurrentViewModelElement = itemViewModel;
+            IsInUse = true;
 
-                if (_currentViewModelElement is ElementViewModel)
-                {
-                    _currentElement.CaptureMouse();
-                }
+            if (_currentElement == null) return;
+
+            if (_operationType == "dragging")
+            {
+                SelectElement();
+            }
+
+            if (_operationType == "drawing" || (_operationType == "dragging" && CurrentViewModelElement is ElementViewModel))
+            {
+                _currentElement.CaptureMouse();
             }
         }
 
-        public void UpdateDragOperationWhenDrawingRelation(Point currentPosition, Canvas parentCanvas)
+        /// <summary>
+        /// Aktualizuje operaci během tažení nebo kreslení.
+        /// </summary>
+        /// <param name="currentPosition">Aktuální pozice kurzoru myši.</param>
+        /// <param name="parentCanvas">Plátno, na kterém se nachází prvek.</param>
+        /// <param name="parentGrid">Grid, ve kterém se nachází prvek.</param>
+        public void UpdateOperation(Point currentPosition, Canvas parentCanvas, Grid parentGrid)
         {
-            if (_currentViewModelElement == null || !_isInUse) return;
+            if (CurrentViewModelElement == null || !IsInUse) return;
 
-
-            if (IsMouseInCanvas(currentPosition, parentCanvas) && _currentViewModelElement is RelationViewModel relation)
+            if (IsMouseInCanvas(currentPosition, parentCanvas))
             {
-                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawingRelation inside canvas");
-                relation.X2 = currentPosition.X;
-                relation.Y2 = currentPosition.Y;
+                //Debug.WriteLine("MouseHandlingService: UpdateOperation - inside canvas");
+                switch (_operationType)
+                {
+                    case "drawing":
+                        UpdatePositionForDrawing(currentPosition);
+                        break;
+                    case "dragging":
+                        UpdatePositionForDragging(currentPosition, parentCanvas, parentGrid);
+                        break;
+                }
             }
             else
-                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawingRelation outside canvas");
-        }
-
-        public void StartRelationDragOrSelectOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, bool temporary)
-        {
-            Debug.WriteLine("MouseHandlingService: StartRelationDragOrSelectOperation");
-
-            if (_currentElement == null)
             {
-                if (startPosition != null) _anchorPoint = (Point)startPosition;
-
-                _currentElement = element;
-                _currentViewModelElement = itemViewModel;
-                _lastItemTypeInUse = "relation";
-                // Start capturing the mouse on the element
-                if (_currentElement != null)
-                {
-                    if (temporary)
-                    {
-                        if (_currentViewModelElement is RelationViewModel)
-                        {
-                            _isInUse = true;
-
-                            _currentElement.CaptureMouse();
-                            //_currentElement.IsHitTestVisible = false;
-                        }
-                    }
-                    else
-                    {
-                        EndDragOperation();
-                    }
-                }
+                //Debug.WriteLine("MouseHandlingService: UpdateOperation - outside canvas");
             }
         }
 
-
-
-        public void UpdateDragOperationWhenDrawing(Point currentPosition, Canvas parentCanvas)
+        /// <summary>
+        /// Aktualizuje pozici prvku při táhnutí myší. Omezuje novou pozici tak, aby prvek zůstal v rámci rodičovského plátna.
+        /// </summary>
+        /// <param name="currentPosition">Aktuální pozice kurzoru myši.</param>
+        /// <param name="parentCanvas">Plátno, na kterém se nachází prvek.</param>
+        /// <param name="parentGrid">Grid, ve kterém se nachází prvek.</param>
+        private void UpdatePositionForDragging(Point currentPosition, Canvas parentCanvas, Grid parentGrid)
         {
-            if (_currentViewModelElement == null || !_isInUse) return;
+            if (!(CurrentViewModelElement is ElementViewModel viewModel)) return;
 
+            double newX = currentPosition.X - _anchorPoint.X + viewModel.XPosition;
+            double newY = currentPosition.Y - _anchorPoint.Y + viewModel.YPosition;
 
-            if (IsMouseInCanvas(currentPosition, parentCanvas) && _currentViewModelElement is ElementViewModel element)
-            {
-                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
-                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing inside canvas");
-                element.XCenter = currentPosition.X;
-                element.YCenter = currentPosition.Y;
-            }
-            else
-                Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDrawing outside canvas");
+            viewModel.XPosition = Clamp(newX, 0, parentCanvas.ActualWidth - parentGrid.ActualWidth);
+            viewModel.YPosition = Clamp(newY, 0, parentCanvas.ActualHeight - parentGrid.ActualHeight);
+            _anchorPoint = currentPosition;
         }
 
-        public void UpdateDragOperationWhenDragging(Point currentPosition, Canvas parentCanvas, Grid parentGrid)
+        /// <summary>
+        /// Aktualizuje pozici prvku nebo vazby při kreslení.
+        /// </summary>
+        /// <param name="currentPosition">Aktuální pozice kurzoru myši.</param>
+        private void UpdatePositionForDrawing(Point currentPosition)
         {
-            if (_currentElement == null | !_isInUse) return;
-
-            if (_currentElement is FrameworkElement associatedElement && associatedElement.DataContext is ElementViewModel viewModel)
+            switch (CurrentViewModelElement)
             {
-
-                bool isInsideCanvas = currentPosition.X >= 0 && currentPosition.Y >= 0 &&
-                                      currentPosition.X <= parentCanvas.ActualWidth &&
-                                      currentPosition.Y <= parentCanvas.ActualHeight;
-
-
-
-                if (isInsideCanvas)
-                {
-                    Debug.WriteLine("MouseHandlingService: UpdateDragOperationWhenDragging: inside canvas");
-                    double newX = currentPosition.X - _anchorPoint.X + viewModel.XPosition;
-                    double newY = currentPosition.Y - _anchorPoint.Y + viewModel.YPosition;
-
-                    newX = Math.Max(0, Math.Min(newX, parentCanvas.ActualWidth - parentGrid.ActualWidth));
-                    newY = Math.Max(0, Math.Min(newY, parentCanvas.ActualHeight - parentGrid.ActualHeight));
-
-                    viewModel.XPosition = newX;
-                    viewModel.YPosition = newY;
-
-                    _anchorPoint = currentPosition;
-                }
-                else
-                {
-                    Debug.WriteLine("Element: MouseMove: outside canvas");
-
-                    // Make sure the ellipse is still within the canvas bounds
-                    viewModel.XPosition = Math.Max(0,
-                        Math.Min(viewModel.XPosition, parentCanvas.ActualWidth - parentGrid.ActualWidth));
-                    viewModel.YPosition = Math.Max(0,
-                        Math.Min(viewModel.YPosition, parentCanvas.ActualHeight - parentGrid.ActualHeight));
-
-                    // Update the anchor point to the center of the ellipse
-                    _anchorPoint = new Point(viewModel.XCenter, viewModel.YCenter);
-                }
+                case ElementViewModel element:
+                    element.XCenter = currentPosition.X;
+                    element.YCenter = currentPosition.Y;
+                    break;
+                case RelationViewModel relation:
+                    relation.X2 = currentPosition.X;
+                    relation.Y2 = currentPosition.Y;
+                    break;
             }
         }
 
-        private void SelectElement()
-        {
-            _currentViewModelElement.IsSelected = true;
-        }
-
+        /// <summary>
+        /// Ukončí operaci tažení nebo kreslení.
+        /// </summary>
         public void EndDragOperation()
         {
-            Debug.WriteLine("MouseHandlingService: EndDragOperation");
-            // Release mouse capture
-            if (_currentElement != null)
-            {
-                _currentViewModelElement = null;
-                _isInUse = false;
-                if (_currentElement.IsMouseCaptured)
-                    _currentElement.ReleaseMouseCapture();
-                _currentElement = null;
-            }
+            //Debug.WriteLine("MouseHandlingService: EndDragOperation");
+            if (_currentElement == null) return;
+
+            CurrentViewModelElement = null;
+            IsInUse = false;
+            
+            if (_currentElement.IsMouseCaptured)
+                _currentElement.ReleaseMouseCapture();
+            
+            _currentElement = null;
         }
 
+        /// <summary>
+        /// Kontroluje, zda se kurzor myši nachází v rámci plátna.
+        /// </summary>
+        /// <param name="mousePosition">Pozice kurzoru myši.</param>
+        /// <param name="canvas">Plátno pro kontrolu pozice.</param>
+        /// <returns>True, pokud se kurzor nachází v rámci plátna.</returns>
+        public bool IsMouseInCanvas(Point mousePosition, Canvas canvas)
+        {
+            return mousePosition.X >= 0 && mousePosition.X <= canvas.ActualWidth &&
+                   mousePosition.Y >= 0 && mousePosition.Y <= canvas.ActualHeight;
+        }
 
+        /// <summary>
+        /// Zajišťuje, že hodnota je v určeném rozmezí.
+        /// </summary>
+        /// <param name="value">Hodnota k omezení.</param>
+        /// <param name="min">Minimální možná hodnota.</param>
+        /// <param name="max">Maximální možná hodnota.</param>
+        /// <returns>Omezená hodnota.</returns>
+        private static double Clamp(double value, double min, double max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        /// <summary>
+        /// Označí prvek jako vybraný.
+        /// </summary>
+        private void SelectElement()
+        {
+            CurrentViewModelElement.IsSelected = true;
+        }
     }
-
 }

@@ -54,7 +54,8 @@ namespace AnalystDataImporter.Utilities
 
             FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
             RelationViewModel relationtViewModel = (RelationViewModel)associatedElement.DataContext;
-            _mouseHandlingService.StartRelationDragOrSelectOperation(associatedElement, null, relationtViewModel, !relationtViewModel.IsFinished);
+            //_mouseHandlingService.StartRelationDragOrSelectOperation(associatedElement, null, relationtViewModel, !relationtViewModel.IsFinished);
+            _mouseHandlingService.StartOperation(associatedElement, null, relationtViewModel, "drawing");//, !relationtViewModel.IsFinished);
         }
 
         protected override void OnDetaching()
@@ -68,13 +69,13 @@ namespace AnalystDataImporter.Utilities
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("Element MouseLeftButtonDown");
-            if (IsEnabled)
-            {
-                FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
-                BaseDiagramItemViewModel relationViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
-                _mouseHandlingService.StartDragOrSelectOperation(associatedElement, null, relationViewModel, false);
-                e.Handled = true;
-            }
+            if (!IsEnabled) return;
+
+            FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
+            BaseDiagramItemViewModel relationViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
+            //_mouseHandlingService.StartDragOrSelectOperation(associatedElement, null, relationViewModel, false);
+            _mouseHandlingService.StartOperation(associatedElement, null, relationViewModel, "dragging");//, false);
+            e.Handled = true;
         }
 
         private void MouseLeftButtonPreviewUp(object sender, MouseButtonEventArgs e)
@@ -83,7 +84,7 @@ namespace AnalystDataImporter.Utilities
             FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
             RelationViewModel relationViewModel = (RelationViewModel)associatedElement.DataContext;
             Point mousePosition = e.GetPosition(ParentCanvas);
-            if (_mouseHandlingService.IsInUse && _mouseHandlingService.CurrentViewModelElement == relationViewModel && !relationViewModel.IsFinished)
+            if (_mouseHandlingService.CurrentViewModelElement == relationViewModel && !relationViewModel.IsFinished)
             {
                 if (!_mouseHandlingService.IsMouseInCanvas(mousePosition,ParentCanvas))
                 {
@@ -99,7 +100,8 @@ namespace AnalystDataImporter.Utilities
         {
             Debug.WriteLine("LineBehavior MouseMove");
             Point mousePosition = e.GetPosition(ParentCanvas);
-            _mouseHandlingService.UpdateDragOperationWhenDrawingRelation(mousePosition, ParentCanvas);
+            //_mouseHandlingService.UpdateDragOperationWhenDrawingRelation(mousePosition, ParentCanvas);
+            _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
         }
 
     }

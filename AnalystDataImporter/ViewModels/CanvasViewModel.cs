@@ -180,9 +180,14 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        // Událost, která se vyvolá při změně vlastnosti
+        // Událost, která se vyvolá při změně vlastnosti - pro binding
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #region Test metody
+
+        /// <summary>
+        /// Metoda pro přidání testovacích prvků a vazeb na plátno.
+        /// </summary>
         public void AddTestingElementsAndRelation()
         {
             if (!TestingMode) return;
@@ -194,6 +199,13 @@ namespace AnalystDataImporter.ViewModels
             IsDraggingElementModeActive = true;
         }
 
+        /// <summary>
+        /// Metoda pro přidání testovacího prvku na plátno.
+        /// </summary>
+        /// <param name="position">Pozice, kam prvek přidat.</param>
+        /// <param name="title">Název prvku.</param>
+        /// <param name="label">Popisek prvku.</param>
+        /// <returns>Vytvořený testovací prvek.</returns>
         private ElementViewModel AddTestingElementToCanvas(Point position, string title, string label)
         {
             var newElement = _elementViewModelFactory.Create();
@@ -206,7 +218,12 @@ namespace AnalystDataImporter.ViewModels
             return newElement;
         }
 
-        public void AddTestingRelationToCanvas(ElementViewModel fromElement, ElementViewModel toElement)
+        /// <summary>
+        /// Metoda pro přidání testovací vazby mezi prvky na plátno.
+        /// </summary>
+        /// <param name="fromElement">Prvek, od kterého vazba začíná.</param>
+        /// <param name="toElement">Prvek, ke kterému vazba směřuje.</param>
+        private void AddTestingRelationToCanvas(ElementViewModel fromElement, ElementViewModel toElement)
         {
             var relationViewModel = _relationViewModelFactory.Create(
                 new Point(fromElement.XCenter, fromElement.YCenter), new Point(toElement.XCenter, toElement.YCenter));
@@ -218,9 +235,13 @@ namespace AnalystDataImporter.ViewModels
             _relationManager.AddRelation(relationViewModel);
         }
 
+        #endregion
+
+        /// <summary>
+        /// Metoda pro ukončení kreslení prvku.
+        /// </summary>
         private void FinishElementDrawing()
         {
-            Debug.WriteLine("CanvasViewModel: MouseButtoDown - finishing new element in canvas");
             _tempElement.FinishTempElement();
             _tempElement = null;
             IsDrawingElement = false;
@@ -228,6 +249,11 @@ namespace AnalystDataImporter.ViewModels
             IsDraggingElementModeActive = true;
             OnPropertyChanged(nameof(CanvasCursor));
         }
+
+        /// <summary>
+        /// Metoda pro změnu kurzoru při operaci s prvkem.
+        /// </summary>
+        /// <param name="operation">Typ operace, která určuje, jaký kurzor zobrazit.</param>
 
         private void ChangeCursorByElement(string operation)
         {
@@ -248,6 +274,9 @@ namespace AnalystDataImporter.ViewModels
             OnPropertyChanged(nameof(CanvasCursor));
         }
 
+        /// <summary>
+        /// Metoda pro odstranění vybraných prvků.
+        /// </summary>
         private void DeleteSelectionExecute()
         {
             if (_isMultipleSelectionActivated) return;
@@ -256,40 +285,39 @@ namespace AnalystDataImporter.ViewModels
                 case null:
                     return;
                 case ElementViewModel element:
-                {
-                    var connectedRelations = _relationManager.GetRelationsConnectedToElement(element);
-                    foreach (var connectedRelation in connectedRelations)
-                        _relationManager.Relations.Remove(connectedRelation);
-                    _elementManager.Elements.Remove(element);
-                    // TODO: Linq, když je tento element v objetfrom nebo objectto na nějake vazbě, tak ji taky smaž
-                    break;
-                }
-            }
+                    {
+                        IList<RelationViewModel> connectedRelations = _relationManager.GetRelationsConnectedToElement(element);
+                        foreach (RelationViewModel connectedRelation in connectedRelations)
+                            _relationManager.Relations.Remove(connectedRelation);
 
-            if (SelectedSingleItem is RelationViewModel relation) _relationManager.Relations.Remove(relation);
-            // TODO: Linq, když je tento element v objetfrom nebo objectto na nějake vazbě, tak ji taky smaž
+                        _elementManager.Elements.Remove(element);
+                        break;
+                    }
+                case RelationViewModel relation:
+                    {
+                        _relationManager.Relations.Remove(relation);
+                        break;
+                    }
+            }
             SelectedSingleItem = null;
         }
 
+        /// <summary>
+        /// Metoda pro zrušení výběru všech prvků.
+        /// </summary>
         private void ReleaseSelection()
         {
             if (SelectedSingleItem == null) return;
-            foreach (var item in CanvasItems)
-            {
-                switch (item)
-                {
-                    case ElementViewModel element:
-                        element.IsSelected = false;
-                        break;
-                    case RelationViewModel relation:
-                        relation.IsSelected = false;
-                        break;
-                }
-
-                SelectedSingleItem = null;
-            }
+            foreach (var item in SelectedItems.ToList())
+                if (item is BaseDiagramItemViewModel baseViewModel)
+                    baseViewModel.IsSelected = false;
+            SelectedItems.Clear();
+            SelectedSingleItem = null;
         }
 
+        /// <summary>
+        /// Metoda pro zpracování změny vlastnosti 'IsSelected' u prvku nebo vazby.
+        /// </summary>
         private void RelationOrElementViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "IsSelected") return;
@@ -303,14 +331,20 @@ namespace AnalystDataImporter.ViewModels
                 HandleDeselection(viewModel);
         }
 
+        /// <summary>
+        /// Metoda pro zpracování výběru prvku nebo vazby.
+        /// </summary>
         private void HandleSelection(BaseDiagramItemViewModel viewModel)
         {
             if (SelectedItems.Contains(viewModel)) return;
-            if (!_isMultipleSelectionActivated && SelectedItems.Any()) DeselectAll();
+            if (!_isMultipleSelectionActivated && SelectedItems.Any()) ReleaseSelection();//DeselectAll();
             SelectedItems.Add(viewModel);
             SelectedSingleItem = viewModel;
         }
 
+        /// <summary>
+        /// Metoda pro zpracování zrušení výběru prvku nebo vazby.
+        /// </summary>
         private void HandleDeselection(BaseDiagramItemViewModel viewModel)
         {
             if (!SelectedItems.Contains(viewModel)) return;
@@ -318,15 +352,9 @@ namespace AnalystDataImporter.ViewModels
             if (SelectedSingleItem == viewModel) SelectedSingleItem = null;
         }
 
-        private void DeselectAll()
-        {
-            foreach (var item in SelectedItems.ToList())
-                if (item is BaseDiagramItemViewModel baseViewModel)
-                    baseViewModel.IsSelected = false;
-            SelectedItems.Clear();
-            SelectedSingleItem = null;
-        }
-
+        /// <summary>
+        /// Metoda pro zpracování změn kolekce prvků nebo vazeb.
+        /// </summary>
         private void OnCollectionChanged(NotifyCollectionChangedEventArgs e, ICollection<object> canvasItems)
         {
             switch (e.Action)
@@ -352,18 +380,21 @@ namespace AnalystDataImporter.ViewModels
 
                     break;
 
-                // Handle other cases if necessary
-                case NotifyCollectionChangedAction.Replace:
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    break;
+                // Případné další změny v kolekci
+                //case NotifyCollectionChangedAction.Replace:
+                //    break;
+                //case NotifyCollectionChangedAction.Move:
+                //    break;
+                //case NotifyCollectionChangedAction.Reset:
+                //    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        /// <summary>
+        /// Metoda pro přidání nového prvku na plátno.
+        /// </summary>
         private void AddNewElementToCanvas(Point mousePosition)
         {
             Debug.WriteLine("CanvasViewModel: Adding new element to canvas");
@@ -372,6 +403,9 @@ namespace AnalystDataImporter.ViewModels
             _elementManager.AddElement(_tempElement); // Assuming an element manager or similar mechanism
         }
 
+        /// <summary>
+        /// Metoda pro vytvoření nového prvku.
+        /// </summary>
         private ElementViewModel CreateNewElement(Point position)
         {
             var element = _elementViewModelFactory.Create();
@@ -379,9 +413,14 @@ namespace AnalystDataImporter.ViewModels
             return element;
         }
 
+
+        #region MouseEvents
+        /// <summary>
+        /// Metoda volaná při kliknutí levým tlačítkem myši na plátno. Zbylé operace s myší na objektech plátna (elipsy, lines), jsou v samostatných třídách
+        /// </summary>
         private void CanvasMouseLeftButtonDownExecute(object parameter)
         {
-            Debug.WriteLine("CanvasViewModel: MouseButtonDown");
+            //Debug.WriteLine("CanvasViewModel: MouseButtonDown");
             if (!(parameter is Canvas canvas)) return;
 
             if (IsDrawingRelationModeActive)
@@ -394,17 +433,17 @@ namespace AnalystDataImporter.ViewModels
             else
             {
                 ReleaseSelection();
-                //_mouseHandlingService.EndDragOperation();
             }
         }
 
+        /// <summary>
+        /// Metoda pro zpracování pohybu myši na plátně. Zbylé operace s myší na objektech plátna (elipsy, lines), jsou v samostatných třídách
+        /// </summary>
         private void CanvasMouseMoveExecute(object parameter)
         {
-            Debug.WriteLine("CanvasViewModel: Mouse move");
+            //Debug.WriteLine("CanvasViewModel: Mouse move");
 
             if (!(parameter is Canvas canvas)) return;
-
-            //Canvas canvas = (Canvas)parameter;
 
             var mousePosition = Mouse.GetPosition(canvas);
 
@@ -417,39 +456,19 @@ namespace AnalystDataImporter.ViewModels
             if (!IsDrawingElementModeActive) return;
             if (_tempElement != null) return;
 
-            Debug.WriteLine("CanvasViewModel: Mouse Move - Adding element");
             IsDrawingElement = true;
             OnPropertyChanged(nameof(CanvasCursor));
             AddNewElementToCanvas(mousePosition);
-            Debug.WriteLine("CanvasViewModel: Now elements count: " + _elementManager.Elements.Count);
+            //Debug.WriteLine("CanvasViewModel: Mouse Move - Adding element");
+            //Debug.WriteLine("CanvasViewModel: Now elements count: " + _elementManager.Elements.Count);
         }
 
-        private void RemoveRelationWhenDrawnOutsideCanvas()
-        {
-            RemoveDrawnRelation();
-            FinishRelationDrawing();
-        }
-
-        private void FinishRelationDrawing()
-        {
-            _fromElement = null;
-            _tempRelation = null;
-            IsDrawingRelationModeActive = false;
-            IsDraggingElementModeActive = true;
-            OnPropertyChanged(nameof(CanvasCursor));
-        }
-
-        private void RemoveDrawnRelation()
-        {
-            if (_tempRelation == null) return;
-            _fromElement = null;
-            _relationManager.Relations.Remove(_tempRelation);
-            _tempRelation = null;
-        }
-
+        /// <summary>
+        /// Metoda pro zpracování události uvolnění levého tlačítka myši na plátně. Zbylé operace s myší na objektech plátna (elipsy, lines), jsou v samostatných třídách
+        /// </summary>
         public void CanvasMouseLeftButtonUpExecute(object parameter)
         {
-            Debug.WriteLine("CanvasViewModel: MouseButtonUp");
+            //Debug.WriteLine("CanvasViewModel: MouseButtonUp");
             if ((IsDrawingElementModeActive == false && IsDrawingRelationModeActive == false) ||
                 !(parameter is Canvas canvas)) return;
 
@@ -460,32 +479,11 @@ namespace AnalystDataImporter.ViewModels
             FinishRelationDrawing();
         }
 
-        public bool RelationAlreadyExists(ElementViewModel fromElement, ElementViewModel toElement)
-        {
-            return Relations.Any(relation =>
-                (relation.ObjectFrom == fromElement && relation.ObjectTo == toElement) ||
-                (relation.ObjectFrom == toElement && relation.ObjectTo == fromElement)
-            );
-        }
+        #endregion
 
         /// <summary>
-        ///     Metoda pro oznamování změn vlastností.
+        /// Metoda pro zpracování začátku nebo konce kreslení vazby.
         /// </summary>
-        /// <param name="propertyName">Jméno vlastnosti, která se změnila.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void StartRelationCreation()
-        {
-            IsDrawingRelationModeActive =
-                true; // Set to true when this method is called // Trigger OnPropertyChanged for all properties that depend on this mode
-            IsDrawingElementModeActive = false;
-            IsDraggingElementModeActive = false;
-            OnPropertyChanged(nameof(CanvasCursor)); // Notify that the cursor might need to change
-        }
-
         private void StartOrFinishDrawingRelation(object parameters)
         {
             if (!(parameters is List<object> parameter)) return;
@@ -501,31 +499,98 @@ namespace AnalystDataImporter.ViewModels
                     _relationManager.AddRelation(_tempRelation);
                     break;
                 case "end":
-                {
-                    if (_fromElement == elementViewModel || RelationAlreadyExists(_fromElement, elementViewModel))
                     {
-                        RemoveDrawnRelation();
-                    }
-                    else
-                    {
-                        _tempRelation.ZIndex = 0;
-                        _tempRelation.ObjectFrom = _fromElement;
-                        _tempRelation.ObjectTo = elementViewModel;
-                        _tempRelation.IsFinished = true;
-                    }
+                        if (_fromElement == elementViewModel || RelationAlreadyExists(_fromElement, elementViewModel))
+                        {
+                            RemoveDrawnRelation();
+                        }
+                        else
+                        {
+                            _tempRelation.ZIndex = 0;
+                            _tempRelation.ObjectFrom = _fromElement;
+                            _tempRelation.ObjectTo = elementViewModel;
+                            _tempRelation.IsFinished = true;
+                        }
 
-                    FinishRelationDrawing();
-                    break;
-                }
+                        FinishRelationDrawing();
+                        break;
+                    }
             }
         }
 
+        /// <summary>
+        /// Metoda pro zahájení přidávání prvku.
+        /// </summary>
         private void StartAddingElement()
         {
-            ReleaseSelection();
             IsDrawingElementModeActive = true;
             IsDrawingRelationModeActive = false;
             IsDraggingElementModeActive = false;
+            ReleaseSelection();
+        }
+
+        /// <summary>
+        /// Metoda pro zahájení vytváření vazby.
+        /// </summary>
+        private void StartRelationCreation()
+        {
+            IsDrawingRelationModeActive = true;
+            IsDrawingElementModeActive = false;
+            IsDraggingElementModeActive = false;
+            ReleaseSelection();
+            OnPropertyChanged(nameof(CanvasCursor)); // Notify that the cursor might need to change
+        }
+
+        /// <summary>
+        /// Metoda pro odstranění vazby, pokud je kreslena mimo plátno.
+        /// </summary>
+        private void RemoveRelationWhenDrawnOutsideCanvas()
+        {
+            RemoveDrawnRelation();
+            FinishRelationDrawing();
+        }
+
+        /// <summary>
+        /// Metoda pro dokončení kreslení vazby.
+        /// </summary>
+        private void FinishRelationDrawing()
+        {
+            _fromElement = null;
+            _tempRelation = null;
+            IsDrawingRelationModeActive = false;
+            IsDraggingElementModeActive = true;
+            OnPropertyChanged(nameof(CanvasCursor));
+        }
+
+        /// <summary>
+        /// Metoda pro odstranění kreslené vazby.
+        /// </summary>
+        private void RemoveDrawnRelation()
+        {
+            if (_tempRelation == null) return;
+            _fromElement = null;
+            _relationManager.Relations.Remove(_tempRelation);
+            _tempRelation = null;
+        }
+
+        /// <summary>
+        /// Metoda pro kontrolu, zda již existuje vazba mezi dvěma prvky.
+        /// </summary>
+        public bool RelationAlreadyExists(ElementViewModel fromElement, ElementViewModel toElement)
+        {
+            return Relations.Any(relation =>
+                (relation.ObjectFrom == fromElement && relation.ObjectTo == toElement) ||
+                (relation.ObjectFrom == toElement && relation.ObjectTo == fromElement)
+            );
+        }
+
+        /// <summary>
+        /// Metoda pro oznamování změn vlastností - pro binding
+        /// </summary>
+        /// <param name="propertyName">Jméno vlastnosti, která se změnila.</param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
