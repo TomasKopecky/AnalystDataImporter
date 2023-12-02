@@ -130,7 +130,7 @@ namespace AnalystDataImporter.Utilities
             // Připojení _mouseHandlingService pomocí ServiceLocator pro operace s myší na objektu elipsy
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
             AssociateEventHandlers();
-            StartDrawingNewRelation();
+            StartDrawingNewElement();
         }
 
         ///// <summary>
@@ -146,7 +146,7 @@ namespace AnalystDataImporter.Utilities
         ///// <summary>
         ///// Metoda pro zahájení kreslení elipsy
         ///// </summary>
-        private void StartDrawingNewRelation()
+        private void StartDrawingNewElement()
         {
             Point mousePosition = Mouse.GetPosition(ParentCanvas);
 
