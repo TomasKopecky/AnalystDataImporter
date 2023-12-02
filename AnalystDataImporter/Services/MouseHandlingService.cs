@@ -42,7 +42,7 @@ namespace AnalystDataImporter.Services
         {
             //Debug.WriteLine("MouseHandlingService: StartOperation - " + operationType);
             _operationType = operationType;
-            _anchorPoint = startPosition ?? default(Point);
+            _anchorPoint = startPosition ?? default;
             _currentElement = element;
             CurrentViewModelElement = itemViewModel;
             IsInUse = true;

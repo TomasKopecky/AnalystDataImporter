@@ -170,7 +170,7 @@ namespace AnalystDataImporter.ViewModels
                 else
                     _canvasCursor = "Arrow";
 
-                //Debug.WriteLine("Getting cursor: " + _canvasCursor);
+                Debug.WriteLine("Getting cursor: " + _canvasCursor);
                 return _canvasCursor;
             }
             set
@@ -449,6 +449,7 @@ namespace AnalystDataImporter.ViewModels
 
             if (IsDraggingElementModeActive)
             {
+                //Debug.WriteLine("CanvasViewModel: IsDraggingElementModeActive ");
                 _mouseOnElement = false;
                 OnPropertyChanged(nameof(CanvasCursor));
             }

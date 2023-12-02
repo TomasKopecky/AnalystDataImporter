@@ -92,7 +92,7 @@
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\MouseHandlingService.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
-    <Compile Include="Utilities\ElipseBehavior.cs" />
+    <Compile Include="Utilities\EllipseBehavior.cs" />
     <Compile Include="Utilities\GridSizeBehavior.cs" />
     <Compile Include="Utilities\InverseBooleanConverter.cs" />
     <Compile Include="Utilities\LineBehavior.cs" />

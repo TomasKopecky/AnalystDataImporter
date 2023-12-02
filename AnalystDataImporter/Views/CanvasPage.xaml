@@ -48,7 +48,7 @@
                         <!-- Ellipse centered in the Inner Grid -->
                         <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center">
                             <b:Interaction.Behaviors>
-                                <utilities:ElipseBehavior IsDraggingElementEnabled="{Binding DataContext.IsDraggingElementModeActive,
+                                <utilities:EllipseBehavior IsDraggingElementEnabled="{Binding DataContext.IsDraggingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
                             IsDrawingElementEnabled="{Binding DataContext.IsDrawingElementModeActive,
                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
