@@ -102,8 +102,10 @@
     <Compile Include="Utilities\SharedBehaviorProperties.cs" />
     <Compile Include="ViewModels\BaseDiagramItemViewModel.cs" />
     <Compile Include="ViewModels\CanvasViewModel.cs" />
+    <Compile Include="ViewModels\CompositeCanvasGridViewModel.cs" />
     <Compile Include="ViewModels\DataSourceViewModel.cs" />
     <Compile Include="ViewModels\ElementViewModel.cs" />
+    <Compile Include="ViewModels\GridViewModel.cs" />
     <Compile Include="ViewModels\RelationViewModel.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
     <Compile Include="ViewModels\SpecificationViewModel.cs" />

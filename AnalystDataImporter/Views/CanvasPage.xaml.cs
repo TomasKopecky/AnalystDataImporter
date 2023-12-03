@@ -11,12 +11,14 @@ namespace AnalystDataImporter.Views
         /// Konstruktor třídy CanvasPage.
         /// </summary>
         /// <param name="viewModel">ViewModel asociovaný s tímto pohledem.</param>
-        public CanvasPage(CanvasViewModel viewModel)
+        public CanvasPage(CompositeCanvasGridViewModel viewModel) //CanvasViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
-            viewModel.TestingMode = false;
-            viewModel.AddTestingElementsAndRelation();
+            viewModel.CanvasViewModel.TestingMode = false;
+            viewModel.CanvasViewModel.AddTestingElementsAndRelation();
+            //viewModel.TestingMode = false;
+            //viewModel.AddTestingElementsAndRelation();
         }
     }
 }

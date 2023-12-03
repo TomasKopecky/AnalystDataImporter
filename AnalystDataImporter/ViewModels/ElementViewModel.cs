@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using AnalystDataImporter.Globals;
 using AnalystDataImporter.Models;
 
@@ -11,26 +10,12 @@ namespace AnalystDataImporter.ViewModels
     public class ElementViewModel : BaseDiagramItemViewModel
     {
         private readonly Element _element;
-
-        //private bool _isSelected;
-
         public bool _temporary;
-
-        //// Pozice prvku na plátně
         public new double _xPosition;
-
         public new double _yPosition;
-
         public double _xCenter;
         public double _yCenter;
-
-        // Poslední známá pozice myši (může být užitečné pro drag & drop operace)
-        public double LastMouseX { get; set; }
-
-        public double LastMouseY { get; set; }
-
         public int _zIndex;
-
         public double _width;
         public double _height;
 
@@ -41,7 +26,6 @@ namespace AnalystDataImporter.ViewModels
         {
             _element = element ?? throw new ArgumentNullException(nameof(element));
             _model = _element;
-            //_element = element ?? throw new ArgumentNullException(nameof(element));
         }
 
         public void ConfigureTempElement(double x, double y)
@@ -50,17 +34,6 @@ namespace AnalystDataImporter.ViewModels
             XCenter = x;
             YCenter = y;
             ZIndex = 2;
-        }
-
-        public void FinishTempElement(Point point)
-        {
-            XCenter = point.X;
-            YCenter = point.Y;
-            Label = Constants.DefaultElementLabel;
-            Title = Constants.DefaultElementTitle;
-            _temporary = false;
-            ZIndex = 1;
-            IsSelected = true;
         }
 
         public void FinishTempElement()
@@ -79,11 +52,10 @@ namespace AnalystDataImporter.ViewModels
             get => _element.DateFrom;
             set
             {
-                if (_element.DateFrom != value)
-                {
-                    _element.DateFrom = value;
-                    OnPropertyChanged(nameof(DateFrom));
-                }
+                if (_element.DateFrom == value) return;
+
+                _element.DateFrom = value;
+                OnPropertyChanged(nameof(DateFrom));
             }
         }
 
@@ -92,11 +64,10 @@ namespace AnalystDataImporter.ViewModels
             get => _element.DateTo;
             set
             {
-                if (_element.DateTo != value)
-                {
-                    _element.DateTo = value;
-                    OnPropertyChanged(nameof(DateTo));
-                }
+                if (_element.DateTo == value) return;
+
+                _element.DateTo = value;
+                OnPropertyChanged(nameof(DateTo));
             }
         }
 
@@ -105,11 +76,10 @@ namespace AnalystDataImporter.ViewModels
             get => _element.Icon;
             set
             {
-                if (_element.Icon != value)
-                {
-                    _element.Icon = value;
-                    OnPropertyChanged(nameof(Icon));
-                }
+                if (_element.Icon == value) return;
+
+                _element.Icon = value;
+                OnPropertyChanged(nameof(Icon));
             }
         }
 
@@ -118,11 +88,10 @@ namespace AnalystDataImporter.ViewModels
             get => _element.HasFrame;
             set
             {
-                if (_element.HasFrame != value)
-                {
-                    _element.HasFrame = value;
-                    OnPropertyChanged(nameof(HasFrame));
-                }
+                if (_element.HasFrame == value) return;
+
+                _element.HasFrame = value;
+                OnPropertyChanged(nameof(HasFrame));
             }
         }
 
@@ -135,8 +104,8 @@ namespace AnalystDataImporter.ViewModels
                 if (!_temporary)
                 {
                     if (_width > 0)
-                        _xCenter = _xPosition + (_width / 2.0); 
-                    
+                        _xCenter = _xPosition + (_width / 2.0);
+
                     else
                         _xCenter = _xPosition + Constants.EllipseWidth / 2;
                 }
@@ -187,11 +156,10 @@ namespace AnalystDataImporter.ViewModels
             get => _zIndex;
             set
             {
-                if (_zIndex != value)
-                {
-                    _zIndex = value;
-                    OnPropertyChanged(nameof(ZIndex));
-                }
+                if (_zIndex == value) return;
+
+                _zIndex = value;
+                OnPropertyChanged(nameof(ZIndex));
             }
         }
 

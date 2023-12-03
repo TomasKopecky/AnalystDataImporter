@@ -49,7 +49,11 @@ namespace AnalystDataImporter
             services.AddSingleton<IMouseHandlingService, MouseHandlingService>();
 
             // Registrace ViewModelů.
-            services.AddTransient<CanvasViewModel>();
+            services.AddSingleton<CompositeCanvasGridViewModel>();
+            services.AddSingleton<GridViewModel>();
+
+            services.AddSingleton<CanvasViewModel>();
+            //services.AddTransient<CanvasViewModel>();
             services.AddTransient<ElementViewModel>();
             services.AddTransient<Element>();
             services.AddTransient<RelationViewModel>();
