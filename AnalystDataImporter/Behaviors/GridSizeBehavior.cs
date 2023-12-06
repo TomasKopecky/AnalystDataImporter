@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AnalystDataImporter.ViewModels;
 
-namespace AnalystDataImporter.Utilities
+namespace AnalystDataImporter.Behaviors
 {
     public class GridSizeBehavior : Behavior<Grid>
     {

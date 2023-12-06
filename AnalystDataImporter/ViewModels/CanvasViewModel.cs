@@ -37,6 +37,7 @@ namespace AnalystDataImporter.ViewModels
         private readonly bool _isMultipleSelectionActivated;
         private bool _isRelationDrawingModeActive;
         private bool _mouseOnElement;
+        private bool _mouseOnGridView;
         private object _selectedSingleItem;
         private ElementViewModel _tempElement;
         private RelationViewModel _tempRelation;
@@ -167,6 +168,8 @@ namespace AnalystDataImporter.ViewModels
                     _canvasCursor = "Cross";
                 else if (_mouseOnElement)
                     _canvasCursor = "SizeAll";
+                else if (_mouseOnGridView)
+                    _canvasCursor = "Hand";
                 else
                     _canvasCursor = "Arrow";
 

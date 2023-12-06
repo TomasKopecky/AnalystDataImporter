@@ -47,6 +47,7 @@ namespace AnalystDataImporter
             services.AddSingleton<IRelationViewModelFactory, RelationViewModelFactory>();
             services.AddSingleton<IRelationManager, RelationManager>();
             services.AddSingleton<IMouseHandlingService, MouseHandlingService>();
+            services.AddSingleton<ITableColumnViewModelFactory, TableColumnViewModelFactory>();
 
             // Registrace ViewModelů.
             services.AddSingleton<CompositeCanvasGridViewModel>();

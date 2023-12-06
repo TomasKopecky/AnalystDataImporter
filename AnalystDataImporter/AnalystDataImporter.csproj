@@ -50,6 +50,7 @@
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.77\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -70,6 +71,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\DataGridDragBehavior.cs" />
+    <Compile Include="Factories\TableColumnViewModelFactory.cs" />
+    <Compile Include="Factories\ITableColumnViewModelFactory.cs" />
     <Compile Include="Factories\IRelationViewModelFactory.cs" />
     <Compile Include="Factories\RelationViewModelFactory.cs" />
     <Compile Include="Managers\RelationManager .cs" />
@@ -90,21 +94,23 @@
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\IMouseHandlingService.cs" />
     <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\MouseCursorService.cs" />
     <Compile Include="Services\MouseHandlingService.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
-    <Compile Include="Utilities\EllipseBehavior.cs" />
-    <Compile Include="Utilities\GridSizeBehavior.cs" />
+    <Compile Include="Behaviors\EllipseBehavior.cs" />
+    <Compile Include="Behaviors\GridSizeBehavior.cs" />
     <Compile Include="Utilities\InverseBooleanConverter.cs" />
-    <Compile Include="Utilities\LineBehavior.cs" />
+    <Compile Include="Behaviors\LineBehavior.cs" />
     <Compile Include="Utilities\MousePositionInvokeCommandAction.cs" />
     <Compile Include="Utilities\MyTemplateSelector.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
-    <Compile Include="Utilities\SharedBehaviorProperties.cs" />
+    <Compile Include="Behaviors\SharedBehaviorProperties.cs" />
     <Compile Include="ViewModels\BaseDiagramItemViewModel.cs" />
     <Compile Include="ViewModels\CanvasViewModel.cs" />
     <Compile Include="ViewModels\CompositeCanvasGridViewModel.cs" />
     <Compile Include="ViewModels\DataSourceViewModel.cs" />
     <Compile Include="ViewModels\ElementViewModel.cs" />
+    <Compile Include="ViewModels\ListViewModel.cs" />
     <Compile Include="ViewModels\GridViewModel.cs" />
     <Compile Include="ViewModels\RelationViewModel.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />

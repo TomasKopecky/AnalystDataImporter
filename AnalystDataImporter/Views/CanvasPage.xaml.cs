@@ -17,6 +17,7 @@ namespace AnalystDataImporter.Views
             DataContext = viewModel;
             viewModel.CanvasViewModel.TestingMode = false;
             viewModel.CanvasViewModel.AddTestingElementsAndRelation();
+            viewModel.GridViewModel.LoadTestData();
             //viewModel.TestingMode = false;
             //viewModel.AddTestingElementsAndRelation();
         }

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 
-namespace AnalystDataImporter.Utilities
+namespace AnalystDataImporter.Behaviors
 {
     /// <summary>
     /// Chování pro správu událostí myši na objektu typu Line.
@@ -98,7 +98,7 @@ namespace AnalystDataImporter.Utilities
         /// <param name="e">Data události obsahující informace o kliknutí myši.</param>
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("Element MouseLeftButtonDown");
+            Debug.WriteLine("Relation MouseLeftButtonDown");
             if (!IsEnabled) return;
 
             FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;

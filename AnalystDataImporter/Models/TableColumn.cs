@@ -1,4 +1,6 @@
-﻿namespace AnalystDataImporter.Models
+﻿using System.Collections.Generic;
+
+namespace AnalystDataImporter.Models
 {
     /// <summary>
     /// Třída reprezentující model sloupce tabulky. Definuje vlastnosti jako ID, hlavičku a konfigurace týkající se prázdných hodnot.
@@ -14,6 +16,8 @@
         /// Hlavička sloupce tabulky.
         /// </summary>
         public string Heading { get; set; }
+
+        public List<string> Content { get; set; }
 
         /// <summary>
         /// Určuje, zda je třeba nahradit prázdné hodnoty.

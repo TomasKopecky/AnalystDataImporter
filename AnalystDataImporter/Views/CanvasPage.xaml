@@ -6,22 +6,26 @@
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:viewModel="clr-namespace:AnalystDataImporter.ViewModels"
       xmlns:utilities="clr-namespace:AnalystDataImporter.Utilities"
+      xmlns:behaviors="clr-namespace:AnalystDataImporter.Behaviors"
+      x:Name="CurrentCanvasPage"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Canvas">
 
     <Page.Resources>
         <Style x:Key="ToggleButtonBaseStyle" TargetType="Button">
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="2" />
         </Style>
         <DataTemplate x:Key="ElementTemplate" DataType="{x:Type viewModel:ElementViewModel}">
+
             <Grid>
                 <!-- Interaction Behavior for Grid Size -->
                 <b:Interaction.Behaviors>
-                    <utilities:GridSizeBehavior ElementViewModel="{Binding}"
-                                                utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"/>
+                    <behaviors:GridSizeBehavior
+                        ElementViewModel="{Binding}"
+                        behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
                 </b:Interaction.Behaviors>
 
                 <!-- Border inside the Grid -->
@@ -37,41 +41,46 @@
                         </Style>
                     </Border.Style>
 
-                    <!-- Inner Grid containing Ellipse and TextBlock -->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <!-- For buttons -->
                             <RowDefinition Height="Auto" />
+                            <!-- For Canvas and DataGrid -->
                         </Grid.RowDefinitions>
 
-                        <!-- TODO: nastavit konstantní hodnoty z Constants třídy, jako StrokeThickness, width elisy, atd.-->
                         <!-- Ellipse centered in the Inner Grid -->
-                        <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center">
+                        <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2"
+                                 HorizontalAlignment="Center">
                             <b:Interaction.Behaviors>
-                                <utilities:EllipseBehavior IsDraggingElementEnabled="{Binding DataContext.CanvasViewModel.IsDraggingElementModeActive,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                IsDrawingElementEnabled="{Binding DataContext.CanvasViewModel.IsDrawingElementModeActive,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                IsDrawingRelationEnabled="{Binding DataContext.CanvasViewModel.IsDrawingRelationModeActive,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                ChangeCursorCommand="{Binding DataContext.CanvasViewModel.ChangeCursorWhenOperatingElementCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                FinishDrawingElementCommand="{Binding DataContext.CanvasViewModel.FinishDrawingElementCommand,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                RelationStartOrEndElementSetCommand="{Binding DataContext.CanvasViewModel.GetRelationStartOrEndElementCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                                utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
-                                ParentGrid="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" />
+                                <behaviors:EllipseBehavior
+                                    IsDraggingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"
+                                    IsDrawingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDrawingElementModeActive}"
+                                    IsDrawingRelationEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDrawingRelationModeActive}"
+                                    behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.ChangeCursorWhenOperatingElementCommand}"
+                                    FinishDrawingElementCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.FinishDrawingElementCommand}"
+                                    RelationStartOrEndElementSetCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.GetRelationStartOrEndElementCommand}"
+                                    behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                    ParentGrid="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" />
                             </b:Interaction.Behaviors>
                         </Ellipse>
 
 
                         <!-- TextBlock below the Ellipse in the Inner Grid -->
-                        <TextBlock Grid.Row="1" Text="{Binding Label}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0" />
+                        <TextBlock Grid.Row="1" Text="{Binding Label}" HorizontalAlignment="Center"
+                                   VerticalAlignment="Top" Margin="0,5,0,0" />
                     </Grid>
                 </Border>
             </Grid>
+
         </DataTemplate>
 
         <DataTemplate x:Key="RelationTemplate" DataType="{x:Type viewModel:RelationViewModel}">
+
             <Line X1="{Binding X1}" Y1="{Binding Y1}"
-              X2="{Binding X2}" Y2="{Binding Y2}"
-              StrokeThickness="2"
-              IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
+                  X2="{Binding X2}" Y2="{Binding Y2}"
+                  StrokeThickness="2"
+                  IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
                 <Line.Style>
                     <Style TargetType="Line">
                         <Setter Property="Stroke" Value="Black" />
@@ -83,85 +92,140 @@
                     </Style>
                 </Line.Style>
                 <b:Interaction.Behaviors>
-                    <utilities:LineBehavior IsEnabled="{Binding DataContext.CanvasViewModel.IsDraggingElementModeActive,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                    RelationDeleteWhenOutsideCanvasCommand="{Binding DataContext.CanvasViewModel.RelationDeleteWhenOutsideCanvasCommand,RelativeSource={RelativeSource FindAncestor, AncestorType=Page}}"
-                    utilities:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"/>
+                    <behaviors:LineBehavior
+                        IsEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"
+                        RelationDeleteWhenOutsideCanvasCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.RelationDeleteWhenOutsideCanvasCommand}"
+                        behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
                 </b:Interaction.Behaviors>
             </Line>
+
         </DataTemplate>
 
-        <utilities:MyTemplateSelector x:Key="MyTemplateSelector" ElementTemplate="{StaticResource ElementTemplate}" RelationTemplate="{StaticResource RelationTemplate}" />
+        <utilities:MyTemplateSelector x:Key="MyTemplateSelector" 
+                                      ElementTemplate="{StaticResource ElementTemplate}"
+                                      RelationTemplate="{StaticResource RelationTemplate}" />
     </Page.Resources>
 
-    <!-- Hlavní kontejner pro obsah stránky -->
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Width="590">
-                <!-- Tlačítko pro přidání prvku na plátno -->
-                <!--<Button Content="Add Element" Width="120" Margin="10" Command="{Binding StartAddingElementCommand}" />-->
-                <Button Width="120" Margin="10"  Content="Add Element" Command="{Binding CanvasViewModel.StartAddingElementCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CanvasViewModel.IsDrawingElementModeActive}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
-                                    <Setter Property="BorderBrush" Value="Black"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <!-- Tlačítko pro zahájení kreslení vazby -->
-                <Button Content="Start Relation" Width="120" Margin="10" Command="{Binding CanvasViewModel.StartRelationCreatingCommand}" />
-                <!--IsEnabled="{Binding IsRelationDrawingModeActive}"-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- For GridView -->
+            <RowDefinition Height="Auto" />
+            <!-- For Buttons -->
+            <RowDefinition Height="*" />
+            <!-- For Canvas and Selected Item Details -->
+        </Grid.RowDefinitions>
 
-                <Button Content="Delete" Width="120" Margin="10" Command="{Binding CanvasViewModel.DeleteSelectionCommand}" />
+        <DataGrid DataContext="{Binding GridViewModel}" Cursor="{Binding GridCursor}" Name="ElemenGridView" ItemsSource="{Binding Table}" MaxHeight="100">
+            
+            <b:Interaction.Behaviors>
+                <behaviors:DataGridDragBehavior
+                    behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"/>
+            </b:Interaction.Behaviors>
+        </DataGrid>
 
-                <!--<Button Content="Kreslit vazbu" Width="120" Margin="10" Command="{Binding AddRelationCommand}" />-->
-                <Border BorderBrush="Black" BorderThickness="2" Height="301" Margin="0,0,0.4,0">
-                    <!-- Plátno pro zobrazení prvků -->
-                    <Canvas Cursor="{Binding CanvasViewModel.CanvasCursor}" Name="ElementCanvas" Background="Transparent" Margin="0.4,0.4,-0.2,8.6">
+        <!--<DataGrid Grid.Row="0" ItemsSource="{Binding GridViewModel.Items}" AutoGenerateColumns="False" MaxHeight="100">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Key}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Value}" />
+            </DataGrid.Columns>
+            <b:Interaction.Behaviors>
+                <behaviors:DataGridDragBehavior/>
+            </b:Interaction.Behaviors>
+        </DataGrid>-->
 
-                        <!-- Interaction triggers -->
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="MouseLeftButtonDown">
-                                <utilities:MousePositionInvokeCommandAction
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <!-- Buttons -->
+            <Button Width="120" Margin="10" Content="Add Element"
+                    Command="{Binding CanvasViewModel.StartAddingElementCommand}">
+
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.IsDrawingElementModeActive}" Value="True">
+                                <Setter Property="Background" Value="DarkGray" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Width="120" Margin="10" Content="Start Relation"
+                    Command="{Binding CanvasViewModel.StartRelationCreatingCommand}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.IsDrawingRelationModeActive}" Value="True">
+                                <Setter Property="Background" Value="DarkGray" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Width="120" Margin="10" Content="Delete" Command="{Binding CanvasViewModel.DeleteSelectionCommand}" />
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <!-- For Canvas -->
+                <ColumnDefinition Width="200" />
+                <!-- For Selected Item Details -->
+            </Grid.ColumnDefinitions>
+            <!-- Canvas inside Border -->
+            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" MaxHeight="300">
+
+                <Canvas Cursor="{Binding CanvasViewModel.CanvasCursor}" Name="ElementCanvas" Background="Transparent">
+                    <!-- Interaction triggers -->
+
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseLeftButtonDown">
+                            <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasViewModel.CanvasMouseLeftButtonDownCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                            </b:EventTrigger>
-                            <b:EventTrigger EventName="MouseLeftButtonUp">
-                                <utilities:MousePositionInvokeCommandAction
+                        </b:EventTrigger>
+                        <b:EventTrigger EventName="MouseLeftButtonUp">
+                            <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasViewModel.CanvasMouseLeftButtonUpCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                            </b:EventTrigger>
-                            <b:EventTrigger EventName="MouseMove">
-                                <utilities:MousePositionInvokeCommandAction
+                        </b:EventTrigger>
+                        <b:EventTrigger EventName="MouseMove">
+                            <utilities:MousePositionInvokeCommandAction
                                 Command="{Binding CanvasViewModel.CanvasMouseMoveCommand}"
                                 CommandParameter="{x:Reference Name=ElementCanvas}" />
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
 
-                        <ItemsControl ItemsSource="{Binding CanvasViewModel.CanvasItems}" ItemTemplateSelector="{StaticResource MyTemplateSelector}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Canvas IsItemsHost="True" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemContainerStyle>
-                                <Style TargetType="ContentPresenter">
-                                    <Setter Property="Canvas.Left" Value="{Binding XPosition}" />
-                                    <Setter Property="Canvas.Top" Value="{Binding YPosition}" />
-                                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
-                                </Style>
-                            </ItemsControl.ItemContainerStyle>
-                        </ItemsControl>
-                    </Canvas>
-                </Border>
-            </StackPanel>
-            <StackPanel Width="200" Margin="10">
+
+                    <!-- ItemsControl for Canvas items -->
+                    <ItemsControl ItemsSource="{Binding CanvasViewModel.CanvasItems}"
+                                  ItemTemplateSelector="{StaticResource MyTemplateSelector}">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding XPosition}" />
+                                <Setter Property="Canvas.Top" Value="{Binding YPosition}" />
+                                <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+
+                    </ItemsControl>
+                </Canvas>
+            </Border>
+
+
+            <!-- Selected Item Details -->
+            <StackPanel Grid.Column="1" Margin="10">
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
-                <TextBlock Margin="5" Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />
+                <TextBlock Margin="5"
+                           Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />
             </StackPanel>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

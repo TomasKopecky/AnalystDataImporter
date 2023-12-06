@@ -7,7 +7,7 @@ using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 using System.Collections.Generic;
 
-namespace AnalystDataImporter.Utilities
+namespace AnalystDataImporter.Behaviors
 {
     /// <summary>
     /// Chování pro správu událostí myši na objektu typu Ellipse.
@@ -23,12 +23,6 @@ namespace AnalystDataImporter.Utilities
         {
             get => (ICommand)GetValue(ElementSelectedCommandProperty);
             set => SetValue(ElementSelectedCommandProperty, value);
-        }
-
-        public ICommand ChangeCursorCommand
-        {
-            get => (ICommand)GetValue(ChangeCursorCommandProperty);
-            set => SetValue(ChangeCursorCommandProperty, value);
         }
 
         public ICommand FinishDrawingElementCommand
@@ -48,10 +42,6 @@ namespace AnalystDataImporter.Utilities
             nameof(FinishDrawingElementCommand), typeof(ICommand),
             typeof(EllipseBehavior),
             new PropertyMetadata(null));
-
-        public static readonly DependencyProperty ChangeCursorCommandProperty = DependencyProperty.Register(
-            nameof(ChangeCursorCommand), typeof(ICommand),
-            typeof(EllipseBehavior), new PropertyMetadata(null));
 
         public static readonly DependencyProperty GetStartingOrEndingElementCommandProperty = DependencyProperty.Register(
             nameof(RelationStartOrEndElementSetCommand), typeof(ICommand),
@@ -92,6 +82,12 @@ namespace AnalystDataImporter.Utilities
         {
             get => SharedBehaviorProperties.GetParentCanvas(this);
             set => SharedBehaviorProperties.SetParentCanvas(this, value);
+        }
+
+        public ICommand ChangeCursorCommand
+        {
+            get => SharedBehaviorProperties.GetChangeCursorCommand(this);
+            set => SharedBehaviorProperties.SetChangeCursorCommand(this, value);
         }
 
         /// <summary>
@@ -234,12 +230,12 @@ namespace AnalystDataImporter.Utilities
             Point mousePosition = e.GetPosition(ParentCanvas);
             if (IsDrawingElementEnabled && _isDrawing)
             {
-                UpdateCursor("EllipseDrawingInsideCanvasCursor");
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDrawingInsideCanvasCursor");
                 _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
             }
             else if (IsDraggingElementEnabled)
             {
-                UpdateCursor("EllipseDraggingCursor");
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDraggingCursor");
                 if (_isDragging)
                 {
                     _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, ParentGrid);
@@ -261,16 +257,6 @@ namespace AnalystDataImporter.Utilities
             }
         }
 
-        ///// <summary>
-        ///// Posílání command do CanvasViewModel pro změnu kurzoru myši v canvas
-        ///// </summary>
-        private void UpdateCursor(string cursorType)
-        {
-            if (ChangeCursorCommand.CanExecute(cursorType))
-            {
-                ChangeCursorCommand.Execute(cursorType);
-            }
-        }
 
         ///// <summary>
         ///// Odpojení služeb při destrukci objektu - obecně

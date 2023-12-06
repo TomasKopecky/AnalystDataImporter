@@ -1,6 +1,7 @@
 ﻿using System;
 using AnalystDataImporter.Models;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace AnalystDataImporter.ViewModels
 {
@@ -15,6 +16,7 @@ namespace AnalystDataImporter.ViewModels
         {
             // Ověřte, zda poskytnutý tableColumn není null a inicializujte interní _tableColumn
             _tableColumn = tableColumn ?? throw new ArgumentNullException(nameof(tableColumn));
+            _tableColumn.Content = new List<string>();
         }
 
         /// <summary>
@@ -46,6 +48,15 @@ namespace AnalystDataImporter.ViewModels
                     _tableColumn.Heading = value;
                     OnPropertyChanged(nameof(Heading));
                 }
+            }
+        }
+
+        public List<string> Content
+        {
+            get => _tableColumn.Content;
+            set
+            {
+                OnPropertyChanged(nameof(Content));
             }
         }
 
