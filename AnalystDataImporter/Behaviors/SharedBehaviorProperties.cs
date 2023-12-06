@@ -6,6 +6,8 @@ namespace AnalystDataImporter.Behaviors
 {
     public static class SharedBehaviorProperties
     {
+
+
         public static readonly DependencyProperty ParentCanvasProperty = DependencyProperty.RegisterAttached(
             "ParentCanvas",
             typeof(Canvas),

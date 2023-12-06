@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using AnalystDataImporter.Factories;
 using AnalystDataImporter.Managers;
+using AnalystDataImporter.Services;
 using AnalystDataImporter.Utilities;
 
 namespace AnalystDataImporter.ViewModels
@@ -25,6 +26,7 @@ namespace AnalystDataImporter.ViewModels
     }
     public class GridViewModel : INotifyPropertyChanged
     {
+        private readonly MouseCursorService _mouseCursorService;
         private List<List<String>> Rows;
         public DataTable Table { get; set; }
         private readonly ITableColumnViewModelFactory _tableColumnViewModelFactory;
@@ -35,10 +37,11 @@ namespace AnalystDataImporter.ViewModels
         private bool _isDraggingColumnModeActive;
         public ICommand ChangeCursorWhenOperatingGridCommand { get; private set; }
 
-        public GridViewModel(ITableColumnViewModelFactory tableColumnViewModelFactory)
+        public GridViewModel(ITableColumnViewModelFactory tableColumnViewModelFactory, MouseCursorService mouseCursorService)
         {
             ChangeCursorWhenOperatingGridCommand = new RelayCommand<string>(ChangeCursorByGridView);
             _tableColumnViewModelFactory = tableColumnViewModelFactory ?? throw new ArgumentNullException(nameof(tableColumnViewModelFactory));
+            _mouseCursorService = mouseCursorService;
         }
 
 
@@ -163,30 +166,43 @@ namespace AnalystDataImporter.ViewModels
                     break;
             }
 
-            OnPropertyChanged(nameof(GridCursor));
+            GridCursor = null;
+            //OnPropertyChanged(nameof(GridCursor));
         }
-
 
         public string GridCursor
         {
-            get
+            get => _mouseCursorService.CurrentCursor;
+            private set
             {
-                if (_mouseOnGrid)
-                    _gridCursor = "Hand";
-                else if (IsDraggingColumnModeActive)
-                    _gridCursor = "Wait";
-                else
-                    _gridCursor = "Arrow";
-
-                //Debug.WriteLine("Getting cursor: " + _canvasCursor);
-                return _gridCursor;
-            }
-            set
-            {
-                _gridCursor = value;
-                OnPropertyChanged(nameof(GridCursor));
+                if (_mouseCursorService.CurrentCursor != value)
+                {
+                    _mouseCursorService.UpdateCursorForGrid(_mouseOnGrid,IsDraggingColumnModeActive);
+                    //CanvasCursor = null;
+                }
             }
         }
+
+        //public string GridCursor
+        //{
+        //    get
+        //    {
+        //        if (_mouseOnGrid)
+        //            _gridCursor = "Hand";
+        //        else if (IsDraggingColumnModeActive)
+        //            _gridCursor = "Wait";
+        //        else
+        //            _gridCursor = "Arrow";
+
+        //        //Debug.WriteLine("Getting cursor: " + _canvasCursor);
+        //        return _gridCursor;
+        //    }
+        //    set
+        //    {
+        //        _gridCursor = value;
+        //        OnPropertyChanged(nameof(GridCursor));
+        //    }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 

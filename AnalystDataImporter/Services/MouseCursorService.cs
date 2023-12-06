@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace AnalystDataImporter.Services
 {
-    public class MouseCursorService
+    public class MouseCursorService : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private string _currentCursor = "Arrow";
 
         public string CurrentCursor
@@ -25,17 +23,18 @@ namespace AnalystDataImporter.Services
 
         public event EventHandler CursorChanged;
 
-        public void UpdateCursorForCanvas(bool isDrawingElement, bool isDrawingRelation, bool isMouseOnElement, bool isMouseOnGridView)
+        public void UpdateCursorForCanvas(bool isDrawingElement, bool isDrawingRelationModeActive, bool isMouseOnElement, bool isAddingElementOutsideCanvas)
         {
-            // Logic to determine cursor for canvas
             if (isDrawingElement)
-                CurrentCursor = isMouseOnGridView ? "Hand" : "None";
-            else if (isDrawingRelation)
+                CurrentCursor = isAddingElementOutsideCanvas ? "Arrow" : "None";
+            else if (isDrawingRelationModeActive)
                 CurrentCursor = "Cross";
             else if (isMouseOnElement)
                 CurrentCursor = "SizeAll";
             else
-                CurrentCursor = isMouseOnGridView ? "Hand" : "Arrow";
+                CurrentCursor = "Arrow";
+
+            OnPropertyChanged(nameof(CurrentCursor));
         }
 
         public void UpdateCursorForGrid(bool isMouseOnGrid, bool isDraggingColumn)
@@ -47,6 +46,13 @@ namespace AnalystDataImporter.Services
                 CurrentCursor = "Wait";
             else
                 CurrentCursor = "Arrow";
+
+            OnPropertyChanged(nameof(CurrentCursor));
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

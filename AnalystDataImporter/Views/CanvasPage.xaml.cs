@@ -1,11 +1,15 @@
-﻿using AnalystDataImporter.ViewModels;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Controls;
+using AnalystDataImporter.Services;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.Views
 {
     /// <summary>
     /// Tato třída reprezentuje code-behind pro stránku WPF, na které je zobrazeno plátno, kde lze přidávat a pomocí myši přesouvat elipsy.
     /// </summary>
-    public partial class CanvasPage
+    public partial class CanvasPage : Page
     {
         /// <summary>
         /// Konstruktor třídy CanvasPage.
@@ -21,5 +25,6 @@ namespace AnalystDataImporter.Views
             //viewModel.TestingMode = false;
             //viewModel.AddTestingElementsAndRelation();
         }
+
     }
 }

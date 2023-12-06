@@ -132,6 +132,7 @@ namespace AnalystDataImporter.Behaviors
 
             // Ukončí operaci s myší
             _mouseHandlingService.EndDragOperation();
+            //e.Handled = true;
         }
 
         /// <summary>
@@ -146,6 +147,7 @@ namespace AnalystDataImporter.Behaviors
 
             // metoda v service MouseHandlingService pro kreslení vazby - logika i podmínky jsou řešeny v dané metodě UpdateOperation
             _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
+            //e.Handled = true;
         }
 
         /// <summary>

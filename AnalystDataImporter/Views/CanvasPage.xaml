@@ -10,7 +10,9 @@
       x:Name="CurrentCanvasPage"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Canvas">
+      Title="Canvas"
+      Cursor="{Binding CurrentCursor}"
+      >
 
     <Page.Resources>
         <Style x:Key="ToggleButtonBaseStyle" TargetType="Button">
@@ -116,7 +118,7 @@
             <!-- For Canvas and Selected Item Details -->
         </Grid.RowDefinitions>
 
-        <DataGrid DataContext="{Binding GridViewModel}" Cursor="{Binding GridCursor}" Name="ElemenGridView" ItemsSource="{Binding Table}" MaxHeight="100">
+        <DataGrid DataContext="{Binding GridViewModel}" Name="ElemenGridView" ItemsSource="{Binding Table}" AutoGenerateColumns="True" MaxHeight="100">
             
             <b:Interaction.Behaviors>
                 <behaviors:DataGridDragBehavior
@@ -134,7 +136,7 @@
             </b:Interaction.Behaviors>
         </DataGrid>-->
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="Transparent">
             <!-- Buttons -->
             <Button Width="120" Margin="10" Content="Add Element"
                     Command="{Binding CanvasViewModel.StartAddingElementCommand}">
@@ -176,7 +178,7 @@
             <!-- Canvas inside Border -->
             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" MaxHeight="300">
 
-                <Canvas Cursor="{Binding CanvasViewModel.CanvasCursor}" Name="ElementCanvas" Background="Transparent">
+                <Canvas Name="ElementCanvas" Background="Transparent">
                     <!-- Interaction triggers -->
 
                     <b:Interaction.Triggers>
@@ -221,7 +223,7 @@
 
 
             <!-- Selected Item Details -->
-            <StackPanel Grid.Column="1" Margin="10">
+            <StackPanel Grid.Column="1" Margin="10" Background="Transparent">
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
                 <TextBlock Margin="5"
                            Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />

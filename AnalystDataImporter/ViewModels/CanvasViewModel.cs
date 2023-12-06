@@ -27,18 +27,18 @@ namespace AnalystDataImporter.ViewModels
         private readonly IRelationManager _relationManager;
         private readonly IRelationViewModelFactory _relationViewModelFactory;
         private readonly IMouseHandlingService _mouseHandlingService;
+        private readonly MouseCursorService _mouseCursorService;
 
-        private string _canvasCursor;
+        //private string _canvasCursor;
         private ElementViewModel _fromElement;
         private bool _isAddingElementOutsideCanvas;
         private bool _isDraggingElementModeActive;
         private bool _isDrawingElement;
         private bool _isDrawingElementModeActive;
-        private readonly bool _isMultipleSelectionActivated;
         private bool _isRelationDrawingModeActive;
         private bool _mouseOnElement;
-        private bool _mouseOnGridView;
         private object _selectedSingleItem;
+        private readonly bool _isMultipleSelectionActivated;
         private ElementViewModel _tempElement;
         private RelationViewModel _tempRelation;
         #endregion
@@ -47,7 +47,7 @@ namespace AnalystDataImporter.ViewModels
         // Konstruktor
         public CanvasViewModel(IElementViewModelFactory elementViewModelFactory, IElementManager elementManager,
             IRelationViewModelFactory relationViewModelFactory, IRelationManager relationManager,
-            IMouseHandlingService mouseHandlingService)
+            IMouseHandlingService mouseHandlingService, MouseCursorService mouseCursorService)
         {
             // Inicializace proměnných a závislostí
             _elementViewModelFactory = elementViewModelFactory ?? throw new ArgumentNullException(nameof(elementViewModelFactory));
@@ -55,6 +55,7 @@ namespace AnalystDataImporter.ViewModels
             _relationViewModelFactory = relationViewModelFactory ?? throw new ArgumentNullException(nameof(relationViewModelFactory));
             _relationManager = relationManager ?? throw new ArgumentNullException(nameof(relationManager));
             _mouseHandlingService = mouseHandlingService ?? throw new ArgumentNullException(nameof(mouseHandlingService));
+            _mouseCursorService = mouseCursorService ?? throw new ArgumentNullException(nameof(mouseCursorService));
 
             InitializeCommands();
 
@@ -67,6 +68,7 @@ namespace AnalystDataImporter.ViewModels
             _isMultipleSelectionActivated = false;
             _isDraggingElementModeActive = true;
             TestingMode = false;
+            _mouseCursorService = mouseCursorService;
         }
         #endregion
 
@@ -160,27 +162,37 @@ namespace AnalystDataImporter.ViewModels
 
         public string CanvasCursor
         {
-            get
+            get => _mouseCursorService.CurrentCursor;
+            private set
             {
-                if (IsDrawingElement)
-                    _canvasCursor = _isAddingElementOutsideCanvas ? "Arrow" : "None";
-                else if (IsDrawingRelationModeActive)
-                    _canvasCursor = "Cross";
-                else if (_mouseOnElement)
-                    _canvasCursor = "SizeAll";
-                else if (_mouseOnGridView)
-                    _canvasCursor = "Hand";
-                else
-                    _canvasCursor = "Arrow";
+                if (_mouseCursorService.CurrentCursor != value)
+                {
+                    _mouseCursorService.UpdateCursorForCanvas(IsDrawingElement, IsDrawingRelationModeActive, _mouseOnElement, _isAddingElementOutsideCanvas);
+                    //CanvasCursor = null;
+                }
+            }
 
-                //Debug.WriteLine("Getting cursor: " + _canvasCursor);
-                return _canvasCursor;
-            }
-            set
-            {
-                _canvasCursor = value;
-                OnPropertyChanged(nameof(CanvasCursor));
-            }
+            //get
+            //{
+            //    if (IsDrawingElement)
+            //        _canvasCursor = _isAddingElementOutsideCanvas ? "Arrow" : "None";
+            //    else if (IsDrawingRelationModeActive)
+            //        _canvasCursor = "Cross";
+            //    else if (_mouseOnElement)
+            //        _canvasCursor = "SizeAll";
+            //    else if (_mouseOnGridView)
+            //        _canvasCursor = "Hand";
+            //    else
+            //        _canvasCursor = "Arrow";
+
+            //    //Debug.WriteLine("Getting cursor: " + _canvasCursor);
+            //    return _canvasCursor;
+            //}
+            //set
+            //{
+            //    _canvasCursor = value;
+            //    CanvasCursor = null;
+            //}
         }
 
         // Událost, která se vyvolá při změně vlastnosti - pro binding
@@ -250,7 +262,9 @@ namespace AnalystDataImporter.ViewModels
             IsDrawingElement = false;
             IsDrawingElementModeActive = false;
             IsDraggingElementModeActive = true;
-            OnPropertyChanged(nameof(CanvasCursor));
+
+
+            CanvasCursor = null;
         }
 
         /// <summary>
@@ -274,7 +288,8 @@ namespace AnalystDataImporter.ViewModels
                     break;
             }
 
-            OnPropertyChanged(nameof(CanvasCursor));
+            CanvasCursor = null;
+            //CanvasCursor = null;
         }
 
         /// <summary>
@@ -454,14 +469,16 @@ namespace AnalystDataImporter.ViewModels
             {
                 //Debug.WriteLine("CanvasViewModel: IsDraggingElementModeActive ");
                 _mouseOnElement = false;
-                OnPropertyChanged(nameof(CanvasCursor));
+                CanvasCursor = null;
+                //CanvasCursor = null;
             }
 
             if (!IsDrawingElementModeActive) return;
             if (_tempElement != null) return;
 
             IsDrawingElement = true;
-            OnPropertyChanged(nameof(CanvasCursor));
+            CanvasCursor = null;
+            //CanvasCursor = null;
             AddNewElementToCanvas(mousePosition);
             //Debug.WriteLine("CanvasViewModel: Mouse Move - Adding element");
             //Debug.WriteLine("CanvasViewModel: Now elements count: " + _elementManager.Elements.Count);
@@ -542,7 +559,7 @@ namespace AnalystDataImporter.ViewModels
             IsDrawingElementModeActive = false;
             IsDraggingElementModeActive = false;
             ReleaseSelection();
-            OnPropertyChanged(nameof(CanvasCursor)); // Notify that the cursor might need to change
+            CanvasCursor = null; // Notify that the cursor might need to change
         }
 
         /// <summary>
@@ -563,7 +580,7 @@ namespace AnalystDataImporter.ViewModels
             _tempRelation = null;
             IsDrawingRelationModeActive = false;
             IsDraggingElementModeActive = true;
-            OnPropertyChanged(nameof(CanvasCursor));
+            CanvasCursor = null;
         }
 
         /// <summary>
