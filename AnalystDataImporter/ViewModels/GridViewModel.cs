@@ -27,21 +27,28 @@ namespace AnalystDataImporter.ViewModels
     public class GridViewModel : INotifyPropertyChanged
     {
         private readonly MouseCursorService _mouseCursorService;
+        private readonly SharedStatesService _sharedStateService;
+        private readonly SharedCanvasPageItems _sharedCanvasPageItems;
         private List<List<String>> Rows;
         public DataTable Table { get; set; }
         private readonly ITableColumnViewModelFactory _tableColumnViewModelFactory;
         private ObservableCollection<TableColumnViewModel> _columns;
         //public ObservableCollection<ColumnInfo> Columns { get; private set; }
         private string _gridCursor;
-        private bool _mouseOnGrid;
-        private bool _isDraggingColumnModeActive;
+        //private bool _mouseOnGrid;
+        //private bool _isDraggingColumnModeActive;
         public ICommand ChangeCursorWhenOperatingGridCommand { get; private set; }
 
-        public GridViewModel(ITableColumnViewModelFactory tableColumnViewModelFactory, MouseCursorService mouseCursorService)
+        public ICommand GetDraggedGridViewColumnCommand { get; private set; }
+
+        public GridViewModel(ITableColumnViewModelFactory tableColumnViewModelFactory, MouseCursorService mouseCursorService, SharedStatesService sharedStateService, SharedCanvasPageItems sharedCanvasPageItems)
         {
             ChangeCursorWhenOperatingGridCommand = new RelayCommand<string>(ChangeCursorByGridView);
+            GetDraggedGridViewColumnCommand = new RelayCommand<object>(GetDraggedGridViewColumnIndex);
             _tableColumnViewModelFactory = tableColumnViewModelFactory ?? throw new ArgumentNullException(nameof(tableColumnViewModelFactory));
             _mouseCursorService = mouseCursorService;
+            _sharedStateService = sharedStateService;
+            _sharedCanvasPageItems = sharedCanvasPageItems;
         }
 
 
@@ -136,16 +143,16 @@ namespace AnalystDataImporter.ViewModels
             //};
         }
 
-        public bool IsDraggingColumnModeActive
-        {
-            get => _isDraggingColumnModeActive;
-            set
-            {
-                if (_isDraggingColumnModeActive == value) return;
-                _isDraggingColumnModeActive = value;
-                OnPropertyChanged(nameof(IsDraggingColumnModeActive));
-            }
-        }
+        //public bool IsDraggingColumnModeActive
+        //{
+        //    get => _isDraggingColumnModeActive;
+        //    set
+        //    {
+        //        if (_isDraggingColumnModeActive == value) return;
+        //        _isDraggingColumnModeActive = value;
+        //        OnPropertyChanged(nameof(IsDraggingColumnModeActive));
+        //    }
+        //}
 
         /// <summary>
         /// Metoda pro změnu kurzoru při operaci s prvkem.
@@ -157,12 +164,27 @@ namespace AnalystDataImporter.ViewModels
             switch (operation)
             {
                 case "GridViewMouseOverCursor":
-                    _isDraggingColumnModeActive = false;
-                    _mouseOnGrid = true;
+                    _sharedStateService.IsDraggingGridColumnModeActive = false;
+                    _sharedStateService.MouseOnGrid = true;
+                    _sharedStateService.MouseOnCanvas = false;
                     break;
-                case "GridViewDraggingCursor":
-                    _isDraggingColumnModeActive = true;
-                    _mouseOnGrid = false;
+                case "GridViewDraggingAllowedCursor":
+                    _sharedStateService.IsDraggingElementModeActive = false;
+                    _sharedStateService.IsDraggingGridColumnModeActive = true;
+                    _sharedStateService.MouseOnCanvas = true;
+                    _sharedStateService.MouseOnGrid = false;
+                    break;
+                case "GridViewDraggingDisallowedCursor":
+                    _sharedStateService.IsDraggingElementModeActive = false;
+                    _sharedStateService.IsDraggingGridColumnModeActive = true;
+                    _sharedStateService.MouseOnGrid = false;
+                    _sharedStateService.MouseOnCanvas = false;
+                    break;
+                case "GridViewLeaveCursor":
+                    _sharedStateService.IsDraggingElementModeActive = true;
+                    _sharedStateService.IsDraggingGridColumnModeActive = false;
+                    _sharedStateService.MouseOnGrid = false;
+                    _sharedStateService.MouseOnCanvas = false;
                     break;
             }
 
@@ -170,14 +192,24 @@ namespace AnalystDataImporter.ViewModels
             //OnPropertyChanged(nameof(GridCursor));
         }
 
-        public string GridCursor
+        private void GetDraggedGridViewColumnIndex(object parameter)
+        {
+            
+            if (parameter is int columnIndex) 
+            {
+                _sharedCanvasPageItems.TableColumn = Columns[columnIndex];
+            }
+        }
+
+        public Cursor GridCursor
         {
             get => _mouseCursorService.CurrentCursor;
             private set
             {
                 if (_mouseCursorService.CurrentCursor != value)
                 {
-                    _mouseCursorService.UpdateCursorForGrid(_mouseOnGrid,IsDraggingColumnModeActive);
+                    _mouseCursorService.UpdateCursor();
+                    //_mouseCursorService.UpdateCursorForGrid(_mouseOnGrid,IsDraggingColumnModeActive);
                     //CanvasCursor = null;
                 }
             }

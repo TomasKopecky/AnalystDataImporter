@@ -16,13 +16,14 @@ namespace AnalystDataImporter.Behaviors
     {
         // Privátní proměnná pro service IMouseHandlingService
         private IMouseHandlingService _mouseHandlingService;
+        private SharedStatesService _sharedStateService;
 
-        // Vlastnosti DependencyProperty
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
-            nameof(IsEnabled),
-            typeof(bool),
-            typeof(LineBehavior),
-            new PropertyMetadata(null)); // new PropertyMetadata(true, OnIsEnabledChanged));
+        //// Vlastnosti DependencyProperty
+        //public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
+        //    nameof(IsEnabled),
+        //    typeof(bool),
+        //    typeof(LineBehavior),
+        //    new PropertyMetadata(null)); // new PropertyMetadata(true, OnIsEnabledChanged));
 
         public static readonly DependencyProperty RelationDeleteWhenOutsideCanvasCommandProperty =
             DependencyProperty.Register(
@@ -33,11 +34,11 @@ namespace AnalystDataImporter.Behaviors
         /// <summary>
         /// Zda je chování aktivní.
         /// </summary>
-        public bool IsEnabled
-        {
-            get => (bool)GetValue(IsEnabledProperty);
-            set => SetValue(IsEnabledProperty, value);
-        }
+        //public bool IsEnabled
+        //{
+        //    get => (bool)GetValue(IsEnabledProperty);
+        //    set => SetValue(IsEnabledProperty, value);
+        //}
 
         /// <summary>
         /// Příkaz pro odstranění vazby, pokud je kreslena mimo plátno.
@@ -65,6 +66,7 @@ namespace AnalystDataImporter.Behaviors
             base.OnAttached();
             // Zde připojujeme service IMouseHandlingService
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
+            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
             AssociateEventHandlers();
             StartDrawingNewRelation();
         }
@@ -99,7 +101,7 @@ namespace AnalystDataImporter.Behaviors
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("Relation MouseLeftButtonDown");
-            if (!IsEnabled) return;
+            if (!_sharedStateService.IsDraggingElementModeActive) return;
 
             FrameworkElement associatedElement = (FrameworkElement)this.AssociatedObject;
             BaseDiagramItemViewModel relationViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
@@ -132,7 +134,6 @@ namespace AnalystDataImporter.Behaviors
 
             // Ukončí operaci s myší
             _mouseHandlingService.EndDragOperation();
-            //e.Handled = true;
         }
 
         /// <summary>
@@ -147,7 +148,6 @@ namespace AnalystDataImporter.Behaviors
 
             // metoda v service MouseHandlingService pro kreslení vazby - logika i podmínky jsou řešeny v dané metodě UpdateOperation
             _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
-            //e.Handled = true;
         }
 
         /// <summary>

@@ -28,15 +28,17 @@ namespace AnalystDataImporter.ViewModels
         private readonly IRelationViewModelFactory _relationViewModelFactory;
         private readonly IMouseHandlingService _mouseHandlingService;
         private readonly MouseCursorService _mouseCursorService;
+        private readonly SharedStatesService _sharedStateService;
+        private readonly SharedCanvasPageItems _sharedCanvasPageItems;
 
         //private string _canvasCursor;
         private ElementViewModel _fromElement;
-        private bool _isAddingElementOutsideCanvas;
-        private bool _isDraggingElementModeActive;
-        private bool _isDrawingElement;
-        private bool _isDrawingElementModeActive;
-        private bool _isRelationDrawingModeActive;
-        private bool _mouseOnElement;
+        //private bool _sharedStateService.IsAddingElementOutsideCanvas;
+        //private bool _sharedStateService.IsDraggingElementModeActive;
+        //private bool __sharedStateService.IsDrawingElement;
+        //private bool __sharedStateService.IsDrawingElementModeActive;
+        //private bool _isRelationDrawingModeActive;
+        //private bool _sharedStateService.MouseOnElement;
         private object _selectedSingleItem;
         private readonly bool _isMultipleSelectionActivated;
         private ElementViewModel _tempElement;
@@ -47,7 +49,7 @@ namespace AnalystDataImporter.ViewModels
         // Konstruktor
         public CanvasViewModel(IElementViewModelFactory elementViewModelFactory, IElementManager elementManager,
             IRelationViewModelFactory relationViewModelFactory, IRelationManager relationManager,
-            IMouseHandlingService mouseHandlingService, MouseCursorService mouseCursorService)
+            IMouseHandlingService mouseHandlingService, MouseCursorService mouseCursorService, SharedStatesService sharedStateService, SharedCanvasPageItems sharedCanvasPageItems)
         {
             // Inicializace proměnných a závislostí
             _elementViewModelFactory = elementViewModelFactory ?? throw new ArgumentNullException(nameof(elementViewModelFactory));
@@ -56,7 +58,9 @@ namespace AnalystDataImporter.ViewModels
             _relationManager = relationManager ?? throw new ArgumentNullException(nameof(relationManager));
             _mouseHandlingService = mouseHandlingService ?? throw new ArgumentNullException(nameof(mouseHandlingService));
             _mouseCursorService = mouseCursorService ?? throw new ArgumentNullException(nameof(mouseCursorService));
-
+            _mouseCursorService = mouseCursorService;
+            _sharedStateService = sharedStateService;
+            _sharedCanvasPageItems = sharedCanvasPageItems;
             InitializeCommands();
 
             CanvasItems = new ObservableCollection<object>();
@@ -66,9 +70,8 @@ namespace AnalystDataImporter.ViewModels
             Relations.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
 
             _isMultipleSelectionActivated = false;
-            _isDraggingElementModeActive = true;
+            _sharedStateService.IsDraggingElementModeActive = true;
             TestingMode = false;
-            _mouseCursorService = mouseCursorService;
         }
         #endregion
 
@@ -84,8 +87,9 @@ namespace AnalystDataImporter.ViewModels
         public ICommand CanvasMouseMoveCommand { get; private set; }
         public ICommand RelationDeleteWhenOutsideCanvasCommand { get; private set; }
         public ICommand CanvasMouseLeftButtonUpCommand { get; private set; }
-        public RelayCommand StartAddingElementCommand { get; private set; }
+        public ICommand StartAddingElementCommand { get; private set; }
         public ICommand StartRelationCreatingCommand { get; private set; }
+        public ICommand GetGridViewColumnDraggedSetCommand { get; private set; }
         public ObservableCollection<ElementViewModel> Elements => (ObservableCollection<ElementViewModel>)_elementManager.Elements;
         public ObservableCollection<RelationViewModel> Relations => (ObservableCollection<RelationViewModel>)_relationManager.Relations;
         public bool TestingMode { get; set; }
@@ -103,6 +107,7 @@ namespace AnalystDataImporter.ViewModels
             ChangeCursorWhenOperatingElementCommand = new RelayCommand<string>(ChangeCursorByElement);
             FinishDrawingElementCommand = new RelayCommand(FinishElementDrawing);
             RelationDeleteWhenOutsideCanvasCommand = new RelayCommand(RemoveRelationWhenDrawnOutsideCanvas);
+            GetGridViewColumnDraggedSetCommand = new RelayCommand<object>(DropGridColumnToElementInCanvas);
         }
 
         public object SelectedSingleItem
@@ -116,69 +121,69 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public bool IsDrawingRelationModeActive
-        {
-            get => _isRelationDrawingModeActive;
-            set
-            {
-                if (_isRelationDrawingModeActive == value) return;
-                _isRelationDrawingModeActive = value;
-                OnPropertyChanged(nameof(IsDrawingRelationModeActive));
-            }
-        }
+        //public bool _sharedStateService.IsDrawingRelationModeActive
+        //{
+        //    get => _isRelationDrawingModeActive;
+        //    set
+        //    {
+        //        if (_isRelationDrawingModeActive == value) return;
+        //        _isRelationDrawingModeActive = value;
+        //        OnPropertyChanged(nameof(_sharedStateService.IsDrawingRelationModeActive));
+        //    }
+        //}
 
-        public bool IsDraggingElementModeActive
-        {
-            get => _isDraggingElementModeActive;
-            set
-            {
-                if (_isDraggingElementModeActive == value) return;
-                _isDraggingElementModeActive = value;
-                OnPropertyChanged(nameof(IsDraggingElementModeActive));
-            }
-        }
+        //public bool IsDraggingElementModeActive
+        //{
+        //    get => _sharedStateService.IsDraggingElementModeActive;
+        //    set
+        //    {
+        //        if (_sharedStateService.IsDraggingElementModeActive == value) return;
+        //        _sharedStateService.IsDraggingElementModeActive = value;
+        //        OnPropertyChanged(nameof(IsDraggingElementModeActive));
+        //    }
+        //}
 
-        public bool IsDrawingElement
-        {
-            get => _isDrawingElement;
-            set
-            {
-                if (_isDrawingElement == value) return;
-                _isDrawingElement = value;
-                OnPropertyChanged(nameof(IsDrawingElement));
-            }
-        }
+        //public bool _sharedStateService.IsDrawingElement
+        //{
+        //    get => __sharedStateService.IsDrawingElement;
+        //    set
+        //    {
+        //        if (__sharedStateService.IsDrawingElement == value) return;
+        //        __sharedStateService.IsDrawingElement = value;
+        //        OnPropertyChanged(nameof(_sharedStateService.IsDrawingElement));
+        //    }
+        //}
 
-        public bool IsDrawingElementModeActive
-        {
-            get => _isDrawingElementModeActive;
-            set
-            {
-                if (_isDrawingElementModeActive == value) return;
-                _isDrawingElementModeActive = value;
-                OnPropertyChanged(nameof(IsDrawingElementModeActive));
-            }
-        }
+        //public bool _sharedStateService.IsDrawingElementModeActive
+        //{
+        //    get => __sharedStateService.IsDrawingElementModeActive;
+        //    set
+        //    {
+        //        if (__sharedStateService.IsDrawingElementModeActive == value) return;
+        //        __sharedStateService.IsDrawingElementModeActive = value;
+        //        OnPropertyChanged(nameof(_sharedStateService.IsDrawingElementModeActive));
+        //    }
+        //}
 
-        public string CanvasCursor
+        public Cursor CanvasCursor
         {
             get => _mouseCursorService.CurrentCursor;
             private set
             {
                 if (_mouseCursorService.CurrentCursor != value)
-                {
-                    _mouseCursorService.UpdateCursorForCanvas(IsDrawingElement, IsDrawingRelationModeActive, _mouseOnElement, _isAddingElementOutsideCanvas);
-                    //CanvasCursor = null;
-                }
+                    //{
+                    _mouseCursorService.UpdateCursor();
+                //_mouseCursorService.UpdateCursorForCanvas(_sharedStateService.IsDrawingElement, _sharedStateService.IsDrawingRelationModeActive, _sharedStateService.MouseOnElement, _sharedStateService.IsAddingElementOutsideCanvas);
+                //CanvasCursor = null;
             }
 
             //get
             //{
-            //    if (IsDrawingElement)
-            //        _canvasCursor = _isAddingElementOutsideCanvas ? "Arrow" : "None";
-            //    else if (IsDrawingRelationModeActive)
+            //    if (_sharedStateService.IsDrawingElement)
+            //        _canvasCursor = _sharedStateService.IsAddingElementOutsideCanvas ? "Arrow" : "None";
+            //    else if (_sharedStateService.IsDrawingRelationModeActive)
             //        _canvasCursor = "Cross";
-            //    else if (_mouseOnElement)
+            //    else if (_sharedStateService.MouseOnElement)
             //        _canvasCursor = "SizeAll";
             //    else if (_mouseOnGridView)
             //        _canvasCursor = "Hand";
@@ -211,7 +216,7 @@ namespace AnalystDataImporter.ViewModels
             var toElement = AddTestingElementToCanvas(new Point(400, 100), "Second element", "identita není");
             AddTestingElementToCanvas(new Point(2, 2), "Third element", "identita");
             AddTestingRelationToCanvas(fromElement, toElement);
-            IsDraggingElementModeActive = true;
+            _sharedStateService.IsDraggingElementModeActive = true;
         }
 
         /// <summary>
@@ -259,10 +264,22 @@ namespace AnalystDataImporter.ViewModels
         {
             _tempElement.FinishTempElement();
             _tempElement = null;
-            IsDrawingElement = false;
-            IsDrawingElementModeActive = false;
-            IsDraggingElementModeActive = true;
+            _sharedStateService.IsDrawingElement = false;
+            _sharedStateService.IsDrawingElementModeActive = false;
+            _sharedStateService.IsDraggingElementModeActive = true;
 
+            CanvasCursor = null;
+        }
+
+        private void FinishElementDrawingFromGridColumn()
+        {
+            _tempElement.FinishElementFromGridView();
+            _tempElement = null;
+            _sharedStateService.IsDrawingElement = false;
+            _sharedStateService.IsDrawingElementModeActive = false;
+            _sharedStateService.IsDraggingGridColumnModeActive = false;
+            _sharedStateService.IsDraggingElementModeActive = true;
+            _sharedCanvasPageItems.TableColumn = null;
 
             CanvasCursor = null;
         }
@@ -277,14 +294,14 @@ namespace AnalystDataImporter.ViewModels
             switch (operation)
             {
                 case "EllipseDraggingCursor":
-                    _isAddingElementOutsideCanvas = false;
-                    _mouseOnElement = true;
+                    _sharedStateService.IsAddingElementOutsideCanvas = false;
+                    _sharedStateService.MouseOnElement = true;
                     break;
                 case "EllipseDrawingInsideCanvasCursor":
-                    _isAddingElementOutsideCanvas = false;
+                    _sharedStateService.IsAddingElementOutsideCanvas = false;
                     break;
                 case "EllipseDrawingOutsideCanvasCursor":
-                    _isAddingElementOutsideCanvas = true;
+                    _sharedStateService.IsAddingElementOutsideCanvas = true;
                     break;
             }
 
@@ -418,6 +435,7 @@ namespace AnalystDataImporter.ViewModels
             Debug.WriteLine("CanvasViewModel: Adding new element to canvas");
 
             _tempElement = CreateNewElement(mousePosition); // A method that creates and configures the new element
+            //ReleaseSelection();
             _elementManager.AddElement(_tempElement); // Assuming an element manager or similar mechanism
         }
 
@@ -427,7 +445,10 @@ namespace AnalystDataImporter.ViewModels
         private ElementViewModel CreateNewElement(Point position)
         {
             var element = _elementViewModelFactory.Create();
-            element.ConfigureTempElement(position.X, position.Y);
+            if (_sharedStateService.IsDraggingGridColumnModeActive)
+                element.ConfigureElementFromGridView(position.X, position.Y, _sharedCanvasPageItems.TableColumn);
+            else
+                element.ConfigureTempElement(position.X, position.Y);
             return element;
         }
 
@@ -441,7 +462,7 @@ namespace AnalystDataImporter.ViewModels
             //Debug.WriteLine("CanvasViewModel: MouseButtonDown");
             if (!(parameter is Canvas canvas)) return;
 
-            if (IsDrawingRelationModeActive)
+            if (_sharedStateService.IsDrawingRelationModeActive)
             {
                 var mousePosition = Mouse.GetPosition(canvas);
                 if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, canvas)) return;
@@ -465,18 +486,18 @@ namespace AnalystDataImporter.ViewModels
 
             var mousePosition = Mouse.GetPosition(canvas);
 
-            if (IsDraggingElementModeActive)
+            if (_sharedStateService.IsDraggingElementModeActive)
             {
                 //Debug.WriteLine("CanvasViewModel: IsDraggingElementModeActive ");
-                _mouseOnElement = false;
+                _sharedStateService.MouseOnElement = false;
                 CanvasCursor = null;
                 //CanvasCursor = null;
             }
 
-            if (!IsDrawingElementModeActive) return;
+            if (!_sharedStateService.IsDrawingElementModeActive) return;
             if (_tempElement != null) return;
 
-            IsDrawingElement = true;
+            _sharedStateService.IsDrawingElement = true;
             CanvasCursor = null;
             //CanvasCursor = null;
             AddNewElementToCanvas(mousePosition);
@@ -490,14 +511,28 @@ namespace AnalystDataImporter.ViewModels
         public void CanvasMouseLeftButtonUpExecute(object parameter)
         {
             //Debug.WriteLine("CanvasViewModel: MouseButtonUp");
-            if ((IsDrawingElementModeActive == false && IsDrawingRelationModeActive == false) ||
-                !(parameter is Canvas canvas)) return;
+            //if ((_sharedStateService.IsDrawingElementModeActive == false && _sharedStateService.IsDrawingRelationModeActive == false) ||
+            //    !(parameter is Canvas canvas)) return;
+            if (!_sharedStateService.IsDrawingRelationModeActive && !_sharedStateService.IsDraggingGridColumnModeActive) return;
 
-            if (!IsDrawingRelationModeActive) return;
+            Canvas canvas = parameter as Canvas;
             var mousePosition = Mouse.GetPosition(canvas);
-            if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, canvas)) return;
-            RemoveDrawnRelation();
-            FinishRelationDrawing();
+            if (_sharedStateService.IsDrawingRelationModeActive)
+            {
+                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, canvas))
+                    return;
+                else
+                {
+                    RemoveDrawnRelation();
+                    FinishRelationDrawing();
+                }
+            }
+
+            else if (_sharedStateService.IsDraggingGridColumnModeActive)
+            {
+                AddNewElementToCanvas(mousePosition);
+                FinishElementDrawingFromGridColumn();
+            }
         }
 
         #endregion
@@ -544,10 +579,11 @@ namespace AnalystDataImporter.ViewModels
         /// </summary>
         private void StartAddingElement()
         {
-            IsDrawingElementModeActive = true;
-            IsDrawingRelationModeActive = false;
-            IsDraggingElementModeActive = false;
+            _sharedStateService.IsDrawingElementModeActive = true;
+            _sharedStateService.IsDrawingRelationModeActive = false;
+            _sharedStateService.IsDraggingElementModeActive = false;
             ReleaseSelection();
+            CanvasCursor = null;
         }
 
         /// <summary>
@@ -555,9 +591,9 @@ namespace AnalystDataImporter.ViewModels
         /// </summary>
         private void StartRelationCreation()
         {
-            IsDrawingRelationModeActive = true;
-            IsDrawingElementModeActive = false;
-            IsDraggingElementModeActive = false;
+            _sharedStateService.IsDrawingRelationModeActive = true;
+            _sharedStateService.IsDrawingElementModeActive = false;
+            _sharedStateService.IsDraggingElementModeActive = false;
             ReleaseSelection();
             CanvasCursor = null; // Notify that the cursor might need to change
         }
@@ -578,8 +614,8 @@ namespace AnalystDataImporter.ViewModels
         {
             _fromElement = null;
             _tempRelation = null;
-            IsDrawingRelationModeActive = false;
-            IsDraggingElementModeActive = true;
+            _sharedStateService.IsDrawingRelationModeActive = false;
+            _sharedStateService.IsDraggingElementModeActive = true;
             CanvasCursor = null;
         }
 
@@ -592,6 +628,21 @@ namespace AnalystDataImporter.ViewModels
             _fromElement = null;
             _relationManager.Relations.Remove(_tempRelation);
             _tempRelation = null;
+        }
+
+        private void DropGridColumnToElementInCanvas(object parameter)
+        {
+            if (parameter is ElementViewModel elementViewModel && _sharedCanvasPageItems.TableColumn != null)
+            {
+                //elementViewModel.Label = _sharedCanvasPageItems.TableColumn.Heading;
+                //elementViewModel.Title = _sharedCanvasPageItems.TableColumn.Heading;
+                elementViewModel.GridTableColumn = _sharedCanvasPageItems.TableColumn;
+                _sharedStateService.IsDraggingGridColumnModeActive = false;
+                _sharedStateService.IsDraggingElementModeActive = true;
+                //ReleaseSelection();
+                elementViewModel.IsSelected = true;
+                CanvasCursor = null;
+            }
         }
 
         /// <summary>

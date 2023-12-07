@@ -50,6 +50,8 @@ namespace AnalystDataImporter
             services.AddSingleton<ITableColumnViewModelFactory, TableColumnViewModelFactory>();
             
             services.AddSingleton<MouseCursorService, MouseCursorService>();
+            services.AddSingleton<SharedStatesService, SharedStatesService>();
+            services.AddSingleton<SharedCanvasPageItems, SharedCanvasPageItems>();
 
             // Registrace ViewModelů.
             services.AddSingleton<CompositeCanvasGridViewModel>();

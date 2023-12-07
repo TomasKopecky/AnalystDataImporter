@@ -17,6 +17,7 @@ namespace AnalystDataImporter.Behaviors
         private bool _isDragging; // ndikace zda je aktivní mód tažení elipsy
         private bool _isDrawing; // indikace zda je aktivní mód kreslení elipsy
         private IMouseHandlingService _mouseHandlingService; // proměnná pro přiřazení service pro obsluhu mouse events
+        private SharedStatesService _sharedStateService;
 
         // Commands pro komunikaci s CanvasViewModel třídou_mouseHandlingService
         public ICommand ElementSelectedCommand
@@ -37,6 +38,12 @@ namespace AnalystDataImporter.Behaviors
             set => SetValue(GetStartingOrEndingElementCommandProperty, value);
         }
 
+        public ICommand GridViewColumnDraggedSetCommand
+        {
+            get => (ICommand)GetValue(GridViewColumnDraggedSetCommandProperty);
+            set => SetValue(GridViewColumnDraggedSetCommandProperty, value);
+        }
+
         // Vlastnosti DependencyProperty - návaznost na výše uvedené commands - připojení k view
         public static readonly DependencyProperty ChangeFinishDrawingElementProperty = DependencyProperty.Register(
             nameof(FinishDrawingElementCommand), typeof(ICommand),
@@ -51,17 +58,22 @@ namespace AnalystDataImporter.Behaviors
             nameof(ElementSelectedCommand), typeof(ICommand), typeof(EllipseBehavior),
             new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IsDraggingElementEnabledProperty = DependencyProperty.Register(
-            nameof(IsDraggingElementEnabled),
-            typeof(bool),
+        public static readonly DependencyProperty GridViewColumnDraggedSetCommandProperty = DependencyProperty.Register(
+            nameof(GridViewColumnDraggedSetCommand), typeof(ICommand),
             typeof(EllipseBehavior),
-            new PropertyMetadata(null)); //new PropertyMetadata(true, OnIsEnabledChanged));
+            new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IsDrawingElementEnabledProperty = DependencyProperty.Register(
-            nameof(IsDrawingElementEnabled),
-            typeof(bool),
-            typeof(EllipseBehavior),
-            new PropertyMetadata(null)); // new PropertyMetadata(true, OnIsEnabledChanged));
+        //public static readonly DependencyProperty _sharedStateService.IsDraggingElementModeActiveProperty = DependencyProperty.Register(
+        //    nameof(_sharedStateService.IsDraggingElementModeActive),
+        //    typeof(bool),
+        //    typeof(EllipseBehavior),
+        //    new PropertyMetadata(null)); //new PropertyMetadata(true, OnIsEnabledChanged));
+
+        //public static readonly DependencyProperty IsDrawingElementEnabledProperty = DependencyProperty.Register(
+        //    nameof(IsDrawingElementEnabled),
+        //    typeof(bool),
+        //    typeof(EllipseBehavior),
+        //    new PropertyMetadata(null)); // new PropertyMetadata(true, OnIsEnabledChanged));
 
         public static readonly DependencyProperty GridProperty = DependencyProperty.Register(
             nameof(ParentGrid),
@@ -69,11 +81,11 @@ namespace AnalystDataImporter.Behaviors
             typeof(EllipseBehavior),
             new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IsDrawingRelationEnabledProperty = DependencyProperty.Register(
-           nameof(IsDrawingRelationEnabled),
-           typeof(bool),
-           typeof(EllipseBehavior),
-           new PropertyMetadata(null));
+        //public static readonly DependencyProperty IsDrawingRelationEnabledProperty = DependencyProperty.Register(
+        //   nameof(IsDrawingRelationEnabled),
+        //   typeof(bool),
+        //   typeof(EllipseBehavior),
+        //   new PropertyMetadata(null));
 
         /// <summary>
         /// Plátno, ke kterému je chování připojeno - sdíleno z SharedBehaviorProperties třídy
@@ -99,23 +111,23 @@ namespace AnalystDataImporter.Behaviors
             set => SetValue(GridProperty, value);
         }
 
-        public bool IsDraggingElementEnabled
-        {
-            get => (bool)GetValue(IsDraggingElementEnabledProperty);
-            set => SetValue(IsDraggingElementEnabledProperty, value);
-        }
+        //public bool _sharedStateService.IsDraggingElementModeActive
+        //{
+        //    get => (bool)GetValue(_sharedStateService.IsDraggingElementModeActiveProperty);
+        //    set => SetValue(_sharedStateService.IsDraggingElementModeActiveProperty, value);
+        //}
 
-        public bool IsDrawingElementEnabled
-        {
-            get => (bool)GetValue(IsDrawingElementEnabledProperty);
-            set => SetValue(IsDrawingElementEnabledProperty, value);
-        }
+        //public bool IsDrawingElementEnabled
+        //{
+        //    get => (bool)GetValue(IsDrawingElementEnabledProperty);
+        //    set => SetValue(IsDrawingElementEnabledProperty, value);
+        //}
 
-        public bool IsDrawingRelationEnabled
-        {
-            get => (bool)GetValue(IsDrawingRelationEnabledProperty);
-            set => SetValue(IsDrawingRelationEnabledProperty, value);
-        }
+        //public bool IsDrawingRelationEnabled
+        //{
+        //    get => (bool)GetValue(IsDrawingRelationEnabledProperty);
+        //    set => SetValue(IsDrawingRelationEnabledProperty, value);
+        //}
 
         ///// <summary>
         ///// Připojení sužeb při vytvoření objektu
@@ -125,6 +137,7 @@ namespace AnalystDataImporter.Behaviors
             base.OnAttached();
             // Připojení _mouseHandlingService pomocí ServiceLocator pro operace s myší na objektu elipsy
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
+            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
             AssociateEventHandlers();
             StartDrawingNewElement();
         }
@@ -173,19 +186,19 @@ namespace AnalystDataImporter.Behaviors
             BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
 
             // v případě módu dragging startujeme přesouvací mód v _mouseHandlingService
-            if (IsDraggingElementEnabled)
+            if (_sharedStateService.IsDraggingElementModeActive)
             {
                 _mouseHandlingService.StartOperation(associatedElement, mousePosition, elementViewModel, "dragging");
                 _isDragging = true;
             }
 
             // v případě módu kreslení vazby posíláme pomocí command elipsu jako startovní do CanvasViewModel
-            else if (IsDrawingRelationEnabled && RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
+            else if (_sharedStateService.IsDrawingRelationModeActive && RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
             {
                 RelationStartOrEndElementSetCommand.Execute(new List<object> { elementViewModel, mousePosition, "start" });
             }
 
-            else if (IsDrawingElementEnabled)
+            else if (_sharedStateService.IsDrawingElementModeActive)
             {
                 FinishDrawingIfNeeded();
             }
@@ -200,24 +213,30 @@ namespace AnalystDataImporter.Behaviors
         /// <param name="e">Data události obsahující informace o uvolnění tlačítka myši.</param>
         private void MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (!IsDrawingElementEnabled)
-            {
-                Point mousePosition = e.GetPosition(ParentCanvas);
-                FrameworkElement associatedElement = (FrameworkElement)sender;
-                BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
+            if (_sharedStateService.IsDrawingElementModeActive && !_sharedStateService.IsDraggingGridColumnModeActive)
+                return;
 
-                if (IsDraggingElementEnabled)
+            Point mousePosition = e.GetPosition(ParentCanvas);
+            FrameworkElement associatedElement = (FrameworkElement)sender;
+            BaseDiagramItemViewModel elementViewModel = (BaseDiagramItemViewModel)associatedElement.DataContext;
+
+            if (!_sharedStateService.IsDrawingElementModeActive)
+            {
+                if (_sharedStateService.IsDraggingElementModeActive)
                 {
                     _mouseHandlingService.EndDragOperation();
                     _isDragging = false;
                 }
-                else if (IsDrawingRelationEnabled && RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
+                else if (_sharedStateService.IsDrawingRelationModeActive && RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
                 {
                     RelationStartOrEndElementSetCommand.Execute(new List<object> { elementViewModel, mousePosition, "end" });
                 }
-
-                e.Handled = true;
             }
+            if (_sharedStateService.IsDraggingGridColumnModeActive)
+            {
+                GridViewColumnDraggedSetCommand.Execute(elementViewModel);
+            }
+            e.Handled = true;
         }
 
         /// <summary>
@@ -228,12 +247,12 @@ namespace AnalystDataImporter.Behaviors
         private void MouseMove(object sender, MouseEventArgs e)
         {
             Point mousePosition = e.GetPosition(ParentCanvas);
-            if (IsDrawingElementEnabled && _isDrawing)
+            if (_sharedStateService.IsDrawingElementModeActive && _isDrawing)
             {
                 SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDrawingInsideCanvasCursor");
                 _mouseHandlingService.UpdateOperation(mousePosition, ParentCanvas, null);
             }
-            else if (IsDraggingElementEnabled)
+            else if (_sharedStateService.IsDraggingElementModeActive)
             {
                 SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDraggingCursor");
                 if (_isDragging)

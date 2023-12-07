@@ -45,6 +45,21 @@ namespace AnalystDataImporter.ViewModels
             IsSelected = true;
         }
 
+        public void ConfigureElementFromGridView(double x, double y, TableColumnViewModel tableColumnViewModel)
+        {
+            _temporary = true;
+            XCenter = x;
+            YCenter = y;
+            ZIndex = 1;
+            GridTableColumn = tableColumnViewModel;
+        }
+
+        public void FinishElementFromGridView()
+        {
+            _temporary = false;
+            IsSelected = true;
+        }
+
         // Vlastnosti prvku a jejich gettery a settery s logikou pro oznamování změn vlastností
 
         public DateTime DateFrom

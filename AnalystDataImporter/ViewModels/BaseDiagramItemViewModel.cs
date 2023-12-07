@@ -16,6 +16,8 @@ namespace AnalystDataImporter.ViewModels
 
         protected bool _isTemporary;
 
+        protected TableColumnViewModel _gridTableColumn;
+
         // Common properties and methods for view models, such as IsSelected, PropertyChanged, etc.
         public bool IsSelected
         {
@@ -88,6 +90,20 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _model.Date = value;
                     OnPropertyChanged(nameof(Date));
+                }
+            }
+        }
+
+        public TableColumnViewModel GridTableColumn
+        {
+            get => _gridTableColumn;
+            set
+            {
+                if (_gridTableColumn != value)
+                {
+                    _gridTableColumn = value;
+                    Label = _gridTableColumn.Heading;
+                    OnPropertyChanged(nameof(GridTableColumn));
                 }
             }
         }

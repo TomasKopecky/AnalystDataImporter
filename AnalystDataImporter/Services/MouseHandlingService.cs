@@ -16,7 +16,7 @@ namespace AnalystDataImporter.Services
         /// <summary>
         /// Aktuální ViewModel prvku, s kterým je prováděna operace.
         /// </summary>
-        public BaseDiagramItemViewModel CurrentViewModelElement { get; private set; }
+        public object CurrentViewModelElement { get; private set; }
 
         /// <summary>
         /// Indikátor, zda je služba v procesu použití.
@@ -38,7 +38,7 @@ namespace AnalystDataImporter.Services
         /// <param name="startPosition">Počáteční pozice operace.</param>
         /// <param name="itemViewModel">ViewModel prvku, který je ovládán.</param>
         /// <param name="operationType">Typ operace ("dragging" nebo "drawing").</param>
-        public void StartOperation(UIElement element, Point? startPosition, BaseDiagramItemViewModel itemViewModel, string operationType)//, bool temporary)
+        public void StartOperation(UIElement element, Point? startPosition, object itemViewModel, string operationType)//, bool temporary)
         {
             //Debug.WriteLine("MouseHandlingService: StartOperation - " + operationType);
             _operationType = operationType;
@@ -54,7 +54,7 @@ namespace AnalystDataImporter.Services
                 SelectElement();
             }
 
-            if (_operationType == "drawing" || (_operationType == "dragging" && CurrentViewModelElement is ElementViewModel))
+            if (_operationType == "drawing" || (_operationType == "dragging" && CurrentViewModelElement is ElementViewModel) || (_operationType == "dragging" && CurrentViewModelElement is GridViewModel))
             {
                 _currentElement.CaptureMouse();
             }
@@ -136,10 +136,10 @@ namespace AnalystDataImporter.Services
 
             CurrentViewModelElement = null;
             IsInUse = false;
-            
+
             if (_currentElement.IsMouseCaptured)
                 _currentElement.ReleaseMouseCapture();
-            
+
             _currentElement = null;
         }
 
@@ -172,7 +172,8 @@ namespace AnalystDataImporter.Services
         /// </summary>
         private void SelectElement()
         {
-            CurrentViewModelElement.IsSelected = true;
+            if (CurrentViewModelElement is BaseDiagramItemViewModel viewModel)
+                viewModel.IsSelected = true;
         }
     }
 }

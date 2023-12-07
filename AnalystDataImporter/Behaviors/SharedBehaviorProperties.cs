@@ -42,7 +42,7 @@ namespace AnalystDataImporter.Behaviors
         }
 
         ///// <summary>
-        ///// Posílání command do CanvasViewModel pro změnu kurzoru myši v canvas
+        ///// Posílání command do CanvasViewModel nebo GridViewModel pro změnu kurzoru myši v canvas
         ///// </summary>
         public static void UpdateCursor(ICommand command, string cursorType)
         {

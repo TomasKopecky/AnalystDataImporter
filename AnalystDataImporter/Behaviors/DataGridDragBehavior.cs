@@ -10,8 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 
@@ -20,7 +22,21 @@ namespace AnalystDataImporter.Behaviors
     public class DataGridDragBehavior : Behavior<DataGrid>
     {
         private IMouseHandlingService _mouseHandlingService; // proměnná pro přiřazení service pro obsluhu mouse events
+        private SharedStatesService _sharedStateService;
         private bool _isDragging; // ndikace zda je aktivní mód tažení sloupce gridu
+        private int draggedColumnIndex;
+
+        public static readonly DependencyProperty GetDraggedGridViewColumnCommandProperty =
+            DependencyProperty.Register(
+                nameof(GetDraggedGridViewColumnCommand), typeof(ICommand),
+                typeof(DataGridDragBehavior),
+                new PropertyMetadata(null));
+
+        public ICommand GetDraggedGridViewColumnCommand
+        {
+            get => (ICommand)GetValue(GetDraggedGridViewColumnCommandProperty);
+            set => SetValue(GetDraggedGridViewColumnCommandProperty, value);
+        }
 
         /// <summary>
         /// Plátno, ke kterému je chování připojeno - sdíleno z SharedBehaviorProperties třídy
@@ -45,6 +61,7 @@ namespace AnalystDataImporter.Behaviors
             base.OnAttached();
             // Zde připojujeme service IMouseHandlingService
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
+            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
             AssociateEventHandlers();
         }
 
@@ -64,8 +81,9 @@ namespace AnalystDataImporter.Behaviors
         private void AssociateEventHandlers()
         {
             AssociatedObject.MouseMove += MouseMove;
-            AssociatedObject.PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
-            AssociatedObject.PreviewMouseLeftButtonUp += OnMouseLeftButtonUp;
+            AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+            AssociatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
             AssociatedObject.MouseLeave += OnMouseLeave;
             //AssociatedObject.AutoGeneratingColumn += OnAutoGeneratingColumn;
 
@@ -77,7 +95,7 @@ namespace AnalystDataImporter.Behaviors
             //var gridViewModel = AssociatedObject;
 
             FrameworkElement associatedElement = (FrameworkElement)AssociatedObject;
-            GridViewModel gridViewModel = (GridViewModel)associatedElement.DataContext; 
+            GridViewModel gridViewModel = (GridViewModel)associatedElement.DataContext;
             if (gridViewModel != null)
             {
                 // Handle collection changes to dynamically update columns
@@ -108,10 +126,10 @@ namespace AnalystDataImporter.Behaviors
                 {
                     //if (dataGrid.Columns.Count == gridViewModel.Columns.Count)
                     //{
-                        //foreach (var column in gridViewModel.Columns)
-                        //    dataGrid.Columns.Add
-                        //foreach (DataGridColumn column in dataGrid.Columns)
-                        //    column.Header = gridViewModel.Columns[column.DisplayIndex];
+                    //foreach (var column in gridViewModel.Columns)
+                    //    dataGrid.Columns.Add
+                    //foreach (DataGridColumn column in dataGrid.Columns)
+                    //    column.Header = gridViewModel.Columns[column.DisplayIndex];
                     //}     
                 }
             }
@@ -141,37 +159,90 @@ namespace AnalystDataImporter.Behaviors
         /// <param name="e">Data události obsahující informace o pozici myši.</param>
         private void MouseMove(object sender, MouseEventArgs e)
         {
-            //if (ChangeCursorCommand.CanExecute(sender))
-            //    ChangeCursorCommand.Execute("fasfasdfasdf");
             if (!_isDragging)
                 SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+            else
+            {
+                Point mousePosition = e.GetPosition(ParentCanvas);
+                if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingAllowedCursor");
+                else
+                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+            }
             e.Handled = true;
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+            // Traverse the visual tree upwards to find either a DataGridColumnHeader or a DataGridCell
+            while (dep != null && !(dep is DataGridColumnHeader) && !(dep is DataGridCell))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep is DataGridColumnHeader columnHeader)
+            {
+                // Column header was clicked
+                draggedColumnIndex = columnHeader.Column.DisplayIndex;
+            }
+            else if (dep is DataGridCell cell)
+            {
+                // A cell was clicked
+                draggedColumnIndex = cell.Column.DisplayIndex;
+            }
+
             _isDragging = true;
-            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingCursor");
-            var listView = sender as ListView;
-            var headerClicked = e.OriginalSource as GridViewColumnHeader;
-            //foreach (var l in listView.Items)
-            //{
-            //}
+            _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
+            //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+            //var listView = sender as ListView;
+            //var headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ////foreach (var l in listView.Items)
+            ////{
+            ////}
             e.Handled = true;
+        }
+
+        private void OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isDragging)
+            {
+                _mouseHandlingService.EndDragOperation();
+                Point mousePosition = e.GetPosition(ParentCanvas);
+                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                {
+                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
+                }
+                else
+                {
+                    GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+                    GetDraggedGridViewColumnCommand.Execute(draggedColumnIndex);
+                }
+                //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
+                _isDragging = false;
+            }
+            //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+            //e.Handled = true;
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isDragging = false;
             SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
-            e.Handled = true;
         }
 
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
+            //_isDragging = false;
+            if (!_isDragging)
+            {
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
+                //e.Handled = true;
+            }
             _isDragging = false;
-            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
-            e.Handled = true;
         }
 
         /// <summary>
@@ -189,8 +260,9 @@ namespace AnalystDataImporter.Behaviors
         private void DisassociateEventHandlers()
         {
             AssociatedObject.MouseMove -= MouseMove;
-            AssociatedObject.PreviewMouseLeftButtonDown -= OnMouseLeftButtonDown;
-            AssociatedObject.PreviewMouseLeftButtonUp -= OnMouseLeftButtonUp;
+            AssociatedObject.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
+            AssociatedObject.MouseLeftButtonUp += OnMouseLeftButtonUp;
             AssociatedObject.MouseLeave -= OnMouseLeave;
             //AssociatedObject.AutoGeneratingColumn -= OnAutoGeneratingColumn;
 
