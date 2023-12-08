@@ -268,7 +268,7 @@ namespace AnalystDataImporter.ViewModels
             _sharedStateService.IsDrawingElementModeActive = false;
             _sharedStateService.IsDraggingElementModeActive = true;
 
-            CanvasCursor = null;
+            //CanvasCursor = null;
         }
 
         private void FinishElementDrawingFromGridColumn()
@@ -281,7 +281,7 @@ namespace AnalystDataImporter.ViewModels
             _sharedStateService.IsDraggingElementModeActive = true;
             _sharedCanvasPageItems.TableColumn = null;
 
-            CanvasCursor = null;
+            //CanvasCursor = null;
         }
 
         /// <summary>
@@ -299,9 +299,11 @@ namespace AnalystDataImporter.ViewModels
                     break;
                 case "EllipseDrawingInsideCanvasCursor":
                     _sharedStateService.IsAddingElementOutsideCanvas = false;
+                    _sharedStateService.MouseOnElement = false;
                     break;
                 case "EllipseDrawingOutsideCanvasCursor":
                     _sharedStateService.IsAddingElementOutsideCanvas = true;
+                    _sharedStateService.MouseOnElement = false;
                     break;
             }
 
@@ -641,7 +643,7 @@ namespace AnalystDataImporter.ViewModels
                 _sharedStateService.IsDraggingElementModeActive = true;
                 //ReleaseSelection();
                 elementViewModel.IsSelected = true;
-                CanvasCursor = null;
+                //CanvasCursor = null;
             }
         }
 

@@ -201,6 +201,7 @@ namespace AnalystDataImporter.Behaviors
             else if (_sharedStateService.IsDrawingElementModeActive)
             {
                 FinishDrawingIfNeeded();
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDraggingCursor");
             }
 
             e.Handled = true;
@@ -230,11 +231,13 @@ namespace AnalystDataImporter.Behaviors
                 else if (_sharedStateService.IsDrawingRelationModeActive && RelationStartOrEndElementSetCommand.CanExecute(elementViewModel))
                 {
                     RelationStartOrEndElementSetCommand.Execute(new List<object> { elementViewModel, mousePosition, "end" });
+                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDraggingCursor");
                 }
             }
             if (_sharedStateService.IsDraggingGridColumnModeActive)
             {
                 GridViewColumnDraggedSetCommand.Execute(elementViewModel);
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "EllipseDraggingCursor");
             }
             e.Handled = true;
         }

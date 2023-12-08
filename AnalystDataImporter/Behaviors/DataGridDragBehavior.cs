@@ -23,6 +23,7 @@ namespace AnalystDataImporter.Behaviors
     {
         private IMouseHandlingService _mouseHandlingService; // proměnná pro přiřazení service pro obsluhu mouse events
         private SharedStatesService _sharedStateService;
+        private DataGridColumn selectedColumn;
         private bool _isDragging; // ndikace zda je aktivní mód tažení sloupce gridu
         private int draggedColumnIndex;
 
@@ -187,14 +188,17 @@ namespace AnalystDataImporter.Behaviors
             if (dep is DataGridColumnHeader columnHeader)
             {
                 // Column header was clicked
+                selectedColumn = columnHeader.Column;
                 draggedColumnIndex = columnHeader.Column.DisplayIndex;
             }
             else if (dep is DataGridCell cell)
             {
                 // A cell was clicked
+                selectedColumn = cell.Column;
                 draggedColumnIndex = cell.Column.DisplayIndex;
             }
 
+            UpdateCellStyle(selectedColumn);
             _isDragging = true;
             _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
             //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
@@ -224,6 +228,7 @@ namespace AnalystDataImporter.Behaviors
                 //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
                 _isDragging = false;
             }
+            ResetCellStyle();
             //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
             //e.Handled = true;
         }
@@ -243,6 +248,41 @@ namespace AnalystDataImporter.Behaviors
                 //e.Handled = true;
             }
             _isDragging = false;
+        }
+
+        private void UpdateCellStyle(DataGridColumn selectedColumn)
+        {
+            if (selectedColumn == null) return;
+
+            var cellStyle = new Style(typeof(DataGridCell));
+            var headerStyle = new Style(typeof(DataGridColumnHeader));
+            if (selectedColumn != null)
+            {
+                cellStyle.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.RoyalBlue)));
+                cellStyle.Setters.Add(new Setter(DataGridCell.ForegroundProperty, new SolidColorBrush(Colors.White)));
+                headerStyle.Setters.Add(new Setter(DataGridColumnHeader.BackgroundProperty, new SolidColorBrush(Colors.LightBlue/*SystemColors.MenuHighlightColor*/)));
+                headerStyle.Setters.Add(new Setter(DataGridColumnHeader.ForegroundProperty, new SolidColorBrush(Colors.White)));
+            }
+
+            selectedColumn.CellStyle = cellStyle;
+            selectedColumn.HeaderStyle = headerStyle;
+
+            //foreach (var column in AssociatedObject.Columns)
+            //{
+            //    column.CellStyle = cellStyle;
+            //}
+        }
+
+        private void ResetCellStyle()
+        {
+            if (selectedColumn == null) return;
+
+            var defaultCellStyle = new Style(typeof(DataGridCell));
+            var defaultHeaderStyle = new Style(typeof(DataGridColumnHeader));
+
+            selectedColumn.CellStyle = defaultCellStyle; // Set to null to revert to default style
+            selectedColumn.HeaderStyle = defaultHeaderStyle;
+
         }
 
         /// <summary>

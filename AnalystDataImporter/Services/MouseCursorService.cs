@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -94,6 +95,7 @@ namespace AnalystDataImporter.Services
                 CurrentCursor = Cursors.Arrow;
             }
 
+            Debug.WriteLine(CurrentCursor);
             OnPropertyChanged(nameof(CurrentCursor));
         }
 

@@ -30,6 +30,7 @@ namespace AnalystDataImporter.ViewModels
         private readonly SharedStatesService _sharedStateService;
         private readonly SharedCanvasPageItems _sharedCanvasPageItems;
         private List<List<String>> Rows;
+        private string _selectedColumnName;
         public DataTable Table { get; set; }
         private readonly ITableColumnViewModelFactory _tableColumnViewModelFactory;
         private ObservableCollection<TableColumnViewModel> _columns;
@@ -63,6 +64,16 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
+        public string SelectedColumnName
+        {
+            get => _selectedColumnName;
+            set
+            {
+                _selectedColumnName = value;
+                OnPropertyChanged(nameof(SelectedColumnName));
+            }
+        }
+
         public void LoadTestData()
         {
             Table = new DataTable();
@@ -85,6 +96,8 @@ namespace AnalystDataImporter.ViewModels
             Rows.Add(new List<string> { "777853453", "6534534534534355" });
             Rows.Add(new List<string> { "605325456", "2455778454452412" });
             Rows.Add(new List<string> { "606454354", "2124524564545335" });
+            Rows.Add(new List<string> { "606454378", "5453524564545335" });
+            Rows.Add(new List<string> { "606444225", "2445242564545335" });
 
             foreach (var item in Columns)
             {

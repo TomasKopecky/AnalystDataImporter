@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:views="clr-namespace:AnalystDataImporter.Views"
       xmlns:viewModel="clr-namespace:AnalystDataImporter.ViewModels"
       xmlns:utilities="clr-namespace:AnalystDataImporter.Utilities"
       xmlns:behaviors="clr-namespace:AnalystDataImporter.Behaviors"
@@ -21,6 +20,12 @@
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="BorderThickness" Value="2" />
         </Style>
+        <!--<Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>-->
+
         <DataTemplate x:Key="ElementTemplate" DataType="{x:Type viewModel:ElementViewModel}">
 
             <Grid>
@@ -120,15 +125,53 @@
             <!-- For Canvas and Selected Item Details -->
         </Grid.RowDefinitions>
 
-        <DataGrid DataContext="{Binding GridViewModel}" Name="ElemenGridView" ItemsSource="{Binding Table}" AutoGenerateColumns="True" MaxHeight="100">
-            
-            <b:Interaction.Behaviors>
-                <behaviors:DataGridDragBehavior
+        <Grid Grid.Row="0">
+            <!-- Grid definitions -->
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- For GridView -->
+                <RowDefinition Height="Auto" />
+                <!-- For Buttons -->
+                <RowDefinition Height="*" />
+                <!-- For Canvas and Selected Item Details -->
+            </Grid.RowDefinitions>
+
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="100">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Row for DataGrid -->
+                        <RowDefinition Height="*"/>
+                        <!-- Row for other content -->
+                    </Grid.RowDefinitions>
+                    <!-- ScrollViewer for the entire layout -->
+            <!--<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Column for the DataGrid -->
+                        <ColumnDefinition Width="*" MinWidth="20"/>
+                        <!-- Column for the black space -->
+                    </Grid.ColumnDefinitions>
+
+                        <DataGrid Grid.Column="0" HeadersVisibility="Column" DataContext="{Binding GridViewModel}" Name="ElemenGridView" ItemsSource="{Binding Table}" AutoGenerateColumns="True" CanUserAddRows="False" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" ColumnWidth="Auto" >
+
+                <b:Interaction.Behaviors>
+                    <behaviors:DataGridDragBehavior
                     GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
                     behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
                     behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
-            </b:Interaction.Behaviors>
-        </DataGrid>
+                </b:Interaction.Behaviors>
+            </DataGrid>
+            <!-- Black filler Rectangle/Border -->
+                    <Border Grid.Column="1" Background="LightGray"/>
+                </Grid>
+                </Grid>
+            </ScrollViewer>
+            <!--</ScrollViewer>-->
+        </Grid>
 
         <!--<DataGrid Grid.Row="0" ItemsSource="{Binding GridViewModel.Items}" AutoGenerateColumns="False" MaxHeight="100">
             <DataGrid.Columns>
@@ -140,7 +183,8 @@
             </b:Interaction.Behaviors>
         </DataGrid>-->
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="Transparent">
+        <Grid Grid.Row="1">
+        <StackPanel Orientation="Horizontal" Background="Transparent">
             <!-- Buttons -->
             <Button Width="120" Margin="10" Content="Add Element"
                     Command="{Binding CanvasViewModel.StartAddingElementCommand}">
@@ -171,6 +215,7 @@
             </Button>
             <Button Width="120" Margin="10" Content="Delete" Command="{Binding CanvasViewModel.DeleteSelectionCommand}" />
         </StackPanel>
+        </Grid>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
