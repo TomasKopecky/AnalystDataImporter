@@ -11,12 +11,15 @@ namespace AnalystDataImporter.ViewModels
     public class TableColumnViewModel : INotifyPropertyChanged
     {
         private readonly TableColumn _tableColumn;
+        private double _width;
+
 
         public TableColumnViewModel(TableColumn tableColumn)
         {
             // Ověřte, zda poskytnutý tableColumn není null a inicializujte interní _tableColumn
             _tableColumn = tableColumn ?? throw new ArgumentNullException(nameof(tableColumn));
             _tableColumn.Content = new List<string>();
+            _tableColumn.Temporary = true;
         }
 
         /// <summary>
@@ -31,6 +34,32 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _tableColumn.Id = value;
                     OnPropertyChanged(nameof(Id));
+                }
+            }
+        }
+
+        public int Index
+        {
+            get => _tableColumn.Index;
+            set
+            {
+                if (_tableColumn.Index != value)
+                {
+                    _tableColumn.Index = value;
+                    OnPropertyChanged(nameof(Index));
+                }
+            }
+        }
+
+        public bool Temporary
+        {
+            get => _tableColumn.Temporary;
+            set
+            {
+                if (_tableColumn.Temporary != value)
+                {
+                    _tableColumn.Temporary = value;
+                    OnPropertyChanged(nameof(Temporary));
                 }
             }
         }
@@ -88,6 +117,19 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _tableColumn.ReplaceEmptyValuesWith = value;
                     OnPropertyChanged(nameof(ReplaceEmptyValuesWith));
+                }
+            }
+        }
+
+        public double Width
+        {
+            get => _width;
+            set
+            {
+                if (_width != value)
+                {
+                    _width = value;
+                    OnPropertyChanged(nameof(Width));
                 }
             }
         }

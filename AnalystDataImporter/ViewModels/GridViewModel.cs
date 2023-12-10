@@ -32,6 +32,7 @@ namespace AnalystDataImporter.ViewModels
         private List<List<String>> Rows;
         private string _selectedColumnName;
         public DataTable Table { get; set; }
+        public DataTable ColumnTable { get; set; }
         private readonly ITableColumnViewModelFactory _tableColumnViewModelFactory;
         private ObservableCollection<TableColumnViewModel> _columns;
         //public ObservableCollection<ColumnInfo> Columns { get; private set; }
@@ -74,6 +75,48 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
+        private void GenerateTestDataGridContent()
+        {
+            // Generate new columns and rows
+            int totalColumns = 20;
+            Random random = new Random();
+
+            for (int columnIndex = 0; columnIndex < totalColumns; columnIndex++)
+            {
+                // Create and add new TableColumnViewModel
+                TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
+                tableColumn.Heading = columnIndex % 2 == 0 ? $"SIM{columnIndex / 2 + 1}" : $"IMEI{columnIndex / 2 + 1}";
+                tableColumn.Index = columnIndex;
+                Columns.Add(tableColumn);
+
+                // Add corresponding column in DataTable
+                Table.Columns.Add(tableColumn.Heading, typeof(string));
+                ColumnTable.Columns.Add(tableColumn.Heading, typeof(string));
+            }
+
+            // Generate rows with random data
+            int totalRows = 10;
+
+            for (int rowIndex = 0; rowIndex < totalRows; rowIndex++)
+            {
+                List<string> rowValues = new List<string>();
+                DataRow tableRow = Table.NewRow();
+                //DataRow columnTableRow = ColumnTable.NewRow();
+
+                for (int columnIndex = 0; columnIndex < totalColumns; columnIndex++)
+                {
+                    string value = columnIndex % 2 == 0
+                        ? random.Next(100000000, 999999999).ToString() // SIM-like number
+                        : $"{random.Next(1000000, 9999999)}{random.Next(1000000, 9999999)}"; // IMEI-like number
+
+                    rowValues.Add(value);
+                    tableRow[columnIndex] = value;
+                }
+                Table.Rows.Add(tableRow); // Add the DataRow to the DataTable's Rows collection
+                Rows.Add(rowValues); // This line maintains your list of rows, assuming it's needed elsewhere
+            }
+        }
+
         public void LoadTestData()
         {
             Table = new DataTable();
@@ -82,78 +125,58 @@ namespace AnalystDataImporter.ViewModels
 
             Columns = new ObservableCollection<TableColumnViewModel>();
 
-            TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
-            tableColumn.Heading = "SIM";
+            ColumnTable = new DataTable();
 
-            Columns.Add(tableColumn);
+            GenerateTestDataGridContent();
 
-            tableColumn = _tableColumnViewModelFactory.Create();
-            tableColumn.Heading = "IMEI";
+            //TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
+            //tableColumn.Heading = "SIM";
+            //tableColumn.Index = 0;
 
-            Columns.Add(tableColumn);
+            //Columns.Add(tableColumn);
 
-            Rows.Add(new List<string> { "721546132", "3512135435453453" });
-            Rows.Add(new List<string> { "777853453", "6534534534534355" });
-            Rows.Add(new List<string> { "605325456", "2455778454452412" });
-            Rows.Add(new List<string> { "606454354", "2124524564545335" });
-            Rows.Add(new List<string> { "606454378", "5453524564545335" });
-            Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //tableColumn = _tableColumnViewModelFactory.Create();
+            //tableColumn.Heading = "IMEI";
+            //tableColumn.Index = 1;
 
-            foreach (var item in Columns)
-            {
-                Table.Columns.Add(item.Heading, typeof(string));
-            }
+            //Columns.Add(tableColumn);
 
-            foreach (var tableRow in Rows)
-            {
-                DataRow row = Table.NewRow();
-                int i = 0;
-                foreach (var rowValue in tableRow)
-                {
-                    try
-                    {
-                        row[i] = rowValue;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new NotImplementedException();
-                    }
-                    i++;
-                }
-                Table.Rows.Add(row);
-            }
+            //Rows.Add(new List<string> { "721546132", "3512135435453453" });
+            //Rows.Add(new List<string> { "777853453", "6534534534534355" });
+            //Rows.Add(new List<string> { "605325456", "2455778454452412" });
+            //Rows.Add(new List<string> { "606454354", "2124524564545335" });
+            //Rows.Add(new List<string> { "606454378", "5453524564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
+            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
 
-
-
-
-
-            //row["Column1"] = "Value1";
-            //row["Column2"] = "Value2";
-            //Table.Rows.Add(row);
-
-            //Items = new ObservableCollection<TableColumnViewModel>();
-
-            //var tableColumnViewModel = _tableColumnViewModelFactory.Create();
-            //tableColumnViewModel.Heading = "fsalfjasl";
-            //tableColumnViewModel.Content.Add("fasldfjslkdjf");
-            //tableColumnViewModel.Content.Add("fasldfjslkdjfdsfg");
-
-            //Items.Add(tableColumnViewModel);
-
-            // Example data loading
-            //for (int i = 0; i < 10; i++)
+            //foreach (var item in Columns)
             //{
-            //    Items.Add(new TableColumnViewModel
-            //    {
-            //        Heading = "Item " + i + " Col1",
-            //        //Content = "Item " + i + " Col2"
-            //    });
+            //    Table.Columns.Add(item.Heading, typeof(string));
+            //    ColumnTable.Columns.Add(item.Heading, typeof(string));
             //}
 
-            //Columns = new ObservableCollection<ColumnInfo>
+            //foreach (var tableRow in Rows)
             //{
-            //    new ColumnInfo { Header = "falsdfjs", BindingPath = "asdljfal" }
-            //};
+            //    DataRow row = Table.NewRow();
+            //    int i = 0;
+            //    foreach (var rowValue in tableRow)
+            //    {
+            //        try
+            //        {
+            //            row[i] = rowValue;
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            throw new NotImplementedException();
+            //        }
+            //        i++;
+            //    }
+            //    Table.Rows.Add(row);
+            //}
         }
 
         //public bool IsDraggingColumnModeActive
@@ -207,8 +230,8 @@ namespace AnalystDataImporter.ViewModels
 
         private void GetDraggedGridViewColumnIndex(object parameter)
         {
-            
-            if (parameter is int columnIndex) 
+
+            if (parameter is int columnIndex)
             {
                 _sharedCanvasPageItems.TableColumn = Columns[columnIndex];
             }

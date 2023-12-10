@@ -12,6 +12,10 @@ namespace AnalystDataImporter.Models
         /// </summary>
         public int Id { get; set; }
 
+        public int Index { get; set; }
+
+        public bool Temporary { get; set; }
+
         /// <summary>
         /// Hlavička sloupce tabulky.
         /// </summary>
