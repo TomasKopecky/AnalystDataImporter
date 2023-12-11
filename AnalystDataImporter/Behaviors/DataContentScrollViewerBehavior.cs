@@ -41,8 +41,10 @@ namespace AnalystDataImporter.Behaviors
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (HeadingDataGrid != null)
-                AssociatedObject.Height = HeadingDataGrid.ActualHeight;
+            //if (HeadingDataGrid != null)
+                //AssociatedObject.Height = HeadingDataGrid.ActualHeight;
+            //AssociatedObject.Height = HeadingDataGrid.Height;
+
         }
 
         protected override void OnDetaching()

@@ -137,27 +137,25 @@
                 <!--Scrollviewer s content data grid-->
             </Grid.RowDefinitions>
 
-            <ScrollViewer Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
-                <!--Height="26">-->
+            <ScrollViewer x:Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden"> <!--Height="26">-->
 
                 <Grid>
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <!--Scrollviewer s heading data grid-->
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <!-- Header DataGrid -->
-                    <DataGrid Name="HeadingDataGrid" Grid.Column="0" DataContext="{Binding GridViewModel}" 
+                    <DataGrid x:Name="HeadingDataGrid" Grid.Column="0" DataContext="{Binding GridViewModel}" 
                                             AutoGenerateColumns="True" HeadersVisibility="Column"
                                             HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                                             CanUserResizeColumns="True" CanUserAddRows="False" 
                                             CanUserDeleteRows="False" CanUserResizeRows="False" 
                                             CanUserSortColumns="False" CanUserReorderColumns="False"
-                                            
+                                            RowHeight="0"
                                             ItemsSource="{Binding ColumnTable}"
                                           >
                         <b:Interaction.Behaviors>
@@ -173,21 +171,21 @@ behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCan
                     </DataGrid>
                     <Border Grid.Column="1" Background="LightGray"/>
                 </Grid>
-                <b:Interaction.Behaviors>
+                <!--<b:Interaction.Behaviors>
                     <behaviors:DataContentScrollViewerBehavior
                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"/>
-                </b:Interaction.Behaviors>
+                </b:Interaction.Behaviors>-->
             </ScrollViewer>
 
 
 
-            <ScrollViewer Name="DataGridsScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="DataGridsScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="0" Name="ContentDataGrid" DataContext="{Binding GridViewModel}" 
+                    <DataGrid Grid.Column="0" x:Name="ContentDataGrid" DataContext="{Binding GridViewModel}" 
            ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
            CanUserAddRows="False" HeadersVisibility="None" 
            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
@@ -257,7 +255,7 @@ behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCan
             <!-- Canvas inside Border -->
             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" MaxHeight="300">
 
-                <Canvas Name="ElementCanvas" Background="Transparent">
+                <Canvas x:Name="ElementCanvas" Background="Transparent">
                     <!-- Interaction triggers -->
 
                     <b:Interaction.Triggers>

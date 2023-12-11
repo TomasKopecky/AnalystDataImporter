@@ -78,7 +78,7 @@ namespace AnalystDataImporter.ViewModels
         private void GenerateTestDataGridContent()
         {
             // Generate new columns and rows
-            int totalColumns = 20;
+            int totalColumns = 2;
             Random random = new Random();
 
             for (int columnIndex = 0; columnIndex < totalColumns; columnIndex++)

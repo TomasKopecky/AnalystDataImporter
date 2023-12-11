@@ -251,6 +251,7 @@ namespace AnalystDataImporter.Behaviors
             if (_isHeadingGrid)
             {
                 //HeadingScrollViewer.Height = datagrid.ActualHeight;
+                datagrid.ColumnHeaderHeight = datagrid.ActualHeight;
             }
 
             GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
