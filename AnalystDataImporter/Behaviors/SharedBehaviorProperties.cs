@@ -39,6 +39,12 @@ namespace AnalystDataImporter.Behaviors
             typeof(SharedBehaviorProperties),
             new PropertyMetadata(null));
 
+        public static readonly DependencyProperty HeadingScrollViewerProperty = DependencyProperty.RegisterAttached(
+            "HeadingScrollViewer",
+            typeof(ScrollViewer),
+            typeof(SharedBehaviorProperties),
+            new PropertyMetadata(null));
+
         public static Canvas GetParentCanvas(DependencyObject obj)
         {
             return (Canvas)obj.GetValue(ParentCanvasProperty);
@@ -77,6 +83,16 @@ namespace AnalystDataImporter.Behaviors
         public static void SetScrollViewerWithDataGrids(DependencyObject obj, ScrollViewer value)
         {
             obj.SetValue(ScrollViewerWithDataGridsProperty, value);
+        }
+
+        public static ScrollViewer GetHeadingScrollViewer(DependencyObject obj)
+        {
+            return (ScrollViewer)obj.GetValue(HeadingScrollViewerProperty);
+        }
+
+        public static void SetHeadingScrollViewer(DependencyObject obj, ScrollViewer value)
+        {
+            obj.SetValue(HeadingScrollViewerProperty, value);
         }
 
         public static ICommand GetChangeCursorCommand(DependencyObject obj)

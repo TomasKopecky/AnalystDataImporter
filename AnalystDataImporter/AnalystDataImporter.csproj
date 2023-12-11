@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\DataContentScrollViewerBehavior.cs" />
     <Compile Include="Behaviors\DataGridDragBehavior.cs" />
     <Compile Include="Factories\TableColumnViewModelFactory.cs" />
     <Compile Include="Factories\ITableColumnViewModelFactory.cs" />

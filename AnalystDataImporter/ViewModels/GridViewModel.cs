@@ -95,7 +95,7 @@ namespace AnalystDataImporter.ViewModels
             }
 
             // Generate rows with random data
-            int totalRows = 10;
+            int totalRows = 20;
 
             for (int rowIndex = 0; rowIndex < totalRows; rowIndex++)
             {

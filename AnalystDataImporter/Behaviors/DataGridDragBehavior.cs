@@ -69,6 +69,12 @@ namespace AnalystDataImporter.Behaviors
             get => SharedBehaviorProperties.GetScrollViewerWithDataGrids(this);
             set => SharedBehaviorProperties.SetScrollViewerWithDataGrids(this, value);
         }
+
+        public ScrollViewer HeadingScrollViewer
+        {
+            get => SharedBehaviorProperties.GetHeadingScrollViewer(this);
+            set => SharedBehaviorProperties.SetHeadingScrollViewer(this, value);
+        }
         public ICommand ChangeCursorCommand
         {
             get => SharedBehaviorProperties.GetChangeCursorCommand(this);
@@ -242,6 +248,11 @@ namespace AnalystDataImporter.Behaviors
                 _isHeadingGrid = false;
 
 
+            if (_isHeadingGrid)
+            {
+                //HeadingScrollViewer.Height = datagrid.ActualHeight;
+            }
+
             GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
             // když je prvek content data grid - nastav width sloupců heading data grid podle prvotní šířky content data grid sloupců
             if (gridViewModel != null && gridViewModel.Columns.Count == datagrid.Columns.Count && !_isHeadingGrid)
@@ -273,7 +284,7 @@ namespace AnalystDataImporter.Behaviors
             if (_isheadingColumnWidthDragging)
             {
                 //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-                ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].Width;
+                ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
                 //gridViewModel.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
                 Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove - _isheadingColumnWidthDragging true");
             }

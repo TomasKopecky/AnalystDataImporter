@@ -26,5 +26,9 @@ namespace AnalystDataImporter.Views
             //viewModel.AddTestingElementsAndRelation();
         }
 
+        private void HeadingDataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }
