@@ -147,7 +147,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- ScrollViewer for both DataGrids -->
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxHeight="100">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" MaxHeight="200">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -162,36 +162,50 @@
                             <ColumnDefinition Width="*"/>
                             <!-- For the DataGrid Rows -->
                         </Grid.ColumnDefinitions>
-
-                        <!-- Header DataGrid -->
-                        <DataGrid Grid.Row="0" Grid.Column="0" DataContext="{Binding GridViewModel}" 
+                        
+                                <!-- Header DataGrid -->
+                                <DataGrid Name="HeadingDataGrid" Grid.Row="0" Grid.Column="0" DataContext="{Binding GridViewModel}" 
                 AutoGenerateColumns="True" HeadersVisibility="Column"
                 HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                 CanUserResizeColumns="True" CanUserAddRows="False" 
                 CanUserDeleteRows="False" CanUserResizeRows="False" 
                 CanUserSortColumns="False" CanUserReorderColumns="False"
                 ItemsSource="{Binding ColumnTable}">
-                            <b:Interaction.Behaviors>
-                                <behaviors:DataGridDragBehavior
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:DataGridDragBehavior
      GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
      behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
-     behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
-                            </b:Interaction.Behaviors>
-                        </DataGrid>
-                        <Border Grid.Column="1" Grid.Row="0" Background="LightGray"/>
-                        <!-- Content DataGrid -->
-                        <DataGrid Grid.Row="1" Grid.Column="0" DataContext="{Binding GridViewModel}" 
+     behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                    behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
+                                    behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
+                                    </b:Interaction.Behaviors>
+                                </DataGrid>
+                                <!--<Border Grid.Column="1" Grid.Row="0" Background="LightGray"/>-->
+                            
+                    <ScrollViewer Name="DataGridsScrollViewer" Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Row for Header DataGrid -->
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- Content DataGrid -->
+                            <DataGrid Name="ContentDataGrid" Grid.Row="0" Grid.Column="0" DataContext="{Binding GridViewModel}" 
                 ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
                 CanUserAddRows="False" HeadersVisibility="None" 
                 HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
-                            <b:Interaction.Behaviors>
-                                <behaviors:DataGridDragBehavior
+                                <b:Interaction.Behaviors>
+                                    <behaviors:DataGridDragBehavior
      GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
      behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
-     behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
-                            </b:Interaction.Behaviors>
-                        </DataGrid>
-                        <Border Grid.Column="1" Grid.Row="1" Background="LightGray"/>
+     behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                    behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                    behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
+                                </b:Interaction.Behaviors>
+                            </DataGrid>
+                            <!--<Border Grid.Column="1" Grid.Row="0" Background="LightGray"/>-->
+                        </Grid>
+                    </ScrollViewer>
                     </Grid>
                 </ScrollViewer>
             </Grid>

@@ -52,6 +52,23 @@ namespace AnalystDataImporter.Behaviors
             set => SharedBehaviorProperties.SetParentCanvas(this, value);
         }
 
+        public DataGrid HeadingDataGrid
+        {
+            get => SharedBehaviorProperties.GetHeadingDataGrid(this);
+            set => SharedBehaviorProperties.SetHeadingDataGrid(this, value);
+        }
+
+        public DataGrid ContentDataGrid
+        {
+            get => SharedBehaviorProperties.GetContentDataGrid(this);
+            set => SharedBehaviorProperties.SetContentDataGrid(this, value);
+        }
+
+        public ScrollViewer ScrollViewerWithDataGrids
+        {
+            get => SharedBehaviorProperties.GetScrollViewerWithDataGrids(this);
+            set => SharedBehaviorProperties.SetScrollViewerWithDataGrids(this, value);
+        }
         public ICommand ChangeCursorCommand
         {
             get => SharedBehaviorProperties.GetChangeCursorCommand(this);
@@ -114,25 +131,25 @@ namespace AnalystDataImporter.Behaviors
             }
         }
 
-        private void OnColumnsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            // Handle adding/removing subscriptions based on changes in the collection
-            if (e.OldItems != null)
-            {
-                foreach (TableColumnViewModel oldItem in e.OldItems)
-                {
-                    oldItem.PropertyChanged -= OnColumnPropertyChanged;
-                }
-            }
+        //private void OnColumnsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    // Handle adding/removing subscriptions based on changes in the collection
+        //    if (e.OldItems != null)
+        //    {
+        //        foreach (TableColumnViewModel oldItem in e.OldItems)
+        //        {
+        //            oldItem.PropertyChanged -= OnColumnPropertyChanged;
+        //        }
+        //    }
 
-            if (e.NewItems != null)
-            {
-                foreach (TableColumnViewModel newItem in e.NewItems)
-                {
-                    newItem.PropertyChanged += OnColumnPropertyChanged;
-                }
-            }
-        }
+        //    if (e.NewItems != null)
+        //    {
+        //        foreach (TableColumnViewModel newItem in e.NewItems)
+        //        {
+        //            newItem.PropertyChanged += OnColumnPropertyChanged;
+        //        }
+        //    }
+        //}
 
 
         private void OnColumnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -226,17 +243,24 @@ namespace AnalystDataImporter.Behaviors
 
 
             GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-            if (gridViewModel != null && gridViewModel.Columns.Count == datagrid.Columns.Count)
+            // když je prvek content data grid - nastav width sloupců heading data grid podle prvotní šířky content data grid sloupců
+            if (gridViewModel != null && gridViewModel.Columns.Count == datagrid.Columns.Count && !_isHeadingGrid)
             {
-                gridViewModel.Columns.CollectionChanged += OnColumnsCollectionChanged;
                 int i = 0;
-                foreach (var column in gridViewModel.Columns)
+                foreach (var column in datagrid.Columns)
                 {
-                    if (!_isHeadingGrid)
-                        column.Width = datagrid.Columns[i].ActualWidth;
-                    column.PropertyChanged += OnColumnPropertyChanged;
+                    HeadingDataGrid.Columns[i].Width = column.Width;
                     i++;
                 }
+                //gridViewModel.Columns.CollectionChanged += OnColumnsCollectionChanged;
+                //int i = 0;
+                //foreach (var column in gridViewModel.Columns)
+                //{
+                //    if (!_isHeadingGrid)
+                //        column.Width = datagrid.Columns[i].ActualWidth;
+                //    column.PropertyChanged += OnColumnPropertyChanged;
+                //    i++;
+                //}
             }
 
         }
@@ -248,20 +272,21 @@ namespace AnalystDataImporter.Behaviors
 
             if (_isheadingColumnWidthDragging)
             {
-                GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-                gridViewModel.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
+                //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
+                ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].Width;
+                //gridViewModel.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
                 Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove - _isheadingColumnWidthDragging true");
             }
         }
 
         //Když dvojklik na thumb, tak autofit na velikost toho obsahového column, nikoliv toho heading
 
-            /// <summary>
-            /// Reaguje na pohyb myši. Aktualizuje pozici prvku během přetahování nebo kreslení.
-            /// </summary>
-            /// <param name="sender">Objekt, který událost vyvolal (typicky UI element).</param>
-            /// <param name="e">Data události obsahující informace o pozici myši.</param>
-            private void MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Reaguje na pohyb myši. Aktualizuje pozici prvku během přetahování nebo kreslení.
+        /// </summary>
+        /// <param name="sender">Objekt, který událost vyvolal (typicky UI element).</param>
+        /// <param name="e">Data události obsahující informace o pozici myši.</param>
+        private void MouseMove(object sender, MouseEventArgs e)
         {
             if (!(sender is DataGrid datagrid)) return;
 
@@ -426,16 +451,17 @@ namespace AnalystDataImporter.Behaviors
 
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (sender is DataGrid dataGrid && VisualTreeHelper.GetParent(dataGrid) is Grid grid && grid.Parent is ScrollViewer scrollViewer)
+            //if (sender is DataGrid dataGrid && VisualTreeHelper.GetParent(dataGrid) is Grid grid && grid.Parent is ScrollViewer scrollViewer)
+            if (sender is DataGrid dataGrid && ScrollViewerWithDataGrids != null)
             {
                 // Calculate the new scroll offset.
-                double newOffset = scrollViewer.VerticalOffset - (e.Delta/* / 120.0 * 3*/); // Adjust '3' to change scroll speed
+                double newOffset = ScrollViewerWithDataGrids.VerticalOffset - (e.Delta/* / 120.0 * 3*/); // Adjust '3' to change scroll speed
 
                 // Clamp the new offset to the valid range.
-                newOffset = Math.Max(0, Math.Min(newOffset, scrollViewer.ScrollableHeight));
+                newOffset = Math.Max(0, Math.Min(newOffset, ScrollViewerWithDataGrids.ScrollableHeight));
 
                 // Scroll to the new offset.
-                scrollViewer.ScrollToVerticalOffset(newOffset);
+                ScrollViewerWithDataGrids.ScrollToVerticalOffset(newOffset);
 
                 e.Handled = true;
             }
@@ -511,27 +537,27 @@ namespace AnalystDataImporter.Behaviors
             AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
             AssociatedObject.Loaded -= OnLoaded;
 
-            GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-            if (gridViewModel != null)
-            {
-                gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
-                foreach (var column in gridViewModel.Columns)
-                {
-                    column.PropertyChanged -= OnColumnPropertyChanged;
-                }
-                //AssociatedObject.AutoGeneratingColumn -= OnAutoGeneratingColumn;
+            //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
+            //if (gridViewModel != null)
+            //{
+            //    gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
+            //    foreach (var column in gridViewModel.Columns)
+            //    {
+            //        column.PropertyChanged -= OnColumnPropertyChanged;
+            //    }
+            //    //AssociatedObject.AutoGeneratingColumn -= OnAutoGeneratingColumn;
 
-                //if (AssociatedObject is FrameworkElement frameworkElement)
-                //{
-                //    frameworkElement.DataContextChanged -= OnDataContextChanged;
-                //    if (frameworkElement.DataContext is GridViewModel gridViewModel)
-                //    {
-                //        gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
-                //    }
-                //}
+            //    //if (AssociatedObject is FrameworkElement frameworkElement)
+            //    //{
+            //    //    frameworkElement.DataContextChanged -= OnDataContextChanged;
+            //    //    if (frameworkElement.DataContext is GridViewModel gridViewModel)
+            //    //    {
+            //    //        gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
+            //    //    }
+            //    //}
 
 
-            }
+            //}
         }
 
         private void OnColumnWidthsChanged(object sender, NotifyCollectionChangedEventArgs e)

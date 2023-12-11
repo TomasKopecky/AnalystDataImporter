@@ -21,14 +21,62 @@ namespace AnalystDataImporter.Behaviors
                 typeof(SharedBehaviorProperties),
                 new PropertyMetadata(null));
 
+        public static readonly DependencyProperty HeadingDataGridProperty = DependencyProperty.RegisterAttached(
+            "HeadingDataGrid",
+            typeof(DataGrid),
+            typeof(SharedBehaviorProperties),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ContentDataGridProperty = DependencyProperty.RegisterAttached(
+            "ContentDataGrid",
+            typeof(DataGrid),
+            typeof(SharedBehaviorProperties),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ScrollViewerWithDataGridsProperty = DependencyProperty.RegisterAttached(
+            "ScrollViewerWithDataGrids",
+            typeof(ScrollViewer),
+            typeof(SharedBehaviorProperties),
+            new PropertyMetadata(null));
+
         public static Canvas GetParentCanvas(DependencyObject obj)
         {
             return (Canvas)obj.GetValue(ParentCanvasProperty);
         }
-        
+
         public static void SetParentCanvas(DependencyObject obj, Canvas value)
         {
             obj.SetValue(ParentCanvasProperty, value);
+        }
+
+        public static DataGrid GetHeadingDataGrid(DependencyObject obj)
+        {
+            return (DataGrid)obj.GetValue(HeadingDataGridProperty);
+        }
+
+        public static void SetHeadingDataGrid(DependencyObject obj, DataGrid value)
+        {
+            obj.SetValue(HeadingDataGridProperty, value);
+        }
+
+        public static DataGrid GetContentDataGrid(DependencyObject obj)
+        {
+            return (DataGrid)obj.GetValue(ContentDataGridProperty);
+        }
+
+        public static void SetContentDataGrid(DependencyObject obj, DataGrid value)
+        {
+            obj.SetValue(ContentDataGridProperty, value);
+        }
+
+        public static ScrollViewer GetScrollViewerWithDataGrids(DependencyObject obj)
+        {
+            return (ScrollViewer)obj.GetValue(ScrollViewerWithDataGridsProperty);
+        }
+
+        public static void SetScrollViewerWithDataGrids(DependencyObject obj, ScrollViewer value)
+        {
+            obj.SetValue(ScrollViewerWithDataGridsProperty, value);
         }
 
         public static ICommand GetChangeCursorCommand(DependencyObject obj)
