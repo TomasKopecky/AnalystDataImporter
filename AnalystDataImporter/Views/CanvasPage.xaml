@@ -137,7 +137,8 @@
                 <!--Scrollviewer s content data grid-->
             </Grid.RowDefinitions>
 
-            <ScrollViewer x:Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden"> <!--Height="26">-->
+            <ScrollViewer x:Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
+                <!--Height="26">-->
 
                 <Grid>
 
@@ -150,23 +151,22 @@
                     </Grid.ColumnDefinitions>
                     <!-- Header DataGrid -->
                     <DataGrid x:Name="HeadingDataGrid" Grid.Column="0" DataContext="{Binding GridViewModel}" 
-                                            AutoGenerateColumns="True" HeadersVisibility="Column"
-                                            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
-                                            CanUserResizeColumns="True" CanUserAddRows="False" 
-                                            CanUserDeleteRows="False" CanUserResizeRows="False" 
-                                            CanUserSortColumns="False" CanUserReorderColumns="False"
-                                            RowHeight="0"
-                                            ItemsSource="{Binding ColumnTable}"
-                                          >
+                        AutoGenerateColumns="True" HeadersVisibility="Column"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
+                        CanUserResizeColumns="True" CanUserAddRows="False" 
+                        CanUserDeleteRows="False" CanUserResizeRows="False" 
+                        CanUserSortColumns="False" CanUserReorderColumns="False"
+                        RowHeight="0"
+                        ItemsSource="{Binding ColumnTable}">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
-GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
-behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
-behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
-                               behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
-                                            behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
-                               behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"
-                               behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"         />
+                                GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
+                                behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"
+                                behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"         />
                         </b:Interaction.Behaviors>
                     </DataGrid>
                     <Border Grid.Column="1" Background="LightGray"/>
@@ -186,16 +186,16 @@ behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCan
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid Grid.Column="0" x:Name="ContentDataGrid" DataContext="{Binding GridViewModel}" 
-           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
-           CanUserAddRows="False" HeadersVisibility="None" 
-           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
+                           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
+                           CanUserAddRows="False" HeadersVisibility="None" 
+                           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
-GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
-behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
-behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
-                               behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
-                               behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
+                                GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
+                                behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
                         </b:Interaction.Behaviors>
                     </DataGrid>
                     <Border Grid.Column="1" Background="LightGray"/>

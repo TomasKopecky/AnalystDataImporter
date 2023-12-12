@@ -19,7 +19,7 @@ namespace AnalystDataImporter.ViewModels
         protected TableColumnViewModel _gridTableColumn;
 
         // Common properties and methods for view models, such as IsSelected, PropertyChanged, etc.
-        public bool IsSelected
+        public virtual bool IsSelected
         {
             get => _isSelected;
             set

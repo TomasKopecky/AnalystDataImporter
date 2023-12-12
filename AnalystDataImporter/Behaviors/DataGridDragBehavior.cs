@@ -28,7 +28,7 @@ namespace AnalystDataImporter.Behaviors
         private SharedStatesService _sharedStateService;
         private DataGridColumn selectedColumn;
         private bool _isDragging; // ndikace zda je aktivní mód tažení sloupce gridu
-        private int draggedColumnIndex;
+        //private int _headingColumnWidthDraggedIndex;
         private bool _isHeadingGrid;
         private bool _isheadingColumnWidthDragging;
         private int _headingColumnWidthDraggedIndex;
@@ -89,21 +89,15 @@ namespace AnalystDataImporter.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            // Zde připojujeme service IMouseHandlingService
-            _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
-            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
+            InitializeServices();
             AssociateEventHandlers();
         }
 
-        //private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (e.NewValue is GridViewModel gridViewModel)
-        //    {
-        //        // Now you have access to GridViewModel
-        //        // You can also move your column collection change event subscription here if needed
-        //    }
-        //}
-
+        private void InitializeServices()
+        {
+            _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
+            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
+        }
 
         ///// <summary>
         ///// Připojení mouse services při vytvoření objektu
@@ -119,25 +113,6 @@ namespace AnalystDataImporter.Behaviors
             AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
             AssociatedObject.Loaded += OnLoaded;
             AssociatedObject.PreviewMouseDoubleClick += OnPreviewMouseDoubleClick;
-            //AssociatedObject.AutoGeneratingColumn += OnAutoGeneratingColumn;
-
-            //if (AssociatedObject is FrameworkElement frameworkElement)
-            //{
-            //    frameworkElement.DataContextChanged += OnDataContextChanged;
-            //}
-
-            //var gridViewModel = AssociatedObject;
-
-            FrameworkElement associatedElement = (FrameworkElement)AssociatedObject;
-            GridViewModel gridViewModel = (GridViewModel)associatedElement.DataContext;
-            if (gridViewModel != null)
-            {
-                //gridViewModel.Columns.CollectionChanged += OnColumnsCollectionChanged;
-                //foreach (var column in gridViewModel.Columns)
-                //{
-                //    column.PropertyChanged += OnColumnPropertyChanged;
-                //}
-            }
         }
 
 
@@ -145,45 +120,62 @@ namespace AnalystDataImporter.Behaviors
         {
             //if (!(sender is DataGrid datagrid)) return;
             Debug.WriteLine("DataGridDragBehavior: OnPreviewMouseDoubleClick");
-            DependencyObject dep = (DependencyObject)e.OriginalSource;
-            while (dep != null && !(dep is DataGrid))
+            if (TryGetColumnHeaderFromEvent(e, out var columnHeader))
             {
-                if (dep is Thumb)
-                {
-                    //_isheadingColumnWidthDragging = true;
-                    // Find the DataGridColumnHeader from the Thumb
-                    var columnHeader = FindParent<DataGridColumnHeader>(dep);
-                    if (columnHeader != null)
-                    {
-                        // Access the DataGridColumn associated with this header
-                        DataGridColumn column = columnHeader.Column;
-                        int columnIndex = column.DisplayIndex;
-
-                        var mousePosition = e.GetPosition(columnHeader);
-                        double relativePosition = mousePosition.X / columnHeader.ActualWidth;
-                        //_headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex;
-                        if (relativePosition < 0.5)
-                        {
-                            // Left edge - adjust the preceding column
-                            _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex - 1;
-                        }
-                        else
-                        {
-                            // Right edge - adjust the current column
-                            _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex;
-                        }
-                        ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
-                        AssociatedObject.Columns[_headingColumnWidthDraggedIndex].Width = ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
-                        e.Handled = true;
-                        _isheadingColumnWidthDragging = false;
-                        return;
-                    }
-
-
-                }
-                dep = VisualTreeHelper.GetParent(dep);
+                AdjustColumnWidth(columnHeader, e.GetPosition(columnHeader));
+                e.Handled = true;
             }
         }
+
+        // Method to try getting DataGridColumnHeader from event
+        private bool TryGetColumnHeaderFromEvent(MouseEventArgs e, out DataGridColumnHeader columnHeader)
+        {
+            columnHeader = null;
+            var depObj = e.OriginalSource as DependencyObject;
+
+            columnHeader = depObj.FindVisualParent<DataGridColumnHeader>();
+            return columnHeader != null;
+        }
+
+        // Method to adjust column width
+        private void AdjustColumnWidth(DataGridColumnHeader columnHeader, Point mousePosition)
+        {
+            double relativePosition = mousePosition.X / columnHeader.ActualWidth;
+            int columnIndex = columnHeader.Column.DisplayIndex;
+
+            if (relativePosition < 0.5 && columnIndex > 0)
+            {
+                columnIndex--; // Left edge - adjust the preceding column
+            }
+
+            ContentDataGrid.Columns[columnIndex].Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            AssociatedObject.Columns[columnIndex].Width = ContentDataGrid.Columns[columnIndex].ActualWidth;
+        }
+
+        private void HandleColumnWidthDraggingStart(Thumb thumb)
+        {
+            var columnHeader = thumb.FindVisualParent<DataGridColumnHeader>();
+            if (columnHeader != null)
+            {
+                // Calculate the relative position of the click within the column header
+                var mousePosition = Mouse.GetPosition(columnHeader);
+                double relativePosition = mousePosition.X / columnHeader.ActualWidth;
+
+                // Determine whether to adjust the current column or the preceding column
+                if (relativePosition < 0.5 && columnHeader.Column.DisplayIndex > 0)
+                {
+                    // Left edge - adjust the preceding column
+                    _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex - 1;
+                }
+                else
+                {
+                    // Right edge - adjust the current column
+                    _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex;
+                }
+            }
+        }
+
+
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -197,7 +189,7 @@ namespace AnalystDataImporter.Behaviors
 
             if (_isHeadingGrid)
             {
-                //HeadingScrollViewer.Height = datagrid.ActualHeight;
+                // nastavení výšky heading sloupce přes celou výšku data gridu (dle rodičovského scrollviewer prvku)
                 datagrid.ColumnHeaderHeight = datagrid.ActualHeight;
             }
 
@@ -211,114 +203,192 @@ namespace AnalystDataImporter.Behaviors
                     HeadingDataGrid.Columns[i].Width = column.Width;
                     i++;
                 }
-                //gridViewModel.Columns.CollectionChanged += OnColumnsCollectionChanged;
-                //int i = 0;
-                //foreach (var column in gridViewModel.Columns)
-                //{
-                //    if (!_isHeadingGrid)
-                //        column.Width = datagrid.Columns[i].ActualWidth;
-                //    column.PropertyChanged += OnColumnPropertyChanged;
-                //    i++;
-                //}
             }
 
         }
 
-        private void PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove");
-            if (!(sender is DataGrid datagrid)) return;
-            Point currentMousePosition = e.GetPosition(this.AssociatedObject);
-            if (_isheadingColumnWidthDragging && mouseDownPosition != currentMousePosition)
-            {
-                Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove - _isheadingColumnWidthDragging true && mouseDownPosition != currentMousePosition");
-                //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-                ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
-                //gridViewModel.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
+        //private void PreviewMouseMove(object sender, MouseEventArgs e)
+        //{
+        //    Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove");
+        //    if (!(sender is DataGrid datagrid)) return;
+        //    Point currentMousePosition = e.GetPosition(this.AssociatedObject);
+        //    if (_isheadingColumnWidthDragging && mouseDownPosition != currentMousePosition)
+        //    {
+        //        Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove - _isheadingColumnWidthDragging true && mouseDownPosition != currentMousePosition");
+        //        //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
+        //        ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
+        //        //gridViewModel.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
 
-            }
-        }
+        //    }
+        //    else if (!_isDragging)
+        //    {
+        //        Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove - !dragging");
+        //        SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+        //    }
 
-        //Když dvojklik na thumb, tak autofit na velikost toho obsahového column, nikoliv toho heading
+        //    else
+        //    {
+        //        GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+        //        _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
+        //        Point mousePosition = e.GetPosition(ParentCanvas);
+        //        if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+        //            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingAllowedCursor");
+        //        else
+        //            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+        //    }
+        //    //e.Handled = true;
+        //}
 
         /// <summary>
         /// Reaguje na pohyb myši. Aktualizuje pozici prvku během přetahování nebo kreslení.
         /// </summary>
         /// <param name="sender">Objekt, který událost vyvolal (typicky UI element).</param>
         /// <param name="e">Data události obsahující informace o pozici myši.</param>
-        private void MouseMove(object sender, MouseEventArgs e)
+        //private void MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    Debug.WriteLine("DataGridDragBehavior: MouseMove");
+        //    if (!(sender is DataGrid datagrid)) return;
+
+        //    else if (!_isDragging)
+        //    {
+        //        Debug.WriteLine("DataGridDragBehavior: MouseMove - !dragging");
+        //        SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+        //    }
+        //    else
+        //    {
+        //        GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+        //        _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
+        //        Point mousePosition = e.GetPosition(ParentCanvas);
+        //        if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+        //            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingAllowedCursor");
+        //        else
+        //            SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+        //    }
+        //    e.Handled = true;
+        //}
+
+        private void PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            Debug.WriteLine("DataGridDragBehavior: PreviewMouseMove");
             if (!(sender is DataGrid datagrid)) return;
 
-            else if (!_isDragging)
-                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+            Point currentMousePosition = e.GetPosition(ParentCanvas);
+            if (_isheadingColumnWidthDragging)
+            {
+                HandleColumnWidthAdjustment(datagrid, currentMousePosition);
+            }
             else
             {
-                GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
-                _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
-                Point mousePosition = e.GetPosition(ParentCanvas);
-                if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
-                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingAllowedCursor");
-                else
-                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+                if (_isHeadingGrid)
+                    HandleMouseMoveOperation(currentMousePosition);
+            }
+        }
+
+        private void MouseMove(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine("DataGridDragBehavior: MouseMove");
+            if (!(sender is DataGrid)) return;
+            Point currentMousePosition = e.GetPosition(ParentCanvas);
+            if (!_isHeadingGrid)
+            {
+                Debug.WriteLine("DataGridDragBehavior: MouseMove - !_isHeadingGrid");
+                HandleMouseMoveOperation(currentMousePosition);
             }
             e.Handled = true;
         }
 
+        private void HandleColumnWidthAdjustment(DataGrid datagrid, Point currentMousePosition)
+        {
+            if (mouseDownPosition != currentMousePosition)
+            {
+                Debug.WriteLine("DataGridDragBehavior: Adjusting Column Width");
+                ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
+            }
+        }
+
+        private void HandleMouseMoveOperation(Point currentMousePosition)
+        {
+            if (!_isDragging)
+            {
+                Debug.WriteLine("DataGridDragBehavior: Not Dragging");
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
+            }
+            else
+            {
+                Debug.WriteLine("DataGridDragBehavior: Dragging");
+                UpdateCursorBasedOnPosition(currentMousePosition);
+            }
+        }
+
+        private void UpdateCursorBasedOnPosition(Point mousePosition)
+        {
+            GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+            _mouseHandlingService.StartOperation(AssociatedObject, null, gridViewModel, "dragging");
+
+            Debug.WriteLine("UpdateCursorBasedOnPosition: mouseposition: " + mousePosition);
+
+            if (_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+            {
+                Debug.WriteLine("UpdateCursorBasedOnPosition: _mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas)");
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingAllowedCursor");
+            }
+            else
+            {
+                Debug.WriteLine("UpdateCursorBasedOnPosition: !_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas)");
+                SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewDraggingDisallowedCursor");
+            }
+        }
+
+
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("DataGridDragBehavior: OnPreviewMouseLeftButtonDown");
-            mouseDownPosition = e.GetPosition(this.AssociatedObject);
-            DependencyObject dep = (DependencyObject)e.OriginalSource;
-
-            while (dep != null)
+            mouseDownPosition = e.GetPosition(AssociatedObject);
+            if (TryGetThumbFromEvent(e, out Thumb thumb))
             {
-                if (dep is Thumb)
-                {
-                    _isheadingColumnWidthDragging = true;
-                    // Find the DataGridColumnHeader from the Thumb
-                    var columnHeader = FindParent<DataGridColumnHeader>(dep);
-                    if (columnHeader != null)
-                    {
-                        var mousePosition = e.GetPosition(columnHeader);
-                        double relativePosition = mousePosition.X / columnHeader.ActualWidth;
-                        //_headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex;
-                        if (relativePosition < 0.5)
-                        {
-                            // Left edge - adjust the preceding column
-                            _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex - 1;
-                        }
-                        else
-                        {
-                            // Right edge - adjust the current column
-                            _headingColumnWidthDraggedIndex = columnHeader.Column.DisplayIndex;
-                        }
-                    }
-                    //e.Handled = true;
-                    break;
-                }
-                else if (dep is DataGridColumnHeader columnHeader)
-                {
-                    selectedColumn = columnHeader.Column;
-                    draggedColumnIndex = columnHeader.Column.DisplayIndex;
-                    UpdateCellStyle(selectedColumn);
-                    _isDragging = true;
-                    e.Handled = true;
-                    break;
-                }
-                else if (dep is DataGridCell cell)
-                {
-                    selectedColumn = cell.Column;
-                    draggedColumnIndex = cell.Column.DisplayIndex;
-                    UpdateCellStyle(selectedColumn);
-                    _isDragging = true;
-                    e.Handled = true;
-                    break;
-                }
-
-                dep = VisualTreeHelper.GetParent(dep);
+                _isheadingColumnWidthDragging = true;
+                HandleColumnWidthDraggingStart(thumb);
+            }
+            else if (TryGetHeaderOrCellFromEvent(e, out DataGridColumn column))
+            {
+                selectedColumn = column;
+                _headingColumnWidthDraggedIndex = column.DisplayIndex;
+                UpdateCellStyle(selectedColumn);
+                _isDragging = true;
+                e.Handled = true;
             }
         }
+
+        private bool TryGetThumbFromEvent(MouseButtonEventArgs e, out Thumb thumb)
+        {
+            thumb = null;
+            var depObj = e.OriginalSource as DependencyObject;
+            thumb = depObj.FindVisualParent<Thumb>();
+            return thumb != null;
+        }
+
+        private bool TryGetHeaderOrCellFromEvent(MouseButtonEventArgs e, out DataGridColumn column)
+        {
+            column = null;
+            var depObj = e.OriginalSource as DependencyObject;
+
+            var header = depObj.FindVisualParent<DataGridColumnHeader>();
+            if (header != null)
+            {
+                column = header.Column;
+                return true;
+            }
+
+            var cell = depObj.FindVisualParent<DataGridCell>();
+            if (cell != null)
+            {
+                column = cell.Column;
+                return true;
+            }
+
+            return false;
+        }
+
 
         private static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
@@ -336,46 +406,6 @@ namespace AnalystDataImporter.Behaviors
             }
         }
 
-
-        //private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    //GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
-
-        //    DependencyObject dep = (DependencyObject)e.OriginalSource;
-
-        //    while (dep != null)
-        //    {
-        //        dep = VisualTreeHelper.GetParent(dep);
-        //        if (dep is Thumb)
-        //        {
-        //            // TODO: Tady se začíná rozšiřovat sloupec v heading column - 
-        //            _isheadingColumnWidthDragging = true;
-        //            var bb = VisualTreeHelper.GetParent(dep);
-        //            break;
-        //            //return;
-        //        }
-        //        else if (dep is DataGridColumnHeader columnHeader)
-        //        {
-        //            selectedColumn = columnHeader.Column;
-        //            draggedColumnIndex = columnHeader.Column.DisplayIndex;
-        //            UpdateCellStyle(selectedColumn);
-        //            _isDragging = true;
-        //            e.Handled = true;
-        //            break;
-        //        }
-        //        else if (dep is DataGridCell cell)
-        //        {
-        //            // A cell was clicked
-        //            selectedColumn = cell.Column;
-        //            draggedColumnIndex = cell.Column.DisplayIndex;
-        //            UpdateCellStyle(selectedColumn);
-        //            _isDragging = true;
-        //            e.Handled = true;
-        //            break;
-        //        }
-        //    }
-        //}
-
         private void OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("OnPreviewMouseLeftButtonUp");
@@ -383,6 +413,11 @@ namespace AnalystDataImporter.Behaviors
             {
                 Debug.WriteLine("OnPreviewMouseLeftButtonUp - _isheadingColumnWidthDragging");
                 _isheadingColumnWidthDragging = false;
+
+                // V případech, kdy se rychle táhne myší během změny šířky sloupce v heading data gridu a mousePreviewUp je proveden mimo data grid, nemusí se operace změny přílušného sloupce v content data gridu provést - proto tato pojistná podmínka
+                if (sender is DataGrid datagrid && datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth != ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width)
+                    ContentDataGrid.Columns[_headingColumnWidthDraggedIndex].Width = datagrid.Columns[_headingColumnWidthDraggedIndex].ActualWidth;
+
             }
             else if (_isDragging)
             {
@@ -395,12 +430,12 @@ namespace AnalystDataImporter.Behaviors
                 else
                 {
                     GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
-                    GetDraggedGridViewColumnCommand.Execute(draggedColumnIndex);
+                    GetDraggedGridViewColumnCommand.Execute(_headingColumnWidthDraggedIndex);
                 }
                 //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
                 _isDragging = false;
             }
-            _isheadingColumnWidthDragging = false;
+            //_isheadingColumnWidthDragging = false;
             ResetCellStyle();
             //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewMouseOverCursor");
             //e.Handled = true;
@@ -433,6 +468,7 @@ namespace AnalystDataImporter.Behaviors
 
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
+            Debug.WriteLine("OnMouseLeave");
             //_isDragging = false;
             if (!_isDragging)
             {
@@ -500,48 +536,24 @@ namespace AnalystDataImporter.Behaviors
             AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
             AssociatedObject.Loaded -= OnLoaded;
             AssociatedObject.PreviewMouseDoubleClick -= OnPreviewMouseDoubleClick;
-
-            //GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
-            //if (gridViewModel != null)
-            //{
-            //    gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
-            //    foreach (var column in gridViewModel.Columns)
-            //    {
-            //        column.PropertyChanged -= OnColumnPropertyChanged;
-            //    }
-            //    //AssociatedObject.AutoGeneratingColumn -= OnAutoGeneratingColumn;
-
-            //    //if (AssociatedObject is FrameworkElement frameworkElement)
-            //    //{
-            //    //    frameworkElement.DataContextChanged -= OnDataContextChanged;
-            //    //    if (frameworkElement.DataContext is GridViewModel gridViewModel)
-            //    //    {
-            //    //        gridViewModel.Columns.CollectionChanged -= OnColumnsCollectionChanged;
-            //    //    }
-            //    //}
-
-
-            //}
         }
+    }
+}
 
-        private void OnColumnWidthsChanged(object sender, NotifyCollectionChangedEventArgs e)
+public static class DependencyObjectExtensions
+{
+    public static T FindVisualParent<T>(this DependencyObject child) where T : DependencyObject
+    {
+        while (child != null)
         {
-            // Logic to update DataGrid column widths based on ViewModel
-            // This could involve iterating over AssociatedObject.Columns
-            // and updating their widths to match the ViewModel's collection
+            if (child is T correctlyTyped)
+            {
+                return correctlyTyped;
+            }
+
+            child = VisualTreeHelper.GetParent(child);
         }
 
-        // Vlastnosti DependencyProperty - návaznost na výše uvedené commands - připojení k view
-        //public static readonly DependencyProperty ChangeFinishDrawingElementProperty = DependencyProperty.Register(
-        //    nameof(FinishDrawingElementCommand), typeof(ICommand),
-        //    typeof(DataGridDragBehavior),
-        //    new PropertyMetadata(null));
-
-        //public ICommand FinishDrawingElementCommand
-        //{
-        //    get => (ICommand)GetValue(ChangeFinishDrawingElementProperty);
-        //    set => SetValue(ChangeFinishDrawingElementProperty, value);
-        //}
-
+        return null;
     }
 }

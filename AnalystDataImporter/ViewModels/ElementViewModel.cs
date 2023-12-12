@@ -199,5 +199,18 @@ namespace AnalystDataImporter.ViewModels
                 OnPropertyChanged(nameof(Height));
             }
         }
+
+        public override bool IsSelected
+        {
+            get => base.IsSelected;
+            set
+            {
+                base.IsSelected = value;
+                if (value == true)
+                    ZIndex= 2;
+                else
+                    ZIndex = 1;
+            }
+        }
     }
 }
