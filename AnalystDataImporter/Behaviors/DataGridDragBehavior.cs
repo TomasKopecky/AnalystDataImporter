@@ -25,7 +25,7 @@ namespace AnalystDataImporter.Behaviors
     {
         private Point mouseDownPosition;
         private IMouseHandlingService _mouseHandlingService; // proměnná pro přiřazení service pro obsluhu mouse events
-        private SharedStatesService _sharedStateService;
+        //private SharedStatesService _sharedStateService;
         private DataGridColumn selectedColumn;
         private bool _isDragging; // ndikace zda je aktivní mód tažení sloupce gridu
         //private int _headingColumnWidthDraggedIndex;
@@ -96,7 +96,7 @@ namespace AnalystDataImporter.Behaviors
         private void InitializeServices()
         {
             _mouseHandlingService = ServiceLocator.Current.GetService<IMouseHandlingService>();
-            _sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
+            //_sharedStateService = ServiceLocator.Current.GetService<SharedStatesService>();
         }
 
         ///// <summary>
@@ -130,7 +130,6 @@ namespace AnalystDataImporter.Behaviors
         // Method to try getting DataGridColumnHeader from event
         private bool TryGetColumnHeaderFromEvent(MouseEventArgs e, out DataGridColumnHeader columnHeader)
         {
-            columnHeader = null;
             var depObj = e.OriginalSource as DependencyObject;
 
             columnHeader = depObj.FindVisualParent<DataGridColumnHeader>();
@@ -193,9 +192,8 @@ namespace AnalystDataImporter.Behaviors
                 datagrid.ColumnHeaderHeight = datagrid.ActualHeight;
             }
 
-            GridViewModel gridViewModel = AssociatedObject.DataContext as GridViewModel;
             // když je prvek content data grid - nastav width sloupců heading data grid podle prvotní šířky content data grid sloupců
-            if (gridViewModel != null && gridViewModel.Columns.Count == datagrid.Columns.Count && !_isHeadingGrid)
+            if (AssociatedObject.DataContext is GridViewModel gridViewModel && gridViewModel.Columns.Count == datagrid.Columns.Count && !_isHeadingGrid)
             {
                 int i = 0;
                 foreach (var column in datagrid.Columns)
@@ -361,7 +359,6 @@ namespace AnalystDataImporter.Behaviors
 
         private bool TryGetThumbFromEvent(MouseButtonEventArgs e, out Thumb thumb)
         {
-            thumb = null;
             var depObj = e.OriginalSource as DependencyObject;
             thumb = depObj.FindVisualParent<Thumb>();
             return thumb != null;
@@ -395,8 +392,7 @@ namespace AnalystDataImporter.Behaviors
             DependencyObject parentDepObj = VisualTreeHelper.GetParent(child);
             if (parentDepObj == null) return null;
 
-            T parent = parentDepObj as T;
-            if (parent != null)
+            if (parentDepObj is T parent)
             {
                 return parent;
             }
@@ -429,7 +425,7 @@ namespace AnalystDataImporter.Behaviors
                 }
                 else
                 {
-                    GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
+                    //GridViewModel gridViewModel = (GridViewModel)AssociatedObject.DataContext;
                     GetDraggedGridViewColumnCommand.Execute(_headingColumnWidthDraggedIndex);
                 }
                 //SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
@@ -450,7 +446,7 @@ namespace AnalystDataImporter.Behaviors
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             //if (sender is DataGrid dataGrid && VisualTreeHelper.GetParent(dataGrid) is Grid grid && grid.Parent is ScrollViewer scrollViewer)
-            if (sender is DataGrid dataGrid && ScrollViewerWithDataGrids != null)
+            if (sender is DataGrid && ScrollViewerWithDataGrids != null)
             {
                 // Calculate the new scroll offset.
                 double newOffset = ScrollViewerWithDataGrids.VerticalOffset - (e.Delta/* / 120.0 * 3*/); // Adjust '3' to change scroll speed

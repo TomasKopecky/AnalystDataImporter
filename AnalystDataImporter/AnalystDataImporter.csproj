@@ -106,6 +106,7 @@
     <Compile Include="Behaviors\LineBehavior.cs" />
     <Compile Include="Utilities\MousePositionInvokeCommandAction.cs" />
     <Compile Include="Utilities\MyTemplateSelector.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Behaviors\SharedBehaviorProperties.cs" />
     <Compile Include="Utilities\SafeCursorHandle .cs" />

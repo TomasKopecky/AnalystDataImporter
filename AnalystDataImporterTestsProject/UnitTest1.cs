@@ -13,14 +13,14 @@ namespace AnalystDataImporterTestsProject
     [TestClass]
     public class BasicUiTesting
     {
-        private CanvasViewModel _canvasViewModel;
+        private readonly CanvasViewModel _canvasViewModel;
 
         // Mock objects
         private Mock<IElementViewModelFactory> _mockElementViewModelFactory;
         private Mock<IRelationViewModelFactory> _mockRelationViewModelFactory;
         private Mock<IElementManager> _mockElementManager;
         private Mock<IRelationManager> _mockRelationManager;
-        private Mock<IMouseHandlingService> _mockMouseHandlingService;
+        //private Mock<IMouseHandlingService> _mockMouseHandlingService;
 
         [TestInitialize]
         public void Setup()
@@ -30,7 +30,7 @@ namespace AnalystDataImporterTestsProject
             _mockRelationViewModelFactory = new Mock<IRelationViewModelFactory>();
             _mockElementManager = new Mock<IElementManager>();
             _mockRelationManager = new Mock<IRelationManager>();
-            _mockMouseHandlingService = new Mock<IMouseHandlingService>();
+            //_mockMouseHandlingService = new Mock<IMouseHandlingService>();
 
             // Create a collection of ElementViewModels for testing
             var testElements = new ObservableCollection<ElementViewModel>
@@ -60,12 +60,12 @@ namespace AnalystDataImporterTestsProject
                 .Returns((Point start, Point end) => new RelationViewModel(new Relation(), start, end));
 
             // Create CanvasViewModel instance
-            _canvasViewModel = new CanvasViewModel(
-                _mockElementViewModelFactory.Object,
-                _mockElementManager.Object,
-                _mockRelationViewModelFactory.Object,
-                _mockRelationManager.Object,
-                _mockMouseHandlingService.Object);
+            //_canvasViewModel = new CanvasViewModel(
+            //    _mockElementViewModelFactory.Object,
+            //    _mockElementManager.Object,
+            //    _mockRelationViewModelFactory.Object,
+            //    _mockRelationManager.Object,
+            //    _mockMouseHandlingService.Object);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace AnalystDataImporterTestsProject
             ElementViewModel toElement = AddTestingElementToCanvas(new Point(400, 100), "Second element", "Label 2");
             AddTestingElementToCanvas(new Point(2, 2), "Third element", "Label 3");
             AddTestingRelationToCanvas(fromElement, toElement);
-            _canvasViewModel.IsDraggingElementModeActive = true;
+            //_canvasViewModel.IsDraggingElementModeActive = true;
         }
 
         private ElementViewModel CreateTestElementViewModel(double xPosition, double yPosition, string title, string label)

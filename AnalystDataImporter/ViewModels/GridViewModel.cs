@@ -35,10 +35,6 @@ namespace AnalystDataImporter.ViewModels
         public DataTable ColumnTable { get; set; }
         private readonly ITableColumnViewModelFactory _tableColumnViewModelFactory;
         private ObservableCollection<TableColumnViewModel> _columns;
-        //public ObservableCollection<ColumnInfo> Columns { get; private set; }
-        private string _gridCursor;
-        //private bool _mouseOnGrid;
-        //private bool _isDraggingColumnModeActive;
         public ICommand ChangeCursorWhenOperatingGridCommand { get; private set; }
 
         public ICommand GetDraggedGridViewColumnCommand { get; private set; }
@@ -129,66 +125,7 @@ namespace AnalystDataImporter.ViewModels
 
             GenerateTestDataGridContent();
 
-            //TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
-            //tableColumn.Heading = "SIM";
-            //tableColumn.Index = 0;
-
-            //Columns.Add(tableColumn);
-
-            //tableColumn = _tableColumnViewModelFactory.Create();
-            //tableColumn.Heading = "IMEI";
-            //tableColumn.Index = 1;
-
-            //Columns.Add(tableColumn);
-
-            //Rows.Add(new List<string> { "721546132", "3512135435453453" });
-            //Rows.Add(new List<string> { "777853453", "6534534534534355" });
-            //Rows.Add(new List<string> { "605325456", "2455778454452412" });
-            //Rows.Add(new List<string> { "606454354", "2124524564545335" });
-            //Rows.Add(new List<string> { "606454378", "5453524564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-            //Rows.Add(new List<string> { "606444225", "2445242564545335" });
-
-            //foreach (var item in Columns)
-            //{
-            //    Table.Columns.Add(item.Heading, typeof(string));
-            //    ColumnTable.Columns.Add(item.Heading, typeof(string));
-            //}
-
-            //foreach (var tableRow in Rows)
-            //{
-            //    DataRow row = Table.NewRow();
-            //    int i = 0;
-            //    foreach (var rowValue in tableRow)
-            //    {
-            //        try
-            //        {
-            //            row[i] = rowValue;
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            throw new NotImplementedException();
-            //        }
-            //        i++;
-            //    }
-            //    Table.Rows.Add(row);
-            //}
         }
-
-        //public bool IsDraggingColumnModeActive
-        //{
-        //    get => _isDraggingColumnModeActive;
-        //    set
-        //    {
-        //        if (_isDraggingColumnModeActive == value) return;
-        //        _isDraggingColumnModeActive = value;
-        //        OnPropertyChanged(nameof(IsDraggingColumnModeActive));
-        //    }
-        //}
 
         /// <summary>
         /// Metoda pro změnu kurzoru při operaci s prvkem.
@@ -245,32 +182,11 @@ namespace AnalystDataImporter.ViewModels
                 if (_mouseCursorService.CurrentCursor != value)
                 {
                     _mouseCursorService.UpdateCursor();
-                    //_mouseCursorService.UpdateCursorForGrid(_mouseOnGrid,IsDraggingColumnModeActive);
-                    //CanvasCursor = null;
                 }
             }
         }
 
-        //public string GridCursor
-        //{
-        //    get
-        //    {
-        //        if (_mouseOnGrid)
-        //            _gridCursor = "Hand";
-        //        else if (IsDraggingColumnModeActive)
-        //            _gridCursor = "Wait";
-        //        else
-        //            _gridCursor = "Arrow";
-
-        //        //Debug.WriteLine("Getting cursor: " + _canvasCursor);
-        //        return _gridCursor;
-        //    }
-        //    set
-        //    {
-        //        _gridCursor = value;
-        //        OnPropertyChanged(nameof(GridCursor));
-        //    }
-        //}
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -280,67 +196,3 @@ namespace AnalystDataImporter.ViewModels
         }
     }
 }
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Collections.ObjectModel;
-//using System.ComponentModel;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-
-//namespace AnalystDataImporter.ViewModels
-//{
-//    public class GridViewModel : INotifyPropertyChanged
-//    {
-//        //public GridViewModel()
-//        //{
-//        //    LoadData();
-//        //}
-
-//        private ObservableCollection<KeyValuePair<int, string>> _items;
-
-//        public ObservableCollection<KeyValuePair<int, string>> Items
-//        {
-//            get => _items;
-//            set
-//            {
-//                _items = value;
-//                OnPropertyChanged(nameof(Items));
-//            }
-//        }
-//        //private ObservableCollection<TableColumnViewModel> _items;
-
-//        //public ObservableCollection<TableColumnViewModel> Items
-//        //{
-//        //    get => _items;
-//        //    set
-//        //    {
-//        //        _items = value;
-//        //        OnPropertyChanged(nameof(Items));
-//        //    }
-//        //}
-
-//        public void LoadTestData()
-//        {
-//            // Initialize the collection
-//            Items = new ObservableCollection<KeyValuePair<int, string>>();
-
-//            // Generate sample data
-//            for (int i = 1; i <= 10; i++) // Create 10 sample rows
-//            {
-//                Items.Add(new KeyValuePair<int, string>(i, $"Item {i}"));
-//            }
-//        }
-
-
-//        public event PropertyChangedEventHandler PropertyChanged;
-
-//        protected virtual void OnPropertyChanged(string propertyName)
-//        {
-//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-//        }
-//    }
-
-//}

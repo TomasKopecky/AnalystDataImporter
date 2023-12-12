@@ -304,6 +304,12 @@
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
                 <TextBlock Margin="5"
                            Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />
+                <Grid>
+
+                    <DataGrid>
+                        
+                    </DataGrid>
+                </Grid>
             </StackPanel>
         </Grid>
     </Grid>

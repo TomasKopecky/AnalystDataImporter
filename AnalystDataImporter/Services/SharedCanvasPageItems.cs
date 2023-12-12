@@ -10,8 +10,8 @@ namespace AnalystDataImporter.Services
 {
     public class SharedCanvasPageItems : INotifyPropertyChanged
     {
-        ElementViewModel _fromElement;
-        ElementViewModel _toElement;
+        //ElementViewModel _fromElement;
+        //ElementViewModel _toElement;
         TableColumnViewModel _tableColumn;
 
         public TableColumnViewModel TableColumn

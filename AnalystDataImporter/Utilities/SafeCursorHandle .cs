@@ -10,9 +10,6 @@ namespace AnalystDataImporter.Utilities
 {
     public sealed class SafeCursorHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        [DllImport("user32.dll")]
-        private static extern bool DestroyCursor(IntPtr handle);
-
         public SafeCursorHandle() : base(true) { }
         public SafeCursorHandle(IntPtr handle) : base(true)
         {
@@ -20,7 +17,7 @@ namespace AnalystDataImporter.Utilities
         }
         protected override bool ReleaseHandle()
         {
-            return DestroyCursor(handle);
+            return NativeMethods.DestroyCursor(handle);
         }
     }
 }

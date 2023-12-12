@@ -10,22 +10,17 @@ namespace AnalystDataImporter.Services
 {
     public class MouseCursorService : INotifyPropertyChanged
     {
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr LoadCursor(IntPtr hInstance, UInt16 lpCursorName);
+        
 
         private readonly SharedStatesService _sharedStateService;
         public event PropertyChangedEventHandler PropertyChanged;
-        private string _currentCursorIcon = "Arrow";
         private Cursor _currentCursor = Cursors.Arrow;
         public Cursor CopyCursor { get; private set; }
 
         public MouseCursorService(SharedStatesService sharedStateService)
         {
             _sharedStateService = sharedStateService;
-            IntPtr copyCursorHandle = LoadCursor(LoadLibrary("ole32.dll"), 6);
+            IntPtr copyCursorHandle = NativeMethods.LoadCursor(NativeMethods.LoadLibrary("ole32.dll"), new IntPtr(6)); // Replace '6' with the correct constant for your cursor
             CopyCursor = CursorInteropHelper.Create(new SafeCursorHandle(copyCursorHandle));
         }
 
@@ -41,19 +36,6 @@ namespace AnalystDataImporter.Services
                 }
             }
         }
-
-        //public string CurrentCursor
-        //{
-        //    get => _currentCursor;
-        //    private set
-        //    {
-        //        if (_currentCursor != value)
-        //        {
-        //            _currentCursor = value;
-        //            CursorChanged?.Invoke(this, EventArgs.Empty);
-        //        }
-        //    }
-        //}
 
         public event EventHandler CursorChanged;
 
@@ -98,34 +80,6 @@ namespace AnalystDataImporter.Services
             Debug.WriteLine(CurrentCursor);
             OnPropertyChanged(nameof(CurrentCursor));
         }
-
-
-        //public void UpdateCursorForCanvas(bool isDrawingElement, bool isDrawingRelationModeActive, bool isMouseOnElement, bool isAddingElementOutsideCanvas)
-        //{
-        //    if (isDrawingElement)
-        //        CurrentCursor = isAddingElementOutsideCanvas ? "Arrow" : "None";
-        //    else if (isDrawingRelationModeActive)
-        //        CurrentCursor = "Cross";
-        //    else if (isMouseOnElement)
-        //        CurrentCursor = "SizeAll";
-        //    else
-        //        CurrentCursor = "Arrow";
-
-        //    OnPropertyChanged(nameof(CurrentCursor));
-        //}
-
-        //public void UpdateCursorForGrid(bool isMouseOnGrid, bool isDraggingColumn)
-        //{
-        //    // Logic to determine cursor for grid
-        //    if (isMouseOnGrid)
-        //        CurrentCursor = "Hand";
-        //    else if (isDraggingColumn)
-        //        CurrentCursor = "Wait";
-        //    else
-        //        CurrentCursor = "Arrow";
-
-        //    OnPropertyChanged(nameof(CurrentCursor));
-        //}
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
