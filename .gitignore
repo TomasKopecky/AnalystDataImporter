@@ -361,3 +361,23 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/AnalystDataImporter/obj/Debug/WindowsWPF/TestWindow.g.i.cs
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport2.g.i.cs
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport2.g.cs
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport2.baml
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport1.g.i.cs
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport1.g.cs
+/AnalystDataImporter/obj/Debug/WindowsWPF/PageImport1.baml
+/AnalystDataImporter/obj/Debug/AnalystDataImporter_MarkupCompile.lref
+/AnalystDataImporter/obj/Debug/AnalystDataImporter_Content.g.i.cs
+/AnalystDataImporter/obj/Debug/TestWindow.g.i.cs
+/AnalystDataImporter/obj/Release/WindowsWPF/PageImport2.g.cs
+/AnalystDataImporter/obj/Release/WindowsWPF/PageImport1.g.cs
+/AnalystDataImporter/obj/Release/AnalystDataImporter_MarkupCompile.lref
+/AnalystDataImporter/obj/Release/AnalystDataImporter_MarkupCompile.cache
+/AnalystDataImporter/obj/Release/AnalystDataImporter.csproj.AssemblyReference.cache
+/AnalystDataImporter/obj/Release/MainWindow.g.cs
+/AnalystDataImporter/obj/Release/App.g.cs
+/AnalystDataImporter/obj/Release/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+/.gitignore
+/.gitignore
