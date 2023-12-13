@@ -129,6 +129,14 @@
     <Compile Include="Views\CanvasPage.xaml.cs">
       <DependentUpon>CanvasPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsWPF\Objekt.cs" />
+    <Compile Include="WindowsWPF\PageImport1.xaml.cs">
+      <DependentUpon>PageImport1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\PageImport2.xaml.cs">
+      <DependentUpon>PageImport2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\Vazba.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -146,6 +154,14 @@
     <Page Include="Views\CanvasPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\PageImport1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\PageImport2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
