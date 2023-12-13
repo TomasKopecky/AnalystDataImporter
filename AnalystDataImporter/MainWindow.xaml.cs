@@ -3,12 +3,14 @@
 
 namespace AnalystDataImporter
 {
+    public partial class MainWindow
     {
+
         public MainWindow()
         {
             InitializeComponent();
-        }
-        
+
+
 
             // Získání instance stránky ElementPage pomocí závislostní injekce.
             //var elementPage = App.GetService<ElementPage>();
@@ -23,8 +25,9 @@ namespace AnalystDataImporter
             //Consider adding a navigation mechanism if you plan to switch between different pages(e.g., ElementPage and CanvasPage)
             //in the main window.The Frame control is useful for this purpose.Instead of setting the content of the window directly,
             //you can navigate to different pages using the MainFrame.Navigate() method.
-        }
-    }
 
-}
+
+        }
+
+    }
 }

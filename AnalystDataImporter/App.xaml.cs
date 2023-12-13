@@ -71,7 +71,6 @@ namespace AnalystDataImporter
 
             // Registrace Views.
             services.AddTransient<CanvasPage>();
-            services.AddTransient<ElementPage>();
             services.AddTransient<MainWindow>(); // Registrace hlavního okna.
 
             
