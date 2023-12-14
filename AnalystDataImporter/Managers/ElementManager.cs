@@ -19,17 +19,17 @@ namespace AnalystDataImporter.Managers
         /// Konstruktor třídy ElementManager, který inicializuje objekty a nastavuje výchozí hodnoty.
         /// </summary>
         public ElementManager()
-            {
-                _elements = new ObservableCollection<ElementViewModel>();
-            }
+        {
+            _elements = new ObservableCollection<ElementViewModel>();
+        }
 
         /// <summary>
         /// Metoda pro přidání prvku do kolekce prvků.
         /// </summary>
         /// <param name="elementViewModel">Prvek, který chceme přidat.</param>
         public void AddElement(ElementViewModel elementViewModel)
-            {
-                _elements.Add(elementViewModel);
-            }
+        {
+            _elements.Add(elementViewModel);
+        }
     }
 }
