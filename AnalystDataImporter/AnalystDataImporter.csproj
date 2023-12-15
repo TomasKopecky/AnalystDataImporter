@@ -139,6 +139,39 @@
     <Compile Include="WindowsWPF\PageImport2.xaml.cs">
       <DependentUpon>PageImport2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
+      <DependentUpon>PageBarva.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageDatumCas.xaml.cs">
+      <DependentUpon>PageDatumCas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageIdentita.xaml.cs">
+      <DependentUpon>PageIdentita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageNasobnost.xaml.cs">
+      <DependentUpon>PageNasobnost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PagePopis.xaml.cs">
+      <DependentUpon>PagePopis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PagePopisek.xaml.cs">
+      <DependentUpon>PagePopisek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSila.xaml.cs">
+      <DependentUpon>PageSila.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSirka.xaml.cs">
+      <DependentUpon>PageSirka.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSmer.xaml.cs">
+      <DependentUpon>PageSmer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageTyp.xaml.cs">
+      <DependentUpon>PageTyp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsWPF\Vazba.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +202,50 @@
     <Page Include="WindowsWPF\PageImport2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageDatumCas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageIdentita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageNasobnost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PagePopis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PagePopisek.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSila.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSirka.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSmer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageTyp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
