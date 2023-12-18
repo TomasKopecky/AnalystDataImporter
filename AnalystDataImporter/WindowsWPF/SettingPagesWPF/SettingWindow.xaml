@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="300" Width="500
-        ">
+        Title="SettingWindow" Height="100" Width="200"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
     <Grid>
-        
+        <Frame x:Name="SettingFrame" />
     </Grid>
 </Window>

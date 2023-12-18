@@ -34,12 +34,12 @@
         </Grid.ColumnDefinitions>
 
         <!--Jednoduché-->
-        <RadioButton x:Name="rdBtnVazbaJednoducha" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnVazbaJednoducha" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" />
         <Label Content="Jednoduché" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" />
         <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaJednoducha.png" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
         <!--Násobné-->
-        <RadioButton x:Name="rdBtnVazbaNasobna" Grid.Row="2" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnVazbaNasobna" Grid.Row="2" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" />
         <Label Content="Násobné" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" />
         <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaNasobna.png" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
 

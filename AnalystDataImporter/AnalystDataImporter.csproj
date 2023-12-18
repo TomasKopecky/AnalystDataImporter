@@ -106,6 +106,9 @@
     <Compile Include="Behaviors\GridSizeBehavior.cs" />
     <Compile Include="Services\SharedCanvasPageItems.cs" />
     <Compile Include="Services\SharedStatesService.cs" />
+    <Compile Include="TOM_MainWindow.xaml.cs">
+      <DependentUpon>TOM_MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\InverseBooleanConverter.cs" />
     <Compile Include="Behaviors\LineBehavior.cs" />
     <Compile Include="Utilities\MousePositionInvokeCommandAction.cs" />
@@ -129,8 +132,8 @@
     <Compile Include="Views\CanvasPage.xaml.cs">
       <DependentUpon>CanvasPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsWPF\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="WindowsWPF\MainPage_OLD.xaml.cs">
+      <DependentUpon>MainPage_OLD.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\Objekt.cs" />
     <Compile Include="WindowsWPF\PageImport1.xaml.cs">
@@ -187,11 +190,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TOM_MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CanvasPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsWPF\MainPage.xaml">
+    <Page Include="WindowsWPF\MainPage_OLD.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

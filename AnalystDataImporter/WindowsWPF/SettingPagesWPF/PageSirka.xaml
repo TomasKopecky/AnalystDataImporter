@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Šířka:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
-        <ComboBox x:Name="cmbBxVazbaSirka" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <ComboBox x:Name="cmbBxVazbaSirka" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
             <ComboBoxItem>1</ComboBoxItem>
             <ComboBoxItem>2</ComboBoxItem>
             <ComboBoxItem>3</ComboBoxItem>

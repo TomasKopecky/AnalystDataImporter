@@ -27,7 +27,15 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Typ:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
-        <ComboBox x:Name="cmbBxTypElement" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <ComboBox x:Name="cmbBxTypElement" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
+            <ComboBoxItem>Obecný objekt</ComboBoxItem>
+            <ComboBoxItem>Telefon</ComboBoxItem>
+            <ComboBoxItem>Osoba</ComboBoxItem>
+            <ComboBoxItem>IMEI</ComboBoxItem>
+            <ComboBoxItem>Mail</ComboBoxItem>
+            <ComboBoxItem>Doména</ComboBoxItem>
+            <ComboBoxItem>Číslo jednací</ComboBoxItem>
+        </ComboBox>
 
         <!--Tlačítka-->
         <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />

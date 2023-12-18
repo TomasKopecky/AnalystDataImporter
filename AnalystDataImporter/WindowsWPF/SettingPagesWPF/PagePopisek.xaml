@@ -32,14 +32,14 @@
         </Grid.ColumnDefinitions>
 
         <!--Prázdné-->
-        <RadioButton x:Name="rdBtnPopisekPrazdne" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnPopisekPrazdne" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnPopisekPrazdne_Click"/>
         <Label Content="Prázdné" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" />
         
         <!--Hodnota (Sloupec)-->
-        <RadioButton x:Name="rdBtnPopisekSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnPopisekSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnPopisekSloupec_Click"/>
         <Label Content="Hodnota:" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" />
         <TextBox x:Name="txtBxPopisek" Height="200" Width="400" Margin="5" Grid.Row="2" Grid.Column="1" IsEnabled="False" />
-        <ComboBox x:Name="cmbBxSloupec" SelectedItem="Vložit Sloupec"  MinWidth="200" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" IsEnabled="False">
+        <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" IsEnabled="False">
             <ComboBoxItem>Vložit Sloupec</ComboBoxItem>
         </ComboBox>
 

@@ -22,7 +22,7 @@ namespace AnalystDataImporter.WindowsWPF
     /// <summary>
     /// Interakční logika pro MainPage.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class MainPage_OLD : Page
     {
         // Po nacteni Okna:
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -52,7 +52,7 @@ namespace AnalystDataImporter.WindowsWPF
         }
 
         // konstruktor
-        public MainPage()
+        public MainPage_OLD()
         {
             InitializeComponent(); // Inicializace komponent
         }

@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Síla:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
-        <ComboBox x:Name="cmbBxVazbaSila" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <ComboBox x:Name="cmbBxVazbaSila" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
             <ComboBoxItem>Potvrzené</ComboBoxItem>
             <ComboBoxItem>Nepotvrzené</ComboBoxItem>
             <ComboBoxItem>Nezávazné</ComboBoxItem>

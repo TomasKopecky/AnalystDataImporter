@@ -30,12 +30,12 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <RadioButton x:Name="rdBtnNenastaveno" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnNenastaveno" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnNenastaveno_Click"/>
         <Label Content="Nenastaveno" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" />
 
-        <RadioButton x:Name="rdBtnJedenSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <RadioButton x:Name="rdBtnJedenSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnJedenSloupec_Click"/>
         <Label Content="Jeden sloupec" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" />
-        <ComboBox x:Name="cmbBxSloupecDatum" Width="300" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" IsEnabled="False" />
+        <ComboBox x:Name="cmbBxSloupecDatum" SelectedIndex="0" Width="300" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" IsEnabled="False" />
 
         <!--Tlačítka-->
         <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="2" Width="85" Height="25" Margin="10,5" />

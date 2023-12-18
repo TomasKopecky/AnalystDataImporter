@@ -31,8 +31,11 @@
 
         <TextBox x:Name="txtBxIdentita" Height="200" Width="400" Margin="5" />
 
-        <ComboBox x:Name="cmbBxSloupec" SelectedItem="Vložit Sloupec"  MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5">
+        <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5">
             <ComboBoxItem>Vložit Sloupec</ComboBoxItem>
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
         </ComboBox>
 
         <Label Content="POZOR!: Pokud jsou data prázdná, nevytvářet objekt - (daný řádek se nezpracuje!)" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />

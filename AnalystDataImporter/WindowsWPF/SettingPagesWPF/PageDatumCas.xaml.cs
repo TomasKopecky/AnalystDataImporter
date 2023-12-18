@@ -24,5 +24,20 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
         {
             InitializeComponent();
         }
+
+        private void rdBtnNenastaveno_Click(object sender, RoutedEventArgs e)
+        {
+            cmbBxSloupecDatum.IsEnabled = false;
+
+            // TODO: Metoda - co se stane, když nechci nastavit Datum nebo Čas
+        }
+
+        private void rdBtnJedenSloupec_Click(object sender, RoutedEventArgs e)
+        {
+            cmbBxSloupecDatum.IsEnabled = true;
+
+            // TODO: Metoda - co se stane, když vyberu sloupec pro Datum nebo Čas
+            // TODO: Kontorla formátu Datum/Čas (??)
+        }
     }
 }
