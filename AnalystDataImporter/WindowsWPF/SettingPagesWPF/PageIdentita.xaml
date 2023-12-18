@@ -35,7 +35,6 @@
 
         <!--Tlačítka-->
         <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" VerticalAlignment="Top" />
-
         <Button x:Name="btnStorno" Content="Storno" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,40,10,5" VerticalAlignment="Top" />
 
     </Grid>

@@ -15,8 +15,6 @@
             <RowDefinition Height="Auto"/>
             <!--řádek 1-->
             <RowDefinition Height="Auto"/>
-            <!--řádek 2-->
-            <RowDefinition Height="Auto"/>
             <!--řádek 3-->
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -28,13 +26,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Typ:" VerticalAlignment="Bottom" />
-
+        <Label Content="Typ:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
         <ComboBox x:Name="cmbBxTypElement" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" />
 
         <!--Tlačítka-->
         <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />
-
         <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" />
 
     </Grid>

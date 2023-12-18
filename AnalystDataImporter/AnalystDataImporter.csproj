@@ -290,5 +290,20 @@
   <ItemGroup>
     <Resource Include="dev_rules_cz_en.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaNasobna.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaJednoducha.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaSmerNapoveda.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

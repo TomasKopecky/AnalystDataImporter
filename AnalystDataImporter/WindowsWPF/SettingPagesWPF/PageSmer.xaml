@@ -5,10 +5,43 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageSmer">
+      Title="PageSmer"> <!--d:DesignHeight="450" d:DesignWidth="800"-->
 
     <Grid>
+        <!-- Definice řádků -->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 1-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 3-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 4-->
+            <RowDefinition Height="60"/>
+            <!--řádek 5-->
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <!-- Definice sloupců -->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition Width="Auto"/>
+            <!--sloupec 1-->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Směr od položky Ikona 1 k položce Ikona 2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
+        <ComboBox x:Name="cmbBxVazbaSmer" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ComboBoxItem>Žádné</ComboBoxItem>
+            <ComboBoxItem>Ikona 1 až Ikona 2</ComboBoxItem>
+            <ComboBoxItem>Ikona 2 až Ikona 1</ComboBoxItem>
+        </ComboBox>
+
+        <Label Content="Nápověda:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Bottom" />
+        <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaSmerNapoveda.png" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+        <!--Tlačítka-->
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" />
         
     </Grid>
 </Page>
