@@ -35,7 +35,7 @@
             <ComboBoxItem>Vložit Sloupec</ComboBoxItem>
         </ComboBox>
 
-        <Label Content="PZOR!: Pokud jsou data prázdná, nevytvářet objekt - (daný řádek se nezpracuje!)" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Label Content="POZOR!: Pokud jsou data prázdná, nevytvářet objekt - (daný řádek se nezpracuje!)" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
 
 
 
