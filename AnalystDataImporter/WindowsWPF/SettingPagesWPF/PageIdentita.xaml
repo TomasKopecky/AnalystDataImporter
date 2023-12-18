@@ -17,6 +17,8 @@
             <!--řádek 1-->
             <RowDefinition Height="Auto"/>
             <!--řádek 2-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 3-->
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <!-- Definice sloupců -->
@@ -32,6 +34,10 @@
         <ComboBox x:Name="cmbBxSloupec" SelectedItem="Vložit Sloupec"  MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5">
             <ComboBoxItem>Vložit Sloupec</ComboBoxItem>
         </ComboBox>
+
+        <Label Content="PZOR!: Pokud jsou data prázdná, nevytvářet objekt - (daný řádek se nezpracuje!)" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+
+
 
         <!--Tlačítka-->
         <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" VerticalAlignment="Top" />
