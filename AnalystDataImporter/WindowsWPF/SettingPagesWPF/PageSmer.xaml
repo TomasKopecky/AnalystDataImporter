@@ -17,7 +17,7 @@
             <!--řádek 3-->
             <RowDefinition Height="Auto"/>
             <!--řádek 4-->
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
             <!--řádek 5-->
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>

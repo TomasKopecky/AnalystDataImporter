@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="SettingWindow" Height="100" Width="200"
         WindowStartupLocation="CenterScreen"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Background="#F0F0F0">
     <Grid>
         <Frame x:Name="SettingFrame" />
     </Grid>
