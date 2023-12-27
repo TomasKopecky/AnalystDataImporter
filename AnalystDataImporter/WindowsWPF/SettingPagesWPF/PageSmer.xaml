@@ -27,10 +27,12 @@
             <ColumnDefinition Width="Auto"/>
             <!--sloupec 1-->
             <ColumnDefinition Width="*"/>
+            <!--sloupec 2-->
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Směr od položky Ikona 1 k položce Ikona 2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
-        <ComboBox x:Name="cmbBxVazbaSmer" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="5,0"  HorizontalAlignment="Left">
+        <Label Content="Směr od položky Ikona 1 k položce Ikona 2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Grid.ColumnSpan="2" />
+        <ComboBox x:Name="cmbBxVazbaSmer" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="5,0"  HorizontalAlignment="Left" >
             <ComboBoxItem>Žádné</ComboBoxItem>
             <ComboBoxItem>Ikona 1 až Ikona 2</ComboBoxItem>
             <ComboBoxItem>Ikona 2 až Ikona 1</ComboBoxItem>
@@ -40,8 +42,8 @@
         <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaSmerNapoveda.png" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
         <!--Tlačítka-->
-        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" />
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="2" Width="85" Height="25" Margin="10,5" />
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="2" Width="85" Height="25"  Margin="10,5" />
         
     </Grid>
 </Page>
