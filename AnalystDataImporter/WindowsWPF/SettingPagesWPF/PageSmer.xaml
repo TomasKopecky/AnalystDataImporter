@@ -14,11 +14,11 @@
             <RowDefinition Height="Auto"/>
             <!--řádek 1-->
             <RowDefinition Height="Auto"/>
+            <!--řádek 2-->
+            <RowDefinition Height="Auto"/>
             <!--řádek 3-->
             <RowDefinition Height="Auto"/>
             <!--řádek 4-->
-            <RowDefinition Height="Auto"/>
-            <!--řádek 5-->
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <!-- Definice sloupců -->
@@ -26,7 +26,7 @@
             <!--sloupec 0-->
             <ColumnDefinition Width="Auto"/>
             <!--sloupec 1-->
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="35"/>
             <!--sloupec 2-->
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
