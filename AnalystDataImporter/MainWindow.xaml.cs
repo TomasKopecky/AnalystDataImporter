@@ -1,5 +1,8 @@
-﻿using AnalystDataImporter.Views;
+﻿using System.Windows.Controls;
+using AnalystDataImporter.Views;
+using AnalystDataImporter.WindowsWPF;
 using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
+using System.Windows;
 
 namespace AnalystDataImporter
 {
@@ -10,7 +13,21 @@ namespace AnalystDataImporter
         {
             InitializeComponent();
 
+            //// VÝŠKA A ŠÍŘKA OKNA DLE MONITORU
+            // Získání výšky monitoru
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+            // Výpočet požadované výšky pro okno (2/3 výšky monitoru)
+            double desiredHeight = screenHeight * 2 / 3;
+            // Nastavení výšky hlavního okna
+            this.Height = desiredHeight;
+            // Získání šířky monitoru
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            // Výpočet požadované šířky pro okno (3/4 šířky monitoru)
+            double desiredWidth = screenWidth * 3 / 4;
+            // Nastavení šířky hlavního okna
+            this.Width = desiredWidth;
 
+            #region TOM
             //////TOM:
             //// Získání instance stránky ElementPage pomocí závislostní injekce.
             ////var elementPage = App.GetService<ElementPage>();
@@ -25,120 +42,19 @@ namespace AnalystDataImporter
             ////Consider adding a navigation mechanism if you plan to switch between different pages(e.g., ElementPage and CanvasPage)
             ////in the main window.The Frame control is useful for this purpose.Instead of setting the content of the window directly,
             ////you can navigate to different pages using the MainFrame.Navigate() method.
+            #endregion
+
+            #region PAVEL
+            ////// PAVEL: TESTOVACÍ Tlačítka nastavení:
+            //MainFrame.Content = new TestSettingPage();
+
+            ////// vlož okno se záložkami:
+            MainFrame.Content = new MainPage_OLD();
+            #endregion
 
 
         }
 
-        //SettingWindow SetWin = new SettingWindow(); // vytvoření instance okna SettingWindow
-        PageBarva PgBarva = new PageBarva();
-        PageDatumCas PgDatCas = new PageDatumCas();
-        PageIdentita PgIdentita = new PageIdentita();
-        PageNasobnost PgNasobnost = new PageNasobnost();
-        PagePopis PgPopis = new PagePopis();
-        PagePopisek PgPopisek = new PagePopisek();
-        PageSila PgSila = new PageSila();
-        PageSirka PgSirka = new PageSirka();
-        PageSmer PgSmer = new PageSmer();
-        PageTyp PgTyp = new PageTyp();
 
-        //testc - ELEMENT:
-        private void btnETyp_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgTyp;
-            SetWin.ShowDialog();
-        }
-
-        private void btnEIdentita_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgIdentita;
-            SetWin.ShowDialog();
-        }
-
-        private void btnEDatum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgDatCas;
-            SetWin.ShowDialog();
-        }
-
-        private void btnECas_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgDatCas;
-            SetWin.ShowDialog();
-        }
-
-        private void btnEPopis_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgPopis;
-            SetWin.ShowDialog();
-        }
-
-        //testc - RELATION:
-        private void btnRNasobnost_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgNasobnost;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRBarva_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgBarva;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRPopisek_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgPopisek;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRSmer_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgSmer;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRSila_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgSila;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRDatum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgDatCas;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRCas_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgDatCas;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRSirka_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgSirka;
-            SetWin.ShowDialog();
-        }
-
-        private void btnRPopis_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow SetWin = new SettingWindow();
-            SetWin.Content = PgPopis;
-            SetWin.ShowDialog();
-        }
     }
 }

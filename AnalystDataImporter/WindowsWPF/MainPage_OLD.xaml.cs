@@ -27,25 +27,6 @@ namespace AnalystDataImporter.WindowsWPF
         // Po nacteni Okna:
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Získání výšky monitoru
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-            // Výpočet požadované výšky pro okno (2/3 výšky monitoru)
-            double desiredHeight = screenHeight * 2 / 3;
-
-            // Nastavení výšky hlavního okna
-            this.Height = desiredHeight;
-
-
-            // Získání šířky monitoru
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-
-            // Výpočet požadované šířky pro okno (3/4 šířky monitoru)
-            double desiredWidth = screenWidth * 3 / 4;
-
-            // Nastavení šířky hlavního okna
-            this.Width = desiredWidth;
-
             // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'
             Page page1 = new PageImport1();
             frmImporter.Navigate(page1);

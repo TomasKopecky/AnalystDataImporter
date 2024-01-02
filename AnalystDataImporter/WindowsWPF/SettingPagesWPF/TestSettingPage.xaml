@@ -1,0 +1,71 @@
+﻿<Page x:Class="AnalystDataImporter.WindowsWPF.SettingPagesWPF.TestSettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Title="TestSettingPage">
+
+    <Grid>
+        <!--TEST - SettingsWindow_Test:-->
+        <Grid>
+            <!-- Definice řádků -->
+            <Grid.RowDefinitions>
+                <!--řádek 0-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 1-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 2-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 3-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 4-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 5-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 6-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 7-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 8-->
+                <RowDefinition Height="Auto"/>
+                <!--řádek 9-->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- Definice sloupců -->
+            <Grid.ColumnDefinitions>
+                <!--sloupec 0-->
+                <ColumnDefinition Width="Auto"/>
+                <!--sloupec 1-->
+                <ColumnDefinition Width="30"/>
+                <!--sloupec 2-->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!--SLOUPEC 1:-->
+            <Label Content="TEST - ELEMENT:" Grid.Row="0" Grid.Column="0" Width="150" />
+            <Button x:Name="btnETyp" Content="Typ" Grid.Row="1" Grid.Column="0" Margin="5" Width="150" Click="btnETyp_Click"/>
+            <Button x:Name="btnEIdentita" Content="Identita" Grid.Row="2" Grid.Column="0" Margin="5" Width="150" Click="btnEIdentita_Click"/>
+            <Label Content="Popisek (automaticky)" Grid.Row="3" Grid.Column="0" Width="150"/>
+            <Button x:Name="btnEDatum" Content="Datum" Grid.Row="4" Grid.Column="0" Margin="5" Width="150" Click="btnEDatum_Click"/>
+            <Button x:Name="btnECas" Content="Čas" Grid.Row="5" Grid.Column="0" Margin="5" Width="150" Click="btnECas_Click"/>
+            <Button x:Name="btnEPopis" Content="Popis" Grid.Row="6" Grid.Column="0" Margin="5" Width="150" Click="btnEPopis_Click"/>
+
+
+            <!--SLOUPEC 2:-->
+            <Label Content="TEST - RELATION:" Grid.Row="0" Grid.Column="2" Width="150"/>
+            <Button x:Name="btnRNasobnost" Content="Násobnost" Grid.Row="1" Grid.Column="2" Margin="5" Width="150" Click="btnRNasobnost_Click"/>
+            <Button x:Name="btnRBarva" Content="Barva" Grid.Row="2" Grid.Column="2" Margin="5" Width="150" Click="btnRBarva_Click"/>
+            <Button x:Name="btnRPopisek" Content="Popisek" Grid.Row="3" Grid.Column="2" Margin="5" Width="150" Click="btnRPopisek_Click"/>
+            <Button x:Name="btnRSmer" Content="Směr" Grid.Row="4" Grid.Column="2" Margin="5" Width="150" Click="btnRSmer_Click"/>
+            <Button x:Name="btnRSila" Content="Síla" Grid.Row="5" Grid.Column="2" Margin="5" Width="150" Click="btnRSila_Click"/>
+            <Button x:Name="btnRDatum" Content="Datum" Grid.Row="6" Grid.Column="2" Margin="5" Width="150" Click="btnRDatum_Click"/>
+            <Button x:Name="btnRCas" Content="Čas" Grid.Row="7" Grid.Column="2" Margin="5" Width="150" Click="btnRCas_Click"/>
+            <Button x:Name="btnRSirka" Content="Šířka" Grid.Row="8" Grid.Column="2" Margin="5" Width="150" Click="btnRSirka_Click"/>
+            <Button x:Name="btnRPopis" Content="Popis" Grid.Row="9" Grid.Column="2" Margin="5" Width="150" Click="btnRPopis_Click"/>
+
+        </Grid>
+    </Grid>
+</Page>

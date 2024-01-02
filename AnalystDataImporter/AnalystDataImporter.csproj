@@ -175,6 +175,9 @@
     <Compile Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\TestSettingPage.xaml.cs">
+      <DependentUpon>TestSettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsWPF\Vazba.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\TestSettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

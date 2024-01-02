@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPage" Loaded="Page_Loaded" 
-      MinHeight="450" MinWidth="680">
+      Title="MainPage" Loaded="Page_Loaded">
 
     <Grid x:Name="grdMainWindow" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
 
