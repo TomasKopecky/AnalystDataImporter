@@ -16,14 +16,16 @@ using Microsoft.Win32;
 using System.Data;
 using System.IO;
 using AnalystDataImporter.WindowsWPF;
+using System.Collections.ObjectModel;
 
 namespace AnalystDataImporter.WindowsWPF
 {
     /// <summary>
     /// Interakční logika pro MainPage.xaml
     /// </summary>
-    public partial class MainPage_OLD : Page
+    public partial class MainPage : Page
     {
+        private PageImport2 pageImport2;
         // Po nacteni Okna:
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -33,9 +35,19 @@ namespace AnalystDataImporter.WindowsWPF
         }
 
         // konstruktor
-        public MainPage_OLD()
+        public MainPage(PageImport2 pageImport2)
         {
             InitializeComponent(); // Inicializace komponent
+
+            #region NAPLNĚNÍ STROMU TREE-VIEW:
+            // TODO: dočasné řešení TreeView - TEST:
+            var rootNode = new Node { Name = "název AKCE" };
+            rootNode.Children.Add(new Node { Name = "Datum: 2024-01-02" });
+            rootNode.Children.Add(new Node { Name = "Popis: Akce Kyštof - pachatel ujel v Labu" });
+            // přidání zdroje dat to TreeView:
+            trVwZdroje.ItemsSource = new ObservableCollection<Node> { rootNode };
+            this.pageImport2 = pageImport2;
+            #endregion
         }
 
         // DROP do GRIDu
@@ -115,7 +127,7 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // Tlačítko 'Ďalší' načte stránku 'PageImport2.xaml' do Frame 'frmImporter'
             //Page page2 = new PageImport2();
-            //frmImporter.Navigate(page2);
+            frmImporter.Navigate(pageImport2);
 
             // Tlačítka která budou v kroku 'Další' povolena nebo zakázána:
             btnImportZpet.IsEnabled = true; // Zpět zakázáno - nejde jít už o krok zpět!

@@ -8,8 +8,9 @@ namespace AnalystDataImporter
 {
     public partial class MainWindow
     {
+        private MainPage mainPage;
 
-        public MainWindow()
+        public MainWindow(MainPage mainPage)
         {
             InitializeComponent();
 
@@ -49,7 +50,9 @@ namespace AnalystDataImporter
             //MainFrame.Content = new TestSettingPage();
 
             ////// vlož okno se záložkami:
-            MainFrame.Content = new MainPage_OLD();
+            //Page mainPage = new MainPage();
+            this.mainPage = mainPage;
+            MainFrame.Navigate(mainPage);
             #endregion
 
 

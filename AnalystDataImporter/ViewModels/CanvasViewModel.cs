@@ -69,7 +69,7 @@ namespace AnalystDataImporter.ViewModels
             Elements.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
             Relations.CollectionChanged += (s, e) => OnCollectionChanged(e, CanvasItems);
 
-            _isMultipleSelectionActivated = false;
+            //_isMultipleSelectionActivated = false;
             _sharedStateService.IsDraggingElementModeActive = true;
             TestingMode = false;
         }
