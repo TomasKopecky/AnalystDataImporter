@@ -10,19 +10,19 @@ namespace AnalystDataImporter.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Název vazby.
+        /// Popis objektu - dodatečný popis nebo info o objektu.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Popisek vazby.
+        /// Popisek objektu
         /// </summary>
         public string Label { get; set; }
 
         ///// <summary>
         ///// Typ objektu. Specifikuje kategorii nebo typ prvku.
         ///// </summary>
-        //public string Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Datum objektu. Reprezentuje datum spojené s prvkem.

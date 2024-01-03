@@ -10,7 +10,22 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Barva vazby.
         /// </summary>
-        public string Color { get; set; }
+        public Constants.Colors Color { get; set; }
+
+        /// <summary>
+        /// Tloušťka vazby - původně v Analystu jako šířka
+        /// </summary>
+        public string Thickness { get; set; }
+
+        /// <summary>
+        /// Styl vazby - původně v Analystu jako síla
+        /// </summary>
+        public string Style { get; set; }
+
+        /// <summary>
+        /// Násobnost vazby.
+        /// </summary>
+        public string Multiplicity { get; set; }
 
         /// <summary>
         /// Směr vazby (např. od-do).

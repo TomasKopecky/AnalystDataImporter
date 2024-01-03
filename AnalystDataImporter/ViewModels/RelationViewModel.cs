@@ -86,7 +86,7 @@ namespace AnalystDataImporter.ViewModels
         /// <summary>
         /// Barva relace.
         /// </summary>
-        public string Color
+        public Constants.Colors Color
         {
             get => _relation.Color;
             set

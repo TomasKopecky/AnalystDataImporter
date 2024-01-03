@@ -41,8 +41,19 @@ namespace AnalystDataImporter.Globals
         // implicitní ikony pro objekty
         public enum Icons
         {
+            GeneralObject,
             SimCard,
-            Imei
+            Imei,
+            Imsi,
+            Person,
+            EvidenceNumber,
+            Domain,
+            Email
+        }
+
+        public enum Classes
+        {
+
         }
 
         // implicitní směry vazeb - bez směru, od A k B, od B k A

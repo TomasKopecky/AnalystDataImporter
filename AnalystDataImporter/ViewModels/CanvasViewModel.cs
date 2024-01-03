@@ -39,7 +39,7 @@ namespace AnalystDataImporter.ViewModels
         //private bool __sharedStateService.IsDrawingElementModeActive;
         //private bool _isRelationDrawingModeActive;
         //private bool _sharedStateService.MouseOnElement;
-        private object _selectedSingleItem;
+        private BaseDiagramItemViewModel _selectedSingleItem;
         private readonly bool _isMultipleSelectionActivated;
         private ElementViewModel _tempElement;
         private RelationViewModel _tempRelation;
@@ -110,7 +110,7 @@ namespace AnalystDataImporter.ViewModels
             GetGridViewColumnDraggedSetCommand = new RelayCommand<object>(DropGridColumnToElementInCanvas);
         }
 
-        public object SelectedSingleItem
+        public BaseDiagramItemViewModel SelectedSingleItem
         {
             get => _selectedSingleItem;
             set

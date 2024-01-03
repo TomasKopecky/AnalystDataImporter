@@ -348,7 +348,7 @@
                         <Style TargetType="DataGrid">
                             <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Model.Type}" Value="element">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -376,11 +376,11 @@
                 </DataGrid>
                 
             </GroupBox>
-            <!-- Selected Item Details --><!--
+             <!--Selected Item Details--><!-- 
             <StackPanel Grid.Column="1" Margin="10,100,10,10" Background="Transparent">
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
                 <TextBlock Margin="5"
-                           Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />
+                           Text="{Binding CanvasViewModel.SelectedSingleItem.Model.Title, FallbackValue='No element selected'}" />
                 <Grid>
 
                     <DataGrid>

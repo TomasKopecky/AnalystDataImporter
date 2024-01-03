@@ -6,7 +6,7 @@ namespace AnalystDataImporter.ViewModels
 {
     public abstract class BaseDiagramItemViewModel : INotifyPropertyChanged
     {
-        protected string _type;
+        //protected string _type;
 
         protected bool _isSelected;
         // Pozice prvku na plátně
@@ -22,15 +22,15 @@ namespace AnalystDataImporter.ViewModels
 
         // Common properties and methods for view models, such as IsSelected, PropertyChanged, etc.
 
-        public string Type
-        {
-            get => _type;
-            set
-            {
-                _type = value;
-                OnPropertyChanged(nameof(Type));
-            }
-        }
+        //public string Type
+        //{
+        //    get => _type;
+        //    set
+        //    {
+        //        _type = value;
+        //        OnPropertyChanged(nameof(Type));
+        //    }
+        //}
 
         public virtual bool IsSelected
         {
@@ -81,18 +81,23 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        //public string Type
-        //{
-        //    get => _model.Type;
-        //    set
-        //    {
-        //        if (_model.Type != value)
-        //        {
-        //            _model.Type = value;
-        //            OnPropertyChanged(nameof(Type));
-        //        }
-        //    }
-        //}
+        public BaseDiagramItem Model
+        { 
+            get => _model; 
+        }
+
+        public string Type
+        {
+            get => _model.Type;
+            set
+            {
+                if (_model.Type != value)
+                {
+                    _model.Type = value;
+                    OnPropertyChanged(nameof(Type));
+                }
+            }
+        }
 
         public DateTime Date
         {
