@@ -146,6 +146,7 @@
     <Compile Include="WindowsWPF\PageImport2.xaml.cs">
       <DependentUpon>PageImport2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsWPF\RowModel.cs" />
     <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
       <DependentUpon>PageBarva.xaml</DependentUpon>
     </Compile>

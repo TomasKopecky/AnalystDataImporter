@@ -56,6 +56,7 @@
                             <!-- For buttons -->
                             <RowDefinition Height="Auto" />
                             <!-- For Canvas and DataGrid -->
+                            <!-- For Canvas and DataGrid -->
                         </Grid.RowDefinitions>
 
                         <!-- Ellipse centered in the Inner Grid -->
@@ -340,10 +341,53 @@
 
 
             <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                
                 <!-- TABULKA s Vlastnostmi Obejktů a Vazeb -->
-                <DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
-            </GroupBox>
+                <DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" AutoGenerateColumns="False" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <!--Static text column-->
+                        <DataGridTextColumn Header="Popis"/> <!--Binding="{Binding Label}"-->
 
+
+                        <!--Column with TextBox and Button-->
+                        <DataGridTemplateColumn Header="Hodnota">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Text="asldfkj" Width="100"/> <!--Text="{Binding Value}"-->
+                                        <Button Content="..." Width="30" Click="Button_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    
+                    
+                </DataGrid>
+                
+            </GroupBox>
+            <!-- Selected Item Details --><!--
+            <StackPanel Grid.Column="1" Margin="10,100,10,10" Background="Transparent">
+                <TextBlock Text="Selected item Title" FontWeight="Bold" />
+                <TextBlock Margin="5"
+                           Text="{Binding CanvasViewModel.SelectedSingleItem.Title, FallbackValue='No element selected'}" />
+                <Grid>
+
+                    <DataGrid>
+
+                    </DataGrid>
+                </Grid>
+            </StackPanel>-->
         </Grid>
 
     </Grid>

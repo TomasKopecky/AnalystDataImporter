@@ -19,10 +19,10 @@ namespace AnalystDataImporter.Models
         /// </summary>
         public string Label { get; set; }
 
-        /// <summary>
-        /// Typ objektu. Specifikuje kategorii nebo typ prvku.
-        /// </summary>
-        public string Type { get; set; }
+        ///// <summary>
+        ///// Typ objektu. Specifikuje kategorii nebo typ prvku.
+        ///// </summary>
+        //public string Type { get; set; }
 
         /// <summary>
         /// Datum objektu. Reprezentuje datum spojené s prvkem.

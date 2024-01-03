@@ -26,6 +26,7 @@ namespace AnalystDataImporter.ViewModels
         {
             _element = element ?? throw new ArgumentNullException(nameof(element));
             _model = _element;
+            Type = "element";
         }
 
         public void ConfigureTempElement(double x, double y)

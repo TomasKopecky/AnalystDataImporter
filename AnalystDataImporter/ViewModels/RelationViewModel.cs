@@ -60,6 +60,7 @@ namespace AnalystDataImporter.ViewModels
             this._x2 = toPoint.X;
             this._y2 = toPoint.Y;
             _model = _relation;
+            Type = "relation";
         }
 
         // If either XPosition or YPosition of start element changes, update x1 and y1
