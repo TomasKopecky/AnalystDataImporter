@@ -42,7 +42,7 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public int Id
+        public string Id
         {
             get => _model.Id;
             set
@@ -70,12 +70,12 @@ namespace AnalystDataImporter.ViewModels
 
         public string Title
         {
-            get => _model.Title;
+            get => _model.Description;
             set
             {
-                if (_model.Title != value)
+                if (_model.Description != value)
                 {
-                    _model.Title = value;
+                    _model.Description = value;
                     OnPropertyChanged(nameof(Title));
                 }
             }

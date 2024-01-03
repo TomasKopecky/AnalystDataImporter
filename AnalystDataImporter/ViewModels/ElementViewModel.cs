@@ -26,6 +26,7 @@ namespace AnalystDataImporter.ViewModels
         {
             _element = element ?? throw new ArgumentNullException(nameof(element));
             _model = _element;
+            Id = Label;
             Type = "element";
         }
 

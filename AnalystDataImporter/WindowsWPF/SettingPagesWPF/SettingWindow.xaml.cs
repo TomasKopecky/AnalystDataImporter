@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AnalystDataImporter.ViewModels;
 using AnalystDataImporter.Views;
 
 namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
@@ -20,9 +21,10 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class SettingWindow : Window
     {
-        public SettingWindow()
+        public SettingWindow(CompositeCanvasGridViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
 
             //////TOM:
             //// Získání instance stránky ElementPage pomocí závislostní injekce.

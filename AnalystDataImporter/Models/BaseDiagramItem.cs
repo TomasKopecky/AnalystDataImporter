@@ -7,12 +7,12 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Jedinečné ID vazby.
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Popis objektu - dodatečný popis nebo info o objektu.
         /// </summary>
-        public string Title { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Popisek objektu

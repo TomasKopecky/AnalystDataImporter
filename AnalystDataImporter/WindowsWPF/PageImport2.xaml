@@ -206,36 +206,7 @@
             </ScrollViewer>
             <!-- Content DataGrid -->
         </Grid>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         <Grid Grid.Row="1">
             <!-- Definice řádků -->
@@ -248,9 +219,11 @@
             <!--Definice sloupců-->
             <Grid.ColumnDefinitions>
                 <!--sloupec 0-->
-                <ColumnDefinition Width="2*"/>
+                <!--<ColumnDefinition Width="3*"/>-->
+                <ColumnDefinition Width="*"/>
                 <!--sloupec 1-->
-                <ColumnDefinition Width="1*"/>
+                <!--<ColumnDefinition Width="1*"/>-->
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Objekty a Vazby" Grid.RowSpan="2" Margin="0"/>
@@ -338,49 +311,250 @@
                 <!--Grid.Row="1"-->
             </ScrollViewer>
 
+            <!-- PRÁZDNÉ MÍSTO na Tabulku s Vlastnostmi Obejktů -->
+            <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element" >
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="relation" >
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+                <Grid>
+                    <!--<Label Content="Chcete-li zobrazit vlastnosti objektu nebo vazby, vyberte je." HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+                    <Label Content="Chcete-li zobrazit vlastnosti objektu" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Label Content="nebo vazby, vyberte je." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0" />
+                </Grid>
+            </GroupBox>
 
+            <!-- TABULKA s Vlastnostmi Obejktů -->
+            <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+
+                <Grid x:Name="grdTabulkaVlastnostiObejktu"
+                      Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 2-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 3-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 4-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 5-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 6-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 7-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 8-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Definice sloupců-->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 1. Řádek 0-->
+                    <Label Content="Vlastnost" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="3" />
+                    <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
+                    <!-- 2. Řádek 1-->
+                    <TextBox Text="Typ (ikona)" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+                    <TextBox x:Name="txtEBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Type}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEIkonaTyp" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnEIkonaTyp_Click" />
+                    <!-- 3. Řádek 2-->
+                    <TextBox Text="Identita (id)" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEIdentita" Text="{Binding CanvasViewModel.SelectedSingleItem.Id}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEIdentita" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnEIdentita_Click" />
+                    <!-- 4. Řádek 3-->
+                    <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopisek" Text="{Binding CanvasViewModel.SelectedSingleItem.Label}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+                    <!--<Button x:Name="btnEPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" />-->
+                    <!-- 5. Řádek 4-->
+                    <TextBox Text="Datum" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEDatum" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEDatum" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 6. Řádek 5-->
+                    <TextBox Text="Čas" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxECas" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnECasEPopis" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 7. Řádek 6-->
+                    <TextBox Text="Popis" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Description}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEPopis" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnPopis_Click" />
+
+                </Grid>
+            </GroupBox>
 
             <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-                
-                <!-- TABULKA s Vlastnostmi Obejktů a Vazeb -->
-                <DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" AutoGenerateColumns="False" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="relation">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+
+                <!-- TABULKA s Vlastnostmi Vazeb -->
+                <Grid x:Name="grdTabulkaVlastnostiVazeb" 
+                      Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                   
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 2-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 3-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 4-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 5-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 6-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 7-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 8-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 9-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 10-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 11-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Definice sloupců-->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 1. Řádek 0-->
+                    <Label Content="Vlastnost" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="3" />
+                    <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
+                    <!-- 2. Řádek 1-->
+                    <TextBox Text="Násobnost" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+                    <TextBox x:Name="txtRBxIkonaTyp" Text="Obecný objekt" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRNasobnost" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnRNasobnost_Click" />
+                    <!-- 3. Řádek 2-->
+                    <TextBox Text="Barva" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRIdentita" Text="x" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRBarva" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnRBarva_Click" />
+                    <!-- 4. Řádek 3-->
+                    <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopisek" Text="Obecný objekt" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" Click="btnPopisek_Click" />
+                    <!-- 5. Řádek 4-->
+                    <TextBox Text="Směr" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSmer" Text="" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSmer" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnRSmer_Click" />
+                    <!-- 6. Řádek 5-->
+                    <TextBox Text="Styl (Síla)" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSila" Text="" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSila" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnRSila_Click" />
+                    <!-- 7. Řádek 6-->
+                    <TextBox Text="Datum" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRDatum" Text="" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRDatum" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 8. Řádek 7-->
+                    <TextBox Text="Čas" Grid.Row="7" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRCas" Text="" Grid.Row="7" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRCasE" Content="  ...  " Grid.Row="7" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 9. Řádek 8-->
+                    <TextBox Text="Tloušťka (Šířka)" Grid.Row="8" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSirka" Text="" Grid.Row="8" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSirka" Content="  ...  " Grid.Row="8" Grid.Column="3" Click="btnRSirka_Click" />
+                    <!-- 10. Řádek 9-->
+                    <TextBox Text="Popis" Grid.Row="9" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopis" Text="" Grid.Row="9" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRPopis" Content="  ...  " Grid.Row="9" Grid.Column="3" Click="btnPopis_Click" />
+                </Grid>
+
+            </GroupBox>
+
+            <!--<DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" AutoGenerateColumns="False" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
                     <DataGrid.Style>
                         <Style TargetType="DataGrid">
                             <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Model.Type}" Value="element">
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.Style>
                     <DataGrid.Columns>
-                        <!--Static text column-->
-                        <DataGridTextColumn Header="Popis"/> <!--Binding="{Binding Label}"-->
-
-
-                        <!--Column with TextBox and Button-->
+                        Static text column
+                        <DataGridTextColumn Header="Popis"/>
+                        Binding="{Binding Label}"
+                        Column with TextBox and Button
                         <DataGridTemplateColumn Header="Hodnota">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBox Text="asldfkj" Width="100"/> <!--Text="{Binding Value}"-->
+                                        <TextBox Text="asldfkj" Width="100"/>
+                                        Text="{Binding Value}"
                                         <Button Content="..." Width="30" Click="Button_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
-                    
-                    
-                </DataGrid>
-                
-            </GroupBox>
-             <!--Selected Item Details--><!-- 
-            <StackPanel Grid.Column="1" Margin="10,100,10,10" Background="Transparent">
+                </DataGrid>-->
+
+
+
+            <!--Selected Item Details-->
+            <!--<StackPanel Grid.Column="1" Margin="10,100,10,10" Background="Transparent">
                 <TextBlock Text="Selected item Title" FontWeight="Bold" />
                 <TextBlock Margin="5"
-                           Text="{Binding CanvasViewModel.SelectedSingleItem.Model.Title, FallbackValue='No element selected'}" />
+                           Text="{Binding CanvasViewModel.SelectedSingleItem.Type, FallbackValue='No element selected'}" />
                 <Grid>
 
                     <DataGrid>
@@ -388,6 +562,7 @@
                     </DataGrid>
                 </Grid>
             </StackPanel>-->
+            
         </Grid>
 
     </Grid>

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AnalystDataImporter.Globals;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
 {
@@ -20,9 +22,17 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class PageTyp : Page
     {
+        //private BaseDiagramItemViewModel _baseDiagramItemViewModel;
         public PageTyp()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            // TODO:
+            //cmbBxTypElement.SelectedValue = _selectedValue;
         }
     }
 }
