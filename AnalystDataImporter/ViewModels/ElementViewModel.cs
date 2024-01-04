@@ -28,6 +28,7 @@ namespace AnalystDataImporter.ViewModels
             _model = _element;
             Id = Label;
             Type = "element";
+            Class = "Obecný objekt";
         }
 
         public void ConfigureTempElement(double x, double y)

@@ -13,16 +13,14 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class PageImport2 : Page
     {
-        private CompositeCanvasGridViewModel _compositeCanvasGridViewModel;
-        private SettingWindow _settingWindow;
+        private CanvasViewModel _canvasViewModel;
 
         public PageImport2(CompositeCanvasGridViewModel viewModel, SettingWindow settingWindow)
         {
             InitializeComponent();
 
             DataContext = viewModel;
-            _compositeCanvasGridViewModel = viewModel;
-            _settingWindow = settingWindow;
+            _canvasViewModel = viewModel.CanvasViewModel;
             viewModel.CanvasViewModel.TestingMode = true;
             viewModel.CanvasViewModel.AddTestingElementsAndRelation();
             viewModel.GridViewModel.LoadTestData();
@@ -70,65 +68,53 @@ namespace AnalystDataImporter.WindowsWPF
 
         private void btnEIkonaTyp_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Page pageTyp = new PageTyp();
-            _settingWindow.Content = pageTyp;
-            // TODO:
-            //pageTyp
-            _settingWindow.ShowDialog();
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            settingWindow.ShowPageType();
         }
 
         private void btnEIdentita_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageIdentita();
-            _settingWindow.ShowDialog();
+
         }
 
         private void btnDatum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageDatumCas();
-            _settingWindow.ShowDialog();
+           
         }
 
         private void btnPopis_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PagePopis();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnRNasobnost_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageNasobnost();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnRBarva_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageBarva();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnPopisek_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PagePopisek();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnRSmer_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageSmer();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnRSila_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageSila();
-            _settingWindow.ShowDialog();
+            
         }
 
         private void btnRSirka_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _settingWindow.Content = new PageSirka();
-            _settingWindow.ShowDialog();
+            
         }
     }
 }

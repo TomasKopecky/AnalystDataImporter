@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 namespace AnalystDataImporter.Globals
 {
-    public class Constants
+    public static class Constants
     {
         // Cesta k aktualizacím
-        public string UpdatePath { get; set; }
+        public static string UpdatePath { get; set; }
 
         // Indexová cesta
-        public string IndexPath { get; set; }
+        public static string IndexPath { get; set; }
 
         public const double EllipseWidth = 50;
 
@@ -39,19 +42,19 @@ namespace AnalystDataImporter.Globals
         }
 
         // implicitní ikony pro objekty
-        public enum Icons
-        {
-            GeneralObject,
-            SimCard,
-            Imei,
-            Imsi,
-            Person,
-            EvidenceNumber,
-            Domain,
-            Email
-        }
+        public static List<string> Classes = new List<string>{
+            "Obecný objekt",
+            "SIM karta",
+            "IMEI",
+            "IMSI",
+            "Osoba",
+            "Číslo jednací",
+            "Doména",
+            "Email"
+        };
+        
 
-        public enum Classes
+        public enum Icons
         {
 
         }

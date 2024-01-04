@@ -22,17 +22,25 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class PageTyp : Page
     {
-        //private BaseDiagramItemViewModel _baseDiagramItemViewModel;
-        public PageTyp()
+        public BaseSettingPage basicSettingPage;
+        
+        public PageTyp(CanvasViewModel canvasViewModel)
         {
             InitializeComponent();
+            basicSettingPage = new BaseSettingPage(canvasViewModel);
+            cmbBxTypElement.ItemsSource = Constants.Classes;
+            cmbBxTypElement.Text = canvasViewModel.SelectedSingleItem.Class;
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void btnStorno_Click(object sender, RoutedEventArgs e)
         {
+            basicSettingPage.OnRequestClose();
+        }
 
-            // TODO:
-            //cmbBxTypElement.SelectedValue = _selectedValue;
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            basicSettingPage.canvasViewModel.SelectedSingleItem.Class = cmbBxTypElement.Text;
+            basicSettingPage.OnRequestClose();
         }
     }
 }

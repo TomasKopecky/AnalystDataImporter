@@ -99,6 +99,19 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
+        public string Class
+        {
+            get => _model.Class;
+            set
+            {
+                if (_model.Class != value)
+                {
+                    _model.Class = value;
+                    OnPropertyChanged(nameof(Class));
+                }
+            }
+        }
+
         public DateTime Date
         {
             get => _model.Date;

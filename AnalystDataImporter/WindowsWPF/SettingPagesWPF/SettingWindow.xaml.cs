@@ -21,10 +21,12 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class SettingWindow : Window
     {
-        public SettingWindow(CompositeCanvasGridViewModel viewModel)
+        private CanvasViewModel _canvasViewModel;
+        public SettingWindow(CanvasViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = viewModel;
+            _canvasViewModel = viewModel;
+            //DataContext = viewModel;
 
             //////TOM:
             //// Získání instance stránky ElementPage pomocí závislostní injekce.
@@ -41,5 +43,20 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             ////in the main window.The Frame control is useful for this purpose.Instead of setting the content of the window directly,
             ////you can navigate to different pages using the MainFrame.Navigate() method.
         }
+
+        public void ShowPageType()
+        {
+            PageTyp pageTyp = new PageTyp(_canvasViewModel);
+            pageTyp.basicSettingPage.RequestClose += CloseWindow;
+            Content = pageTyp;
+            ShowDialog();
+        }
+
+        private void CloseWindow()
+        {
+            // TODO: možná bude třeba zde ještě při destroy objektu i odebrat právě event CloseWindow u dané page, tedy něco jako pageTyp.basicSettingPage.RequestClose -= CloseWindow;
+            Close();
+        }
+
     }
 }

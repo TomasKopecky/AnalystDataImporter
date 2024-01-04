@@ -348,7 +348,7 @@
 
                 <Grid x:Name="grdTabulkaVlastnostiObejktu"
                       Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
-                    <Grid.Style>
+                    <!--<Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
@@ -357,7 +357,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
+                    </Grid.Style>-->
 
                     <!-- Definice řádků -->
                     <Grid.RowDefinitions>
@@ -395,7 +395,7 @@
                     <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
                     <!-- 2. Řádek 1-->
                     <TextBox Text="Typ (ikona)" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
-                    <TextBox x:Name="txtEBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Type}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtEBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Class}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnEIkonaTyp" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnEIkonaTyp_Click" />
                     <!-- 3. Řádek 2-->
                     <TextBox Text="Identita (id)" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
