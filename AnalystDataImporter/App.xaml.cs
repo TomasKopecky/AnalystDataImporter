@@ -77,7 +77,7 @@ namespace AnalystDataImporter
             
             services.AddSingleton<PageImport2>();
             services.AddSingleton<MainPage>();
-            services.AddTransient<SettingWindow>();
+            //services.AddTransient<SettingWindow>();
 
 
             services.AddTransient<MousePositionInvokeCommandAction>();

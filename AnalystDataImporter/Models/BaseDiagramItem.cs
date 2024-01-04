@@ -29,7 +29,6 @@ namespace AnalystDataImporter.Models
         ///// </summary>
         public string Class { get; set; }
 
-
         /// <summary>
         /// Datum objektu. Reprezentuje datum spojené s prvkem.
         /// </summary>

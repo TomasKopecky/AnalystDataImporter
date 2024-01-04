@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AnalystDataImporter.Globals;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
 {
@@ -20,9 +22,27 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class PageBarva : Page
     {
-        public PageBarva()
+        public BaseSettingPage basicSettingPage;
+        private RelationViewModel _relationViewModel;
+
+        public PageBarva(CanvasViewModel canvasViewModel)
         {
             InitializeComponent();
+            basicSettingPage = new BaseSettingPage(canvasViewModel);
+            cmbBxVazbaBarva.ItemsSource = Constants.Colors.Keys;
+            _relationViewModel = (RelationViewModel) canvasViewModel.SelectedSingleItem;
+            cmbBxVazbaBarva.Text = Constants.Colors.FirstOrDefault(color => color.Value.ToString() == _relationViewModel.ColorValue.ToString()).Key;
+        }
+
+        private void btnStorno_Click(object sender, RoutedEventArgs e)
+        {
+            basicSettingPage.OnRequestClose();
+        }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            _relationViewModel.ColorValue = Constants.Colors[cmbBxVazbaBarva.Text];
+            basicSettingPage.OnRequestClose();
         }
     }
 }

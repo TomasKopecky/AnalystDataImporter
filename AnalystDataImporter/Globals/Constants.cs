@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
+using System.Drawing;
+
 
 namespace AnalystDataImporter.Globals
 {
@@ -68,14 +70,14 @@ namespace AnalystDataImporter.Globals
         }
 
         // Implicitní barvy
-        public enum Colors
+        public static Dictionary<string, string> Colors = new Dictionary<string, string>
         {
-            black,
-            blue,
-            green,
-            yellow,
-            orange
-        }
+            {"Černá","Black"},
+            {"Modrá","Blue"},
+            {"Zelená","Green"},
+            {"Žlutá","Yellow"},
+            {"Oranžová","Orange"}
+        };
     }
 
     // pomocná třída pro možnost uchování oddělovačů v datové struktuře Enum

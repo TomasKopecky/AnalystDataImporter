@@ -103,6 +103,7 @@
                     Margin="10,5" Grid.Column="0" Grid.Row="1">
                         <Button x:Name="btnImportZpet" Content="← Zpět" Width="100" Margin="10" IsEnabled="False" Click="btnImportZpet_Click"/>
                         <Button x:Name="btnImportDalsi" Content="Další →" Width="100" Margin="10" IsEnabled="True" Click="btnImportDalsi_Click"/>
+                        <Button x:Name="btnImportUlozit" Content="Uložit" Width="100" Margin="10" IsEnabled="True" Click="btnImportUlozit_Click"/>
                         <Button x:Name="btnImportImportovat" Content="Importovat" Width="100" Margin="10"  IsEnabled="False" Click="btnImportImportovat_Click"/>
                     </StackPanel>
                 </Grid>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
 using System.Windows;
 using AnalystDataImporter.Globals;
 using AnalystDataImporter.Models;
@@ -49,7 +51,7 @@ namespace AnalystDataImporter.ViewModels
 
         public int _zIndex;
 
-        public RelationViewModel(Relation relation, Point fromPoint, Point toPoint)
+        public RelationViewModel(Relation relation, System.Windows.Point fromPoint, System.Windows.Point toPoint)
         {
             // Ověřte, zda poskytnutý relation není null a inicializujte interní _relation
             _relation = relation ?? throw new ArgumentNullException(nameof(relation));
@@ -61,6 +63,7 @@ namespace AnalystDataImporter.ViewModels
             this._y2 = toPoint.Y;
             _model = _relation;
             Type = "relation";
+            ColorValue = Constants.Colors.ElementAt(0).Value;
         }
 
         // If either XPosition or YPosition of start element changes, update x1 and y1
@@ -84,17 +87,35 @@ namespace AnalystDataImporter.ViewModels
         }
 
         /// <summary>
-        /// Barva relace.
+        /// Barva relace přímo v hodnotě System.Drawing.Color.
         /// </summary>
-        public Constants.Colors Color
+        public string ColorValue
         {
-            get => _relation.Color;
+            get => _relation.ColorValue;
             set
             {
-                if (_relation.Color != value)
+                if (_relation.ColorValue != value)
                 {
-                    _relation.Color = value;
-                    OnPropertyChanged(nameof(Color));
+                    _relation.ColorValue = value;
+                    ColorKey = Constants.Colors.FirstOrDefault(color => color.Value.ToString() == _relation.ColorValue.ToString()).Key;
+
+                    OnPropertyChanged(nameof(ColorValue));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Barva relace přímo v hodnotě System.Drawing.Color.
+        /// </summary>
+        public string ColorKey
+        {
+            get => _relation.ColorKey;
+            set
+            {
+                if (_relation.ColorKey != value)
+                {
+                    _relation.ColorKey = value;
+                    OnPropertyChanged(nameof(ColorKey));
                 }
             }
         }

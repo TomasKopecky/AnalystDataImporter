@@ -90,11 +90,11 @@
 
             <Line X1="{Binding X1}" Y1="{Binding Y1}"
                   X2="{Binding X2}" Y2="{Binding Y2}"
-                  StrokeThickness="2"
+                  StrokeThickness="2"              
                   IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
                 <Line.Style>
                     <Style TargetType="Line">
-                        <Setter Property="Stroke" Value="Black" />
+                        <Setter Property="Stroke" Value="{Binding ColorValue}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                 <Setter Property="Stroke" Value="LightBlue" />
@@ -484,7 +484,7 @@
                     <Button x:Name="btnRNasobnost" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnRNasobnost_Click" />
                     <!-- 3. Řádek 2-->
                     <TextBox Text="Barva" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRIdentita" Text="x" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRBarva" Text="{Binding CanvasViewModel.SelectedSingleItem.ColorKey}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRBarva" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnRBarva_Click" />
                     <!-- 4. Řádek 3-->
                     <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />

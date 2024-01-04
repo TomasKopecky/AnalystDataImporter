@@ -15,13 +15,13 @@ namespace AnalystDataImporter.WindowsWPF
     {
         private CanvasViewModel _canvasViewModel;
 
-        public PageImport2(CompositeCanvasGridViewModel viewModel, SettingWindow settingWindow)
+        public PageImport2(CompositeCanvasGridViewModel viewModel)
         {
             InitializeComponent();
 
             DataContext = viewModel;
             _canvasViewModel = viewModel.CanvasViewModel;
-            viewModel.CanvasViewModel.TestingMode = true;
+            viewModel.CanvasViewModel.TestingMode = false;
             viewModel.CanvasViewModel.AddTestingElementsAndRelation();
             viewModel.GridViewModel.LoadTestData();
 
@@ -69,52 +69,61 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnEIkonaTyp_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            settingWindow.ShowPageType();
+            settingWindow.ShowPageTyp();
         }
 
         private void btnEIdentita_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageIdentita();
         }
 
         private void btnDatum_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-           
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageDatumCas();
         }
 
         private void btnPopis_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPagePopis();
         }
 
         private void btnRNasobnost_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageNasobnost();
         }
 
         private void btnRBarva_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            settingWindow.ShowPageBarva();
         }
 
         private void btnPopisek_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPagePopisek();
         }
 
         private void btnRSmer_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageSmer();
         }
 
         private void btnRSila_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageSila();
         }
 
         private void btnRSirka_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            //settingWindow.ShowPageSirka();
         }
     }
 }

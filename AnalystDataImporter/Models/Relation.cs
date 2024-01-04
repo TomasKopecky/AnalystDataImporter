@@ -1,4 +1,5 @@
-﻿using AnalystDataImporter.Globals;
+﻿using System.Drawing;
+using AnalystDataImporter.Globals;
 
 namespace AnalystDataImporter.Models
 {
@@ -8,9 +9,14 @@ namespace AnalystDataImporter.Models
     public class Relation : BaseDiagramItem
     {
         /// <summary>
-        /// Barva vazby.
+        /// Barva vazby reprezentovaná přímo ze System.Drawings.
         /// </summary>
-        public Constants.Colors Color { get; set; }
+        public string ColorValue { get; set; }
+
+        /// <summary>
+        /// Barva vazby reprezentovaná českým názvem barvy.
+        /// </summary>
+        public string ColorKey { get; set; }
 
         /// <summary>
         /// Tloušťka vazby - původně v Analystu jako šířka

@@ -148,7 +148,13 @@ namespace AnalystDataImporter.WindowsWPF
             btnImportImportovat.IsEnabled = false; // Importovat povoleno - odtud chceme teprve importovat!
         }
 
-        // Po kliknutí na Tlačítko 'Importovat' v záložce 'ANALYST DATA Import'
+        // Po kliknutí na Tlačítko 'Uložit' v záložce 'ANALYST DATA Import' - pro Uložení Šablony
+        private void btnImportUlozit_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dodělat funkci Tlačítka 'Uložit'
+        }
+
+        // Po kliknutí na Tlačítko 'Importovat' v záložce 'ANALYST DATA Import' - pro import dat do ANALYST DATAu
         private void btnImportImportovat_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Dodělat funkci Tlačítka 'Importovat'
@@ -161,5 +167,6 @@ namespace AnalystDataImporter.WindowsWPF
         #endregion
 
         #endregion
+
     }
 }

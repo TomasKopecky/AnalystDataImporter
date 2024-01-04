@@ -27,16 +27,11 @@
 
         <Label Content="Barva:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
         <ComboBox x:Name="cmbBxVazbaBarva" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
-            <!--TODO: naplnit hodnotami Barvy-->
-            <ComboBoxItem>Černá</ComboBoxItem>
-            <ComboBoxItem>Modrá</ComboBoxItem>
-            <ComboBoxItem>Červená</ComboBoxItem>
-            <ComboBoxItem>Zelená</ComboBoxItem>
         </ComboBox>
 
         <!--Tlačítka-->
-        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" />
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" Click="btnOk_Click" />
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" Click="btnStorno_Click" />
         
     </Grid>
 </Page>
