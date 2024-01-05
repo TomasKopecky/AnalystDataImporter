@@ -44,7 +44,7 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="BorderBrush" Value="LightBlue" />
+                                    <Setter Property="BorderBrush" Value="DodgerBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -60,7 +60,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- Ellipse centered in the Inner Grid -->
-                        <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2"
+                        <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="1"
                                  HorizontalAlignment="Center">
                             <b:Interaction.Behaviors>
                                 <!--IsDraggingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"-->
@@ -88,16 +88,18 @@
 
         <DataTemplate x:Key="RelationTemplate" DataType="{x:Type viewModel:RelationViewModel}">
 
+
             <Line X1="{Binding X1}" Y1="{Binding Y1}"
-                  X2="{Binding X2}" Y2="{Binding Y2}"
-                  StrokeThickness="2"              
+                  X2="{Binding X2}" Y2="{Binding Y2}"       
                   IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
                 <Line.Style>
                     <Style TargetType="Line">
+                        <Setter Property="StrokeThickness" Value="{Binding ColorValue}" />
                         <Setter Property="Stroke" Value="{Binding ColorValue}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Stroke" Value="LightBlue" />
+                                <Setter Property="Stroke" Value="DodgerBlue" />
+                                <Setter Property="StrokeThickness" Value="3" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
