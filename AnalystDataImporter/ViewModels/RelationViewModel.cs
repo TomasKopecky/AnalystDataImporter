@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using AnalystDataImporter.Globals;
 using AnalystDataImporter.Models;
 
@@ -64,7 +65,8 @@ namespace AnalystDataImporter.ViewModels
             _model = _relation;
             Type = "relation";
             ColorValue = Constants.Colors.ElementAt(0).Value;
-            Thickness = 1;
+            Thickness = 1.0;
+            Style = Constants.Style.ElementAt(1).Value;
         }
 
         // If either XPosition or YPosition of start element changes, update x1 and y1
@@ -117,6 +119,22 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _relation.ColorKey = value;
                     OnPropertyChanged(nameof(ColorKey));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Style relace ve smyslu stylu čáry
+        /// </summary>
+        public DoubleCollection Style
+        {
+            get => _relation.Style;
+            set
+            {
+                if (_relation.Style != value)
+                {
+                    _relation.Style = value;
+                    OnPropertyChanged(nameof(Style));
                 }
             }
         }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using System.Drawing;
-
+using System.Windows;
+using System.Windows.Media;
 
 namespace AnalystDataImporter.Globals
 {
@@ -15,9 +16,11 @@ namespace AnalystDataImporter.Globals
         // Indexová cesta
         public static string IndexPath { get; set; }
 
-        public const double EllipseWidth = 50;
+        public const double EllipseWidth = 40;
 
-        public const int SelectBorderThickness = 2;
+        public const int SelectBorderThicknessInt = 4;
+
+        public static Thickness SelectBorderThicknes = new Thickness(SelectBorderThicknessInt);
 
         public const string DefaultElementLabel = "(identita není nastavena)";
 
@@ -54,7 +57,7 @@ namespace AnalystDataImporter.Globals
             "Doména",
             "Email"
         };
-        
+
 
         public enum Icons
         {
@@ -68,6 +71,23 @@ namespace AnalystDataImporter.Globals
             fromAtoB,
             fromBtoA
         }
+
+        // implicitní Styl (Síla) čáry - StrokeDashArray
+        //public static List<Tuple<string, double, double>> Style = new List<Tuple<string, double, double>>
+        //{
+        //    new Tuple<string, double, double>("Potvrzené",0,0),
+        //    new Tuple<string, double, double>("Nepotvrzené",2,1),
+        //    new Tuple<string, double, double>("Nezávazné",0.5,2)
+        //};
+
+
+        // implicitní Styl (Síla) čáry - 
+        public static Dictionary<string,DoubleCollection> Style = new Dictionary<string, DoubleCollection>
+        {
+            {"Potvrzené",new DoubleCollection(){0,0}},
+            {"Nepotvrzené",new DoubleCollection(){2,1}},
+            {"Nezávazné",new DoubleCollection(){0.5,2}},
+        };
 
         // Implicitní barvy
         public static Dictionary<string, string> Colors = new Dictionary<string, string>

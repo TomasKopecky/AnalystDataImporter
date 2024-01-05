@@ -139,7 +139,7 @@ namespace AnalystDataImporter.ViewModels
             {
                 _yPosition = value;
                 if (!_temporary)
-                    _yCenter = _yPosition + (Constants.EllipseWidth / 2) + Constants.SelectBorderThickness;
+                    _yCenter = _yPosition + (Constants.EllipseWidth / 2) + Constants.SelectBorderThicknessInt;
 
                 OnPropertyChanged(nameof(YPosition));
             }

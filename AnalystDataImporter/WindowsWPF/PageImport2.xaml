@@ -7,6 +7,7 @@
       xmlns:viewModel="clr-namespace:AnalystDataImporter.ViewModels"
       xmlns:utilities="clr-namespace:AnalystDataImporter.Utilities"
       xmlns:behaviors="clr-namespace:AnalystDataImporter.Behaviors"
+      xmlns:globals="clr-namespace:AnalystDataImporter.Globals"
       x:Name="CurrentCanvasPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -38,7 +39,7 @@
                 </b:Interaction.Behaviors>
 
                 <!-- Border inside the Grid -->
-                <Border BorderThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Border BorderThickness="{x:Static globals:Constants.SelectBorderThicknes}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="BorderBrush" Value="Transparent" />
@@ -60,7 +61,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- Ellipse centered in the Inner Grid -->
-                        <Ellipse Grid.Row="0" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="1"
+                        <Ellipse Grid.Row="0" Width="{x:Static globals:Constants.EllipseWidth}" Height="{x:Static globals:Constants.EllipseWidth}" Fill="White" Stroke="Black" StrokeThickness="2"
                                  HorizontalAlignment="Center">
                             <b:Interaction.Behaviors>
                                 <!--IsDraggingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"-->
@@ -88,7 +89,7 @@
 
         <DataTemplate x:Key="RelationTemplate" DataType="{x:Type viewModel:RelationViewModel}">
 
-
+            <!--Vazba-->
             <Line X1="{Binding X1}" Y1="{Binding Y1}"
                   X2="{Binding X2}" Y2="{Binding Y2}"       
                   IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
@@ -96,9 +97,10 @@
                     <Style TargetType="Line">
                         <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                         <Setter Property="Stroke" Value="{Binding ColorValue}" />
+                        <Setter Property="StrokeDashArray" Value="{Binding Style}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Stroke" Value="DodgerBlue" />
+                                <Setter Property="Stroke" Value="SkyBlue" />
                                 <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                             </DataTrigger>
                         </Style.Triggers>

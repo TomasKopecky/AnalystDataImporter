@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Media;
 using AnalystDataImporter.Globals;
 
 namespace AnalystDataImporter.Models
@@ -26,7 +27,7 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Styl vazby - původně v Analystu jako síla
         /// </summary>
-        public string Style { get; set; }
+        public DoubleCollection Style { get; set; }
 
         /// <summary>
         /// Násobnost vazby.
