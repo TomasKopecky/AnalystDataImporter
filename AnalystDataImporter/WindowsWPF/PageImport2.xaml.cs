@@ -123,7 +123,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnRSirka_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageSirka();
+            settingWindow.ShowPageSirka();
         }
     }
 }

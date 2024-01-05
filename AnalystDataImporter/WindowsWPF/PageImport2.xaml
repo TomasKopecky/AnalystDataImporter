@@ -94,12 +94,12 @@
                   IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
                 <Line.Style>
                     <Style TargetType="Line">
-                        <Setter Property="StrokeThickness" Value="{Binding ColorValue}" />
+                        <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                         <Setter Property="Stroke" Value="{Binding ColorValue}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                 <Setter Property="Stroke" Value="DodgerBlue" />
-                                <Setter Property="StrokeThickness" Value="3" />
+                                <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -510,7 +510,7 @@
                     <Button x:Name="btnRCasE" Content="  ...  " Grid.Row="7" Grid.Column="3" Click="btnDatum_Click" />
                     <!-- 9. Řádek 8-->
                     <TextBox Text="Tloušťka (Šířka)" Grid.Row="8" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRSirka" Text="" Grid.Row="8" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSirka" Text="{Binding CanvasViewModel.SelectedSingleItem.Thickness}" Grid.Row="8" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRSirka" Content="  ...  " Grid.Row="8" Grid.Column="3" Click="btnRSirka_Click" />
                     <!-- 10. Řádek 9-->
                     <TextBox Text="Popis" Grid.Row="9" Grid.Column="0" IsReadOnly="True" />

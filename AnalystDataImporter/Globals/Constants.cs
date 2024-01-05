@@ -78,6 +78,12 @@ namespace AnalystDataImporter.Globals
             {"Žlutá","Yellow"},
             {"Oranžová","Orange"}
         };
+
+        // implicitní Tloušťka (Šířka) vazby
+        public static List<double> Thickness = new List<double>
+        {
+           1,2,3,4,5,6,7,8,9,10
+        };
     }
 
     // pomocná třída pro možnost uchování oddělovačů v datové struktuře Enum

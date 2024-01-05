@@ -64,6 +64,7 @@ namespace AnalystDataImporter.ViewModels
             _model = _relation;
             Type = "relation";
             ColorValue = Constants.Colors.ElementAt(0).Value;
+            Thickness = 1;
         }
 
         // If either XPosition or YPosition of start element changes, update x1 and y1
@@ -170,6 +171,19 @@ namespace AnalystDataImporter.ViewModels
                     OnPropertyChanged(nameof(ObjectTo));
                     OnPropertyChanged(nameof(X2));
                     OnPropertyChanged(nameof(Y2));
+                }
+            }
+        }
+
+        public double Thickness
+        {
+            get => _relation.Thickness;
+            set
+            {
+                if (_relation.Thickness != value)
+                {
+                    _relation.Thickness = value;
+                    OnPropertyChanged(nameof(Thickness));
                 }
             }
         }

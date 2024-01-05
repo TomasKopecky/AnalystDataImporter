@@ -21,7 +21,7 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Tloušťka vazby - původně v Analystu jako šířka
         /// </summary>
-        public string Thickness { get; set; }
+        public double Thickness { get; set; }
 
         /// <summary>
         /// Styl vazby - původně v Analystu jako síla

@@ -45,6 +45,14 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             ShowDialog();
         }
 
+        public void ShowPageSirka()
+        {
+            PageSirka pageSirka = new PageSirka(_canvasViewModel);
+            pageSirka.basicSettingPage.RequestClose += CloseWindow;
+            Content = pageSirka;
+            ShowDialog();
+        }
+
         private void CloseWindow()
         {
             // TODO: možná bude třeba zde ještě při destroy objektu i odebrat právě event CloseWindow u dané page, tedy něco jako pageTyp.basicSettingPage.RequestClose -= CloseWindow;
