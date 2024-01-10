@@ -79,6 +79,8 @@ namespace AnalystDataImporter
 
             services.AddSingleton<IMessageService, MessageService>();
 
+            services.AddSingleton<IMessageBoxService,MessageBoxService>();
+
             // Pokud máte služby nebo repozitáře, registrujte je zde.
             // services.AddTransient<IMyService, MyServiceImplementation>();
         }
