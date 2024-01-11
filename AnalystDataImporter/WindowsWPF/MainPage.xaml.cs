@@ -46,8 +46,10 @@ namespace AnalystDataImporter.WindowsWPF
             var rootNode = new Node { Name = "název AKCE" };
             rootNode.Children.Add(new Node { Name = "Datum: 2024-01-02" });
             rootNode.Children.Add(new Node { Name = "Popis: Akce Kyštof - pachatel ujel v Labu" });
-            // přidání zdroje dat to TreeView:
+            // přidání zdroje dat to TreeView pro Zdroje:
             trVwZdroje.ItemsSource = new ObservableCollection<Node> { rootNode };
+            // přidání zdroje dat to TreeView pro Šablony:
+            trVwSablony.ItemsSource = new ObservableCollection<Node> { rootNode };
             this.pageImport2 = pageImport2;
             #endregion
         }
@@ -134,9 +136,10 @@ namespace AnalystDataImporter.WindowsWPF
             frmImporter.Navigate(pageImport2);
 
             // Tlačítka která budou v kroku 'Další' povolena nebo zakázána:
-            btnImportZpet.IsEnabled = true; // Zpět zakázáno - nejde jít už o krok zpět!
-            btnImportDalsi.IsEnabled = false; // Dlaší povoleno - chceme se dostat na krok dva
-            btnImportImportovat.IsEnabled = true; // Importovat zakázáno - to má jít až ze druhé stránky
+            btnImportZpet.IsEnabled = true; // Zpět povoleno - chceme se dostat na krok jedna
+            btnImportDalsi.IsEnabled = false; // Dlaší zakázáno - nejde jít už o krok dál!
+            btnImportImportovat.IsEnabled = true; // Importovat povoleno - odtud chceme teprve importovat!
+            btnImportUlozit.IsEnabled = true; // Uložit povoleno - odtud chceme teprve Ukládat Šablonu
         }
 
         // Po kliknutí na Tlačítko 'Zpět' v záložce 'ANALYST DATA Import'
@@ -147,9 +150,10 @@ namespace AnalystDataImporter.WindowsWPF
             frmImporter.Navigate(page1);
 
             // Tlačítka která budou v kroku 'Zpět' zakázána nebo povolena:
-            btnImportZpet.IsEnabled = false; // Zpět povoleno - chceme se dostat na krok jedna
-            btnImportDalsi.IsEnabled = true; // Dlaší zakázáno - nejde jít už o krok dál!
-            btnImportImportovat.IsEnabled = false; // Importovat povoleno - odtud chceme teprve importovat!
+            btnImportZpet.IsEnabled = false; // Zpět zakázáno - nejde jít už o krok zpět!
+            btnImportDalsi.IsEnabled = true; // Dlaší povoleno - chceme se dostat na krok dva
+            btnImportImportovat.IsEnabled = false; // Importovat zakázáno - to má jít až ze druhé stránky
+            btnImportUlozit.IsEnabled = false; // Uložit zakázáno - to má jít až ze druhé stránky
         }
 
         // Po kliknutí na Tlačítko 'Uložit' v záložce 'ANALYST DATA Import' - pro Uložení Šablony
