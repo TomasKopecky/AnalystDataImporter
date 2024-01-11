@@ -27,6 +27,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             InitializeComponent();
             _canvasViewModel = viewModel;
             //DataContext = viewModel;
+            this.KeyDown += new KeyEventHandler(SettingWindow_KeyDown);
         }
 
         public void ShowPageTyp()
@@ -122,5 +123,13 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             Close();
         }
 
+        // metoda pro odchytávání stisknutých kláves na klávesnici
+        private void SettingWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) // pokud stisknu klávesu Esc(ape)
+            {
+                this.Close(); // Zavře okno
+            }
+        }
     }
 }
