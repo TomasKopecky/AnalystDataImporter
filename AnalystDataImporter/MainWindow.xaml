@@ -4,8 +4,8 @@
         Title="MainWindow" 
         MinHeight="450" MinWidth="680"
         WindowStartupLocation="CenterScreen"
-        PreviewMouseDown="Window_PreviewMouseDown">
-    
+        > <!--PreviewMouseDown="Window_PreviewMouseDown"-->
+
     <Grid x:Name="MainGrid">
 
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" /> <!--HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"-->

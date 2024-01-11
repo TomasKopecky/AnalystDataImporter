@@ -164,9 +164,18 @@ namespace AnalystDataImporter.WindowsWPF
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
         }
-        #endregion
 
         #endregion
 
+        #endregion
+
+        // Zakázání navigace "Vpřed" a "Zpět"
+        private void frmImporter_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Back || e.NavigationMode == NavigationMode.Forward)
+            {
+                e.Cancel = true; // Zakázání navigace "Vpřed" a "Zpět"
+            }
+        }
     }
 }

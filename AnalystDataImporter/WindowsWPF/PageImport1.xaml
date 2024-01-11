@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      PreviewMouseDown="Page_PreviewMouseDown"
       Title="PageImport1">
 
     <Grid x:Name="grdPageImport1" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">

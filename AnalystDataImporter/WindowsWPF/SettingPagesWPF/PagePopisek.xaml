@@ -38,7 +38,7 @@
         <!--Hodnota (Sloupec)-->
         <RadioButton x:Name="rdBtnPopisekSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnPopisekSloupec_Click"/>
         <Label Content="Hodnota:" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" />
-        <TextBox x:Name="txtBxPopisek" Height="200" Width="400" Margin="5" Grid.Row="2" Grid.Column="1" IsEnabled="False" />
+        <TextBox x:Name="txtBxPopisek" Height="200" Width="400" Margin="5" Grid.Row="2" Grid.Column="1" IsEnabled="False" TextWrapping="Wrap" AcceptsReturn="True" />
         <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Margin="5" IsEnabled="False" SelectionChanged="cmbBxSloupec_SelectionChanged">
             <!--<ComboBoxItem>Vložit Sloupec</ComboBoxItem>
             <ComboBoxItem>1</ComboBoxItem>

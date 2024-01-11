@@ -36,6 +36,14 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             Content = pageTyp;
             ShowDialog();
         }
+        //ShowPageIdentita
+        public void ShowPageIdentita()
+        {
+            PageIdentita pageIdentita = new PageIdentita(_canvasViewModel);
+            pageIdentita.basicSettingPage.RequestClose += CloseWindow;
+            Content = pageIdentita;
+            ShowDialog();
+        }
 
         public void ShowPagePopisek()
         {

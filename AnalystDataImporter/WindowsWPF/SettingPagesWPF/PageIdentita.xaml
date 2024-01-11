@@ -29,13 +29,13 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="txtBxIdentita" Height="200" Width="400" Margin="5" />
+        <TextBox x:Name="txtBxIdentita" Height="200" Width="400" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" />
 
-        <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5">
-            <ComboBoxItem>Vložit Sloupec</ComboBoxItem>
+        <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5" SelectionChanged="cmbBxSloupec_SelectionChanged_1">
+            <!--<ComboBoxItem>Vložit Sloupec</ComboBoxItem>
             <ComboBoxItem>1</ComboBoxItem>
             <ComboBoxItem>2</ComboBoxItem>
-            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>-->
         </ComboBox>
 
         <Label Content="POZOR!: Pokud jsou data prázdná, nevytvářet objekt - (daný řádek se nezpracuje!)" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
@@ -43,8 +43,8 @@
 
 
         <!--Tlačítka-->
-        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" VerticalAlignment="Top" />
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,40,10,5" VerticalAlignment="Top" />
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" VerticalAlignment="Top" Click="btnOk_Click"/>
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,40,10,5" VerticalAlignment="Top" Click="btnStorno_Click"/>
 
     </Grid>
 </Page>

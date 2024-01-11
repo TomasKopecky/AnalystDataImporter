@@ -96,7 +96,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- FRAME - do nej iportuji Page! -->
-                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" />
+                    <Frame x:Name="frmImporter" NavigationUIVisibility="Hidden" Navigating="frmImporter_Navigating" JournalOwnership="UsesParentJournal" />
 
                     <!-- Tlačítka Zpět,Další a Importovat -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" 

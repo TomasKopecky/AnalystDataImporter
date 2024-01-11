@@ -76,7 +76,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnEIdentita_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageIdentita();
+            settingWindow.ShowPageIdentita();
         }
 
         private void btnPopis_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -131,14 +131,6 @@ namespace AnalystDataImporter.WindowsWPF
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
             settingWindow.ShowPageCas();
-        }
-
-        private void CurrentCanvasPage_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.XButton1 || e.ChangedButton == MouseButton.XButton2)
-            {
-                e.Handled = true; // Potlačí událost, čímž zakáže funkci tlačítka
-            }
         }
     }
 }

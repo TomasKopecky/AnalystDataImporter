@@ -58,5 +58,15 @@ namespace AnalystDataImporter
 
 
         }
+
+        //// zakáže všechna tlačítka myši krom Levého a Pravého
+        //private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    // Povolit pouze levé a pravé tlačítko myši
+        //    if (e.ChangedButton != MouseButton.Left && e.ChangedButton != MouseButton.Right)
+        //    {
+        //        e.Handled = true; // Zakázání ostatních tlačítek
+        //    }
+        //}
     }
 }
