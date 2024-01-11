@@ -68,7 +68,7 @@ namespace AnalystDataImporter.ViewModels
             ColorValue = Constants.Colors.ElementAt(0).Value; // Barva
             Label = string.Empty; // Popisek
             DirectionValue = Constants.RelationDirections.ElementAt(0).Value; // Směr = "0"
-            Style = Constants.Style.ElementAt(0).Value; // Síla (Styl) ((Čendy - Ha. ha.))
+            StyleValue = Constants.Style.ElementAt(0).Value; // Síla (Styl) ((Čendy - Ha. ha.))
             Date = string.Empty; // Datum - prázdné (protože jde o sloupec!!)
             Time = string.Empty; // Čas - prázdný (protože jde o sloupec!!)
             Thickness = 1.0; // Šířka (Tloušťka)
@@ -128,53 +128,53 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        /// <summary>
-        /// Style relace ve smyslu stylu čáry
-        /// </summary>
-        public DoubleCollection Style
-        {
-            get => _relation.Style;
-            set
-            {
-                if (_relation.Style != value)
-                {
-                    _relation.Style = value;
-                    OnPropertyChanged(nameof(Style));
-                }
-            }
-        }
-        ///// <summary>
-        ///// Style relace ve smyslu stylu čáry - 
-        ///// </summary>
-        //public DoubleCollection StyleValue
-        //{
-        //    get => _relation.StyleValue;
-        //    set
-        //    {
-        //        if (_relation.StyleValue != value)
-        //        {
-        //            _relation.StyleValue = value;
-        //            ColorKey = Constants.Colors.FirstOrDefault(styl => styl.Value.ToString() == _relation.StyleValue.ToString()).Key;
-
-        //            OnPropertyChanged(nameof(StyleValue));
-        //        }
-        //    }
-        //}
         ///// <summary>
         ///// Style relace ve smyslu stylu čáry
         ///// </summary>
-        //public string StyleKey
+        //public DoubleCollection Style
         //{
-        //    get => _relation.StyleKey;
+        //    get => _relation.Style;
         //    set
         //    {
-        //        if (_relation.StyleKey != value)
+        //        if (_relation.Style != value)
         //        {
-        //            _relation.StyleKey = value;
-        //            OnPropertyChanged(nameof(StyleKey));
+        //            _relation.Style = value;
+        //            OnPropertyChanged(nameof(Style));
         //        }
         //    }
         //}
+        /// <summary>
+        /// Style relace ve smyslu stylu čáry - 
+        /// </summary>
+        public DoubleCollection StyleValue
+        {
+            get => _relation.StyleValue;
+            set
+            {
+                if (_relation.StyleValue != value)
+                {
+                    _relation.StyleValue = value;
+                    StyleKey = Constants.Style.FirstOrDefault(style => style.Value.ToString() == _relation.StyleValue.ToString()).Key;
+
+                    OnPropertyChanged(nameof(StyleValue));
+                }
+            }
+        }
+        /// <summary>
+        /// Style relace ve smyslu stylu čáry
+        /// </summary>
+        public string StyleKey
+        {
+            get => _relation.StyleKey;
+            set
+            {
+                if (_relation.StyleKey != value)
+                {
+                    _relation.StyleKey = value;
+                    OnPropertyChanged(nameof(StyleKey));
+                }
+            }
+        }
 
         ///// <summary>
         ///// Směr relace (např. od-do).
@@ -194,18 +194,18 @@ namespace AnalystDataImporter.ViewModels
         /// <summary>
         /// Směr relace (např. od-do). - Hodnota (int)
         /// </summary>
-        public string DirectionValue
+        public int DirectionValue
         {
             get => _relation.DirectionValue;
             set
             {
-                if (_relation.DirectionValue != value)
-                {
+                //if (_relation.DirectionValue != value)
+                //{
                     _relation.DirectionValue = value;
-                    DirectionKey = Constants.RelationDirections.FirstOrDefault(direction => direction.ToString() == _relation.DirectionValue.ToString()).Key;
+                    DirectionKey = Constants.RelationDirections.FirstOrDefault(direction => direction.Value == _relation.DirectionValue).Key;
 
                     OnPropertyChanged(nameof(DirectionValue));
-                }
+                //}
             }
         }
         /// <summary>

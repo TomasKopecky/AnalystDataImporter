@@ -72,11 +72,11 @@ namespace AnalystDataImporter.Globals
         //    fromBtoA
         //}
         // // implicitní směry vazeb - bez směru, od A k B, od B k A
-        public static Dictionary<string, string> RelationDirections = new Dictionary<string, string>
+        public static Dictionary<string, int> RelationDirections = new Dictionary<string, int>
         {
-            {"Žádné","0"}, // 0 je pomocná proměnná, podle které se nastaví <Line> bez šipek
-            {"Ikona 1 až Ikona 2","2"}, // 2 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 2 (koncového)
-            {"Ikona 2 až Ikona 1","1"} // 1 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 1 (počátečního)
+            {"Žádné",0}, // 0 je pomocná proměnná, podle které se nastaví <Line> bez šipek
+            {"Ikona 1 až Ikona 2",2}, // 2 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 2 (koncového)
+            {"Ikona 2 až Ikona 1",1} // 1 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 1 (počátečního)
         };
 
         //// implicitní násobnost vazby - Jednoduchá, Násobná

@@ -23,11 +23,20 @@ namespace AnalystDataImporter.Models
         /// </summary>
         public double Thickness { get; set; }
 
-        /// <summary>
-        /// Styl vazby - původně v Analystu jako síla
-        /// </summary>
-        public DoubleCollection Style { get; set; }
+        ///// <summary>
+        ///// Styl vazby - původně v Analystu jako síla
+        ///// </summary>
+        //public DoubleCollection Style { get; set; }
 
+        /// <summary>
+        /// Hodnota stylu vazby - čára, tečky, ... - hodnota v podobě DoubleCollection
+        /// </summary>
+        public DoubleCollection StyleValue { get; set; }
+
+        /// <summary>
+        /// Hodnota stylu vazby - čára, tečky, ... - hodnota v podobě string - tedy textový popis daného stylu vazby
+        /// </summary>
+        public string StyleKey { get; set; }
 
         /// <summary>
         /// Násobnost vazby.
@@ -37,7 +46,7 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Směr relace (např. od-do). - Hodnota (string)
         /// </summary>
-        public string DirectionValue { get; set; }
+        public int DirectionValue { get; set; }
 
         /// <summary>
         /// Směr vazby (např. od-do). - Klíč (string)

@@ -31,7 +31,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             basicSettingPage = new BaseSettingPage(canvasViewModel);
             cmbBxVazbaSila.ItemsSource = Constants.Style.Keys;
             _relationViewModel = (RelationViewModel)canvasViewModel.SelectedSingleItem;
-            cmbBxVazbaSila.Text = Constants.Style.FirstOrDefault(styl => styl.Value.ToString() == _relationViewModel.Style.ToString()).Key;
+            cmbBxVazbaSila.Text = Constants.Style.FirstOrDefault(styl => styl.Value.ToString() == _relationViewModel.StyleValue.ToString()).Key;
         }
 
         private void btnStorno_Click(object sender, RoutedEventArgs e)
@@ -41,7 +41,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            _relationViewModel.Style = Constants.Style[cmbBxVazbaSila.Text];
+            _relationViewModel.StyleValue = Constants.Style[cmbBxVazbaSila.Text];
             basicSettingPage.OnRequestClose();
         }
     }

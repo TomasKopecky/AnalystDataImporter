@@ -97,7 +97,7 @@
                     <Style TargetType="Line">
                         <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                         <Setter Property="Stroke" Value="{Binding ColorValue}" />
-                        <Setter Property="StrokeDashArray" Value="{Binding Style}" />
+                        <Setter Property="StrokeDashArray" Value="{Binding StyleValue}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                 <Setter Property="Stroke" Value="DodgerBlue" />
@@ -500,7 +500,7 @@
                     <Button x:Name="btnRSmer" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnRSmer_Click" />
                     <!-- 6. Řádek 5-->
                     <TextBox Text="Styl (Síla)" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRSila" Text="{Binding CanvasViewModel.SelectedSingleItem.Style}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSila" Text="{Binding CanvasViewModel.SelectedSingleItem.StyleKey}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRSila" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnRSila_Click" />
                     <!-- 7. Řádek 6-->
                     <TextBox Text="Datum" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
