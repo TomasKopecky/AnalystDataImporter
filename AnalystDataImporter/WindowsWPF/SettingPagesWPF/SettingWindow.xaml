@@ -11,9 +11,6 @@
         ResizeMode="NoResize"
         Background="#F0F0F0"
         KeyDown="SettingWindow_KeyDown">
-    <!--<Window.InputBindings>
-        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
-    </Window.InputBindings>-->
     <Grid>
         <Frame x:Name="SettingFrame" />
     </Grid>

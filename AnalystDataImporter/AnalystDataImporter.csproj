@@ -148,6 +148,9 @@
       <DependentUpon>PageImport2.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\RowModel.cs" />
+    <Compile Include="WindowsWPF\SaveWindow.xaml.cs">
+      <DependentUpon>SaveWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\BaseSettingPage.cs" />
     <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
       <DependentUpon>PageBarva.xaml</DependentUpon>
@@ -226,6 +229,10 @@
     <Page Include="WindowsWPF\PageImport2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml">
       <SubType>Designer</SubType>

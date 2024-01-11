@@ -25,7 +25,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="txtBxPopis" Height="200" Width="400" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" />
+        <TextBox x:Name="txtBxPopis" Height="200" Width="400" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
 
         <ComboBox x:Name="cmbBxSloupec" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="5" SelectionChanged="cmbBxSloupec_SelectionChanged">
             <!--<ComboBoxItem>Vložit Sloupec</ComboBoxItem>

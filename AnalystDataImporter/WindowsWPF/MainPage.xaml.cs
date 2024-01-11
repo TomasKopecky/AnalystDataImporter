@@ -17,6 +17,8 @@ using System.Data;
 using System.IO;
 using AnalystDataImporter.WindowsWPF;
 using System.Collections.ObjectModel;
+using AnalystDataImporter.ViewModels;
+using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -152,6 +154,8 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnImportUlozit_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Dodělat funkci Tlačítka 'Uložit'
+            SaveWindow saveWindow = new SaveWindow();
+            saveWindow.ShowDialog();
         }
 
         // Po kliknutí na Tlačítko 'Importovat' v záložce 'ANALYST DATA Import' - pro import dat do ANALYST DATAu
