@@ -152,6 +152,9 @@
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\BaseSettingPage.cs" />
+    <Compile Include="WindowsWPF\SettingPagesWPF\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
       <DependentUpon>PageBarva.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WindowsWPF\SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -343,6 +350,16 @@
     <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaSmerNapoveda.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gi4.gif" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif1.gif" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif2.gif" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif3.gif" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif5.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Loading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

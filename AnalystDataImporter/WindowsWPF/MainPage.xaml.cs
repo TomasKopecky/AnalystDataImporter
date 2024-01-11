@@ -95,6 +95,8 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnZdrojeAktualizovat_Click(object sender, RoutedEventArgs e)
         {
             // TODO: funkce Tlačítka Aktualizovat
+            LoadingWindow loadingWindow = new LoadingWindow();
+            loadingWindow.ShowDialog();
         }
         #endregion
 
