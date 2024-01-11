@@ -40,6 +40,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             basicSettingPage.canvasViewModel.SelectedSingleItem.Class = cmbBxTypElement.Text;
+            basicSettingPage.canvasViewModel.SelectedSingleItem.Label = cmbBxTypElement.Text;
             basicSettingPage.OnRequestClose();
         }
     }

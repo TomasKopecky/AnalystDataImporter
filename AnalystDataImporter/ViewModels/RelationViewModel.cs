@@ -64,9 +64,15 @@ namespace AnalystDataImporter.ViewModels
             this._y2 = toPoint.Y;
             _model = _relation;
             Type = "relation";
-            ColorValue = Constants.Colors.ElementAt(0).Value;
-            Thickness = 1.0;
-            Style = Constants.Style.ElementAt(1).Value;
+            Multiplicity = "Jednoduchá"; // Násobnost propojení
+            ColorValue = Constants.Colors.ElementAt(0).Value; // Barva
+            Label = string.Empty; // Popisek
+            DirectionValue = Constants.RelationDirections.ElementAt(0).Value; // Směr = "0"
+            Style = Constants.Style.ElementAt(0).Value; // Síla (Styl) ((Čendy - Ha. ha.))
+            Date = string.Empty; // Datum - prázdné (protože jde o sloupec!!)
+            Time = string.Empty; // Čas - prázdný (protože jde o sloupec!!)
+            Thickness = 1.0; // Šířka (Tloušťka)
+            Description = string.Empty; //Popis
         }
 
         // If either XPosition or YPosition of start element changes, update x1 and y1
@@ -106,7 +112,6 @@ namespace AnalystDataImporter.ViewModels
                 }
             }
         }
-
         /// <summary>
         /// Barva relace přímo v hodnotě System.Drawing.Color.
         /// </summary>
@@ -138,19 +143,83 @@ namespace AnalystDataImporter.ViewModels
                 }
             }
         }
+        ///// <summary>
+        ///// Style relace ve smyslu stylu čáry - 
+        ///// </summary>
+        //public DoubleCollection StyleValue
+        //{
+        //    get => _relation.StyleValue;
+        //    set
+        //    {
+        //        if (_relation.StyleValue != value)
+        //        {
+        //            _relation.StyleValue = value;
+        //            ColorKey = Constants.Colors.FirstOrDefault(styl => styl.Value.ToString() == _relation.StyleValue.ToString()).Key;
 
+        //            OnPropertyChanged(nameof(StyleValue));
+        //        }
+        //    }
+        //}
+        ///// <summary>
+        ///// Style relace ve smyslu stylu čáry
+        ///// </summary>
+        //public string StyleKey
+        //{
+        //    get => _relation.StyleKey;
+        //    set
+        //    {
+        //        if (_relation.StyleKey != value)
+        //        {
+        //            _relation.StyleKey = value;
+        //            OnPropertyChanged(nameof(StyleKey));
+        //        }
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Směr relace (např. od-do).
+        ///// </summary>
+        //public Constants.RelationDirections Direction
+        //{
+        //    get => _relation.Direction;
+        //    set
+        //    {
+        //        if (_relation.Direction != value)
+        //        {
+        //            _relation.Direction = value;
+        //            OnPropertyChanged(nameof(Direction));
+        //        }
+        //    }
+        //}
         /// <summary>
-        /// Směr relace (např. od-do).
+        /// Směr relace (např. od-do). - Hodnota (int)
         /// </summary>
-        public Constants.RelationDirections Direction
+        public string DirectionValue
         {
-            get => _relation.Direction;
+            get => _relation.DirectionValue;
             set
             {
-                if (_relation.Direction != value)
+                if (_relation.DirectionValue != value)
                 {
-                    _relation.Direction = value;
-                    OnPropertyChanged(nameof(Direction));
+                    _relation.DirectionValue = value;
+                    DirectionKey = Constants.RelationDirections.FirstOrDefault(direction => direction.ToString() == _relation.DirectionValue.ToString()).Key;
+
+                    OnPropertyChanged(nameof(DirectionValue));
+                }
+            }
+        }
+        /// <summary>
+        /// Směr relace (např. od-do). - Klíč (string)
+        /// </summary>
+        public string DirectionKey
+        {
+            get => _relation.DirectionKey;
+            set
+            {
+                if (_relation.DirectionKey != value)
+                {
+                    _relation.DirectionKey = value;
+                    OnPropertyChanged(nameof(DirectionKey));
                 }
             }
         }
@@ -189,6 +258,35 @@ namespace AnalystDataImporter.ViewModels
                     OnPropertyChanged(nameof(ObjectTo));
                     OnPropertyChanged(nameof(X2));
                     OnPropertyChanged(nameof(Y2));
+                }
+            }
+        }
+
+        public string Multiplicity
+        {
+            get => _relation.Multiplicity;
+            set
+            {
+                if (_relation.Multiplicity != value)
+                {
+                    _relation.Multiplicity = value;
+                    OnPropertyChanged(nameof(Multiplicity));
+                }
+            }
+        }
+
+        /// <summary>
+        /// popis objektu
+        /// </summary>
+        public string Description
+        {
+            get => _relation.Description;
+            set
+            {
+                if (_relation.Description != value)
+                {
+                    _relation.Description = value;
+                    OnPropertyChanged(nameof(Description));
                 }
             }
         }

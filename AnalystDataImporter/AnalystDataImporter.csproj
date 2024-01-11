@@ -152,8 +152,11 @@
     <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
       <DependentUpon>PageBarva.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsWPF\SettingPagesWPF\PageDatumCas.xaml.cs">
-      <DependentUpon>PageDatumCas.xaml</DependentUpon>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageCas.xaml.cs">
+      <DependentUpon>PageCas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageDatum.xaml.cs">
+      <DependentUpon>PageDatum.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\PageIdentita.xaml.cs">
       <DependentUpon>PageIdentita.xaml</DependentUpon>
@@ -228,7 +231,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsWPF\SettingPagesWPF\PageDatumCas.xaml">
+    <Page Include="WindowsWPF\SettingPagesWPF\PageCas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageDatum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

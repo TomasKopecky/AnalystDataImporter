@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Windows;
 using AnalystDataImporter.Globals;
 using AnalystDataImporter.Models;
 
@@ -26,9 +28,13 @@ namespace AnalystDataImporter.ViewModels
         {
             _element = element ?? throw new ArgumentNullException(nameof(element));
             _model = _element;
-            Id = Label;
             Type = "element";
             Class = Constants.Classes[0];
+            Id = Label;
+            Label = string.Empty; // Popisek
+            Date = string.Empty; // Datum - prázdné (protože jde o sloupec!!)
+            Time = string.Empty; // Čas - prázdný (protože jde o sloupec!!)
+            Title = string.Empty; //Popis
         }
 
         public void ConfigureTempElement(double x, double y)
@@ -42,7 +48,7 @@ namespace AnalystDataImporter.ViewModels
         public void FinishTempElement()
         {
             Label = Constants.DefaultElementLabel;
-            Title = Constants.DefaultElementTitle;
+            Id = Constants.DefaultElementId;
             _temporary = false;
             ZIndex = 1;
             IsSelected = true;

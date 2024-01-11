@@ -13,7 +13,6 @@ namespace AnalystDataImporter.Models
         /// Barva vazby reprezentovaná přímo ze System.Drawings.
         /// </summary>
         public string ColorValue { get; set; }
-
         /// <summary>
         /// Barva vazby reprezentovaná českým názvem barvy.
         /// </summary>
@@ -29,14 +28,21 @@ namespace AnalystDataImporter.Models
         /// </summary>
         public DoubleCollection Style { get; set; }
 
+
         /// <summary>
         /// Násobnost vazby.
         /// </summary>
         public string Multiplicity { get; set; }
 
         /// <summary>
-        /// Směr vazby (např. od-do).
+        /// Směr relace (např. od-do). - Hodnota (string)
         /// </summary>
-        public Constants.RelationDirections Direction { get; set; }
+        public string DirectionValue { get; set; }
+
+        /// <summary>
+        /// Směr vazby (např. od-do). - Klíč (string)
+        /// </summary>
+        public string DirectionKey { get; set; }
+
     }
 }

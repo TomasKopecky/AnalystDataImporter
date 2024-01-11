@@ -30,9 +30,19 @@ namespace AnalystDataImporter.Models
         public string Class { get; set; }
 
         /// <summary>
+        /// Datum a čas objektu. Reprezentuje datum spojené s prvkem pro pozdější využití hodnot ze sloupvů označených jako Date a Time v CSV !!
+        /// </summary>
+        public DateTime DateTimes { get; set; }
+
+        /// <summary>
         /// Datum objektu. Reprezentuje datum spojené s prvkem.
         /// </summary>
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
+
+        /// <summary>
+        /// Čas objektu. Reprezentuje čas spojený s prvkem.
+        /// </summary>
+        public string Time { get; set; }
 
         //public DateTime DateFrom { get; set; }
         //public DateTime DateTo { get; set; }

@@ -170,5 +170,13 @@ namespace AnalystDataImporter.WindowsWPF
         }
 
         #endregion
+
+        private void Page_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.XButton1 || e.ChangedButton == MouseButton.XButton2)
+            {
+                e.Handled = true; // Potlačí událost, čímž zakáže funkci tlačítka
+            }
+        }
     }
 }

@@ -44,8 +44,8 @@
         <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaNasobna.png" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
         <!--Tlačítka-->
-        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="3" Width="85" Height="25" Margin="10,5" />
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="3" Width="85" Height="25"  Margin="10,5" VerticalAlignment="Top" />
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="3" Width="85" Height="25" Margin="10,5" Click="btnOk_Click"/>
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="3" Width="85" Height="25"  Margin="10,5" VerticalAlignment="Top" Click="btnStorno_Click"/>
         
     </Grid>
 </Page>

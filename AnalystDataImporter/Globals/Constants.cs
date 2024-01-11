@@ -24,7 +24,7 @@ namespace AnalystDataImporter.Globals
 
         public const string DefaultElementLabel = "(identita není nastavena)";
 
-        public const string DefaultElementTitle = "(identita není nastavena)";
+        public const string DefaultElementId = "(identita není nastavena)";
 
         // Slovník ikon a tříd
         //public Dictionary<Icon, Class> IconClass { get; set; }
@@ -64,38 +64,50 @@ namespace AnalystDataImporter.Globals
 
         }
 
-        // implicitní směry vazeb - bez směru, od A k B, od B k A
-        public enum RelationDirections
-        {
-            noDirection,
-            fromAtoB,
-            fromBtoA
-        }
-
-        // implicitní Styl (Síla) čáry - StrokeDashArray
-        //public static List<Tuple<string, double, double>> Style = new List<Tuple<string, double, double>>
+        //// implicitní směry vazeb - bez směru, od A k B, od B k A
+        //public enum RelationDirections
         //{
-        //    new Tuple<string, double, double>("Potvrzené",0,0),
-        //    new Tuple<string, double, double>("Nepotvrzené",2,1),
-        //    new Tuple<string, double, double>("Nezávazné",0.5,2)
+        //    noDirection,
+        //    fromAtoB,
+        //    fromBtoA
+        //}
+        // // implicitní směry vazeb - bez směru, od A k B, od B k A
+        public static Dictionary<string, string> RelationDirections = new Dictionary<string, string>
+        {
+            {"Žádné","0"}, // 0 je pomocná proměnná, podle které se nastaví <Line> bez šipek
+            {"Ikona 1 až Ikona 2","2"}, // 2 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 2 (koncového)
+            {"Ikona 2 až Ikona 1","1"} // 1 je pomocná proměnná, podle které se přidá <Line> šipka do bodu 1 (počátečního)
+        };
+
+        //// implicitní násobnost vazby - Jednoduchá, Násobná
+        //public static Dictionary<string, string> Multiplicity = new Dictionary<string, string>
+        //{
+        //    {"Jednoduchá","0"}, // Násobnost vazby? - NE = 0
+        //    {"Násobná","1" } // Násobnost vazby? - ANO = 1
         //};
 
-
         // implicitní Styl (Síla) čáry - 
-        public static Dictionary<string,DoubleCollection> Style = new Dictionary<string, DoubleCollection>
+        public static Dictionary<string, DoubleCollection> Style = new Dictionary<string, DoubleCollection>
         {
-            {"Potvrzené",new DoubleCollection(){0,0}},
-            {"Nepotvrzené",new DoubleCollection(){2,1}},
-            {"Nezávazné",new DoubleCollection(){0.5,2}},
+            {"Potvrzené",new DoubleCollection(){1,0}}, //{1,0}}, ← správné hodnoty
+            {"Nepotvrzené",new DoubleCollection(){6,2}}, //{6,2}}, ← správné hodnoty
+            {"Nezávazné",new DoubleCollection(){1,4}} //{1,4}}, ← správné hodnoty
         };
+        //// implicitní Styl (Síla) čáry - 
+        //public static Dictionary<DoubleCollection, string> Style = new Dictionary<DoubleCollection, string>
+        //{
+        //    {new DoubleCollection(){1,0},"Potvrzené"}, //{1,0}}, ← správné hodnoty
+        //    {new DoubleCollection(){6,2},"Nepotvrzené"}, //{6,2}}, ← správné hodnoty
+        //    {new DoubleCollection(){1,4},"Nezávazné"} //{1,4}}, ← správné hodnoty
+        //};
 
         // Implicitní barvy
         public static Dictionary<string, string> Colors = new Dictionary<string, string>
         {
             {"Černá","Black"},
+            {"Červená","Red"},
             {"Modrá","Blue"},
             {"Zelená","Green"},
-            {"Žlutá","Yellow"},
             {"Oranžová","Orange"}
         };
 

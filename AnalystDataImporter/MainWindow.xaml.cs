@@ -3,6 +3,7 @@ using AnalystDataImporter.Views;
 using AnalystDataImporter.WindowsWPF;
 using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
 using System.Windows;
+using System.Windows.Input;
 
 namespace AnalystDataImporter
 {
@@ -57,7 +58,5 @@ namespace AnalystDataImporter
 
 
         }
-
-
     }
 }

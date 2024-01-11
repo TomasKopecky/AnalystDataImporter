@@ -13,6 +13,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PageImport2"
       Cursor="{Binding CurrentCursor}"
+      PreviewMouseDown="CurrentCanvasPage_PreviewMouseDown"
       >
 
     <Page.Resources>
@@ -45,7 +46,7 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="BorderBrush" Value="DodgerBlue" />
+                                    <Setter Property="BorderBrush" Value="SkyBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -100,7 +101,7 @@
                         <Setter Property="StrokeDashArray" Value="{Binding Style}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Stroke" Value="SkyBlue" />
+                                <Setter Property="Stroke" Value="DodgerBlue" />
                                 <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -403,11 +404,11 @@
                     <Button x:Name="btnEIkonaTyp" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnEIkonaTyp_Click" />
                     <!-- 3. Řádek 2-->
                     <TextBox Text="Identita (id)" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxEIdentita" Text="{Binding CanvasViewModel.SelectedSingleItem.Id}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
-                    <Button x:Name="btnEIdentita" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnEIdentita_Click" />
+                    <TextBox x:Name="txtBxEIdentita" Text="{Binding CanvasViewModel.SelectedSingleItem.Id}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Grid.ColumnSpan="2"/>
+                    <!--<Button x:Name="btnEIdentita" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnEIdentita_Click" />-->
                     <!-- 4. Řádek 3-->
                     <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxEPopisek" Text="{Binding CanvasViewModel.SelectedSingleItem.Label}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopisek" Text="{Binding CanvasViewModel.SelectedSingleItem.Label}" Grid.Row="3" Grid.Column="1" IsReadOnly="True"  Grid.ColumnSpan="2"/>
                     <!--<Button x:Name="btnEPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" />-->
                     <!-- 5. Řádek 4-->
                     <TextBox Text="Datum" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
@@ -415,11 +416,11 @@
                     <Button x:Name="btnEDatum" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnDatum_Click" />
                     <!-- 6. Řádek 5-->
                     <TextBox Text="Čas" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxECas" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
-                    <Button x:Name="btnECasEPopis" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnDatum_Click" />
+                    <TextBox x:Name="txtBxECas" Text="{Binding CanvasViewModel.SelectedSingleItem.Time}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnECas" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnCas_Click" />
                     <!-- 7. Řádek 6-->
                     <TextBox Text="Popis" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxEPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Description}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Title}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnEPopis" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnPopis_Click" />
 
                 </Grid>
@@ -483,8 +484,8 @@
                     <Label Content="Vlastnost" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="3" />
                     <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
                     <!-- 2. Řádek 1-->
-                    <TextBox Text="Násobnost" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
-                    <TextBox x:Name="txtRBxIkonaTyp" Text="Obecný objekt" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox Text="Násobnost propojení" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+                    <TextBox x:Name="txtRBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Multiplicity}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRNasobnost" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnRNasobnost_Click" />
                     <!-- 3. Řádek 2-->
                     <TextBox Text="Barva" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
@@ -492,31 +493,31 @@
                     <Button x:Name="btnRBarva" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnRBarva_Click" />
                     <!-- 4. Řádek 3-->
                     <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRPopisek" Text="Obecný objekt" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopisek" Text="{Binding CanvasViewModel.SelectedSingleItem.Label}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" Click="btnPopisek_Click" />
                     <!-- 5. Řádek 4-->
                     <TextBox Text="Směr" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRSmer" Text="" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSmer" Text="{Binding CanvasViewModel.SelectedSingleItem.DirectionKey}" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRSmer" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnRSmer_Click" />
                     <!-- 6. Řádek 5-->
                     <TextBox Text="Styl (Síla)" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRSila" Text="" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSila" Text="{Binding CanvasViewModel.SelectedSingleItem.Style}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRSila" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnRSila_Click" />
                     <!-- 7. Řádek 6-->
                     <TextBox Text="Datum" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRDatum" Text="" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRDatum" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRDatum" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnDatum_Click" />
                     <!-- 8. Řádek 7-->
                     <TextBox Text="Čas" Grid.Row="7" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRCas" Text="" Grid.Row="7" Grid.Column="1" IsReadOnly="True" />
-                    <Button x:Name="btnRCasE" Content="  ...  " Grid.Row="7" Grid.Column="3" Click="btnDatum_Click" />
+                    <TextBox x:Name="txtBxRCas" Text="{Binding CanvasViewModel.SelectedSingleItem.Time}" Grid.Row="7" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRCasE" Content="  ...  " Grid.Row="7" Grid.Column="3" Click="btnCas_Click" />
                     <!-- 9. Řádek 8-->
                     <TextBox Text="Tloušťka (Šířka)" Grid.Row="8" Grid.Column="0" IsReadOnly="True" />
                     <TextBox x:Name="txtBxRSirka" Text="{Binding CanvasViewModel.SelectedSingleItem.Thickness}" Grid.Row="8" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRSirka" Content="  ...  " Grid.Row="8" Grid.Column="3" Click="btnRSirka_Click" />
                     <!-- 10. Řádek 9-->
                     <TextBox Text="Popis" Grid.Row="9" Grid.Column="0" IsReadOnly="True" />
-                    <TextBox x:Name="txtBxRPopis" Text="" Grid.Row="9" Grid.Column="1" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Title}" Grid.Row="9" Grid.Column="1" IsReadOnly="True" />
                     <Button x:Name="btnRPopis" Content="  ...  " Grid.Row="9" Grid.Column="3" Click="btnPopis_Click" />
                 </Grid>
 

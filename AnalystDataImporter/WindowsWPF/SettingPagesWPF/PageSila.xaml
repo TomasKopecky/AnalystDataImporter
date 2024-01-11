@@ -27,13 +27,13 @@
 
         <Label Content="Síla:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
         <ComboBox x:Name="cmbBxVazbaSila" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
-            <ComboBoxItem>Potvrzené</ComboBoxItem>
+            <!--<ComboBoxItem>Potvrzené</ComboBoxItem>
             <ComboBoxItem>Nepotvrzené</ComboBoxItem>
-            <ComboBoxItem>Nezávazné</ComboBoxItem>
+            <ComboBoxItem>Nezávazné</ComboBoxItem>-->
         </ComboBox>
 
         <!--Tlačítka-->
-        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" />
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" />
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" Click="btnOk_Click"/>
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" Click="btnStorno_Click"/>
     </Grid>
 </Page>

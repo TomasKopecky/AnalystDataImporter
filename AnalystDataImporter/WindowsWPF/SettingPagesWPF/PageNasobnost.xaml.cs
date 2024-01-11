@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AnalystDataImporter.Globals;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
 {
@@ -20,9 +22,41 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     /// </summary>
     public partial class PageNasobnost : Page
     {
-        public PageNasobnost()
+        public BaseSettingPage basicSettingPage;
+        private RelationViewModel _relationViewModel;
+
+        public PageNasobnost(CanvasViewModel canvasViewModel)
         {
             InitializeComponent();
+            basicSettingPage = new BaseSettingPage(canvasViewModel);
+            _relationViewModel = (RelationViewModel)canvasViewModel.SelectedSingleItem;
+
+            if (_relationViewModel.Multiplicity == "Jednoduchá")
+            {
+                rdBtnVazbaJednoducha.IsChecked = true;
+            }
+            else if (_relationViewModel.Multiplicity == "Násobná")
+            {
+                rdBtnVazbaNasobna.IsChecked = true;
+            }
+        }
+
+        private void btnStorno_Click(object sender, RoutedEventArgs e)
+        {
+            basicSettingPage.OnRequestClose();
+        }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            if (rdBtnVazbaJednoducha.IsChecked == true)
+            {
+                _relationViewModel.Multiplicity = "Jednoduchá";
+            }
+            else if (rdBtnVazbaNasobna.IsChecked == true)
+            {
+                _relationViewModel.Multiplicity = "Násobná";
+            }
+            basicSettingPage.OnRequestClose();
         }
     }
 }

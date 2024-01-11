@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Barva:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
-        <ComboBox x:Name="cmbBxVazbaBarva" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
+        <ComboBox x:Name="cmbBxVazbaBarva" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
         </ComboBox>
 
         <!--Tlačítka-->

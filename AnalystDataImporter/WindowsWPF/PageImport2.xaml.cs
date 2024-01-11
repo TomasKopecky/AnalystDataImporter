@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
@@ -78,22 +79,16 @@ namespace AnalystDataImporter.WindowsWPF
             //settingWindow.ShowPageIdentita();
         }
 
-        private void btnDatum_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageDatumCas();
-        }
-
         private void btnPopis_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPagePopis();
+            settingWindow.ShowPagePopis();
         }
 
         private void btnRNasobnost_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageNasobnost();
+            settingWindow.ShowPageNasobnost();
         }
 
         private void btnRBarva_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -105,25 +100,45 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnPopisek_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPagePopisek();
+            settingWindow.ShowPagePopisek();
         }
 
         private void btnRSmer_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageSmer();
+            settingWindow.ShowPageSmer();
         }
 
         private void btnRSila_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
-            //settingWindow.ShowPageSila();
+            settingWindow.ShowPageSila();
         }
 
         private void btnRSirka_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
             settingWindow.ShowPageSirka();
+        }
+
+        private void btnDatum_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            settingWindow.ShowPageDatum();
+        }
+
+        private void btnCas_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow(_canvasViewModel);
+            settingWindow.ShowPageCas();
+        }
+
+        private void CurrentCanvasPage_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.XButton1 || e.ChangedButton == MouseButton.XButton2)
+            {
+                e.Handled = true; // Potlačí událost, čímž zakáže funkci tlačítka
+            }
         }
     }
 }

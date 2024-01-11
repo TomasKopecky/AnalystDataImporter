@@ -112,7 +112,7 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public DateTime Date
+        public string Date
         {
             get => _model.Date;
             set
@@ -121,6 +121,32 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _model.Date = value;
                     OnPropertyChanged(nameof(Date));
+                }
+            }
+        }
+
+        public string Time
+        {
+            get => _model.Time;
+            set
+            {
+                if (_model.Time != value)
+                {
+                    _model.Time = value;
+                    OnPropertyChanged(nameof(Time));
+                }
+            }
+        }
+
+        public DateTime DateTimes
+        {
+            get => _model.DateTimes;
+            set
+            {
+                if (_model.DateTimes != value)
+                {
+                    _model.DateTimes = value;
+                    OnPropertyChanged(nameof(DateTimes));
                 }
             }
         }
