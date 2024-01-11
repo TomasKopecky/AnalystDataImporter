@@ -352,11 +352,21 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gi4.gif" />
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif1.gif" />
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif2.gif" />
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif3.gif" />
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif5.gif" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
