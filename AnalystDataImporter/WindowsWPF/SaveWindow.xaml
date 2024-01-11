@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         KeyDown="SaveWindow_KeyDown"
-        Title="Uložit šablonu" Height="530" Width="450"
-        ResizeMode="NoResize"> <!--Height="510" Width="430"--> <!--(nevim proč, ale s tímto "správným" nastavením se to po spuštění srazí... Nevim.-->
+        Title="Uložit šablonu" Height="540" Width="445"
+        ResizeMode="NoResize"> 
     <Grid>
         <!-- Definice řádků -->
         <Grid.RowDefinitions>
@@ -27,14 +27,14 @@
             <!--řádek 6-->
             <RowDefinition Height="Auto"/>
             <!--řádek 7-->
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Definice sloupců -->
         <Grid.ColumnDefinitions>
             <!--sloupec 0-->
-            <ColumnDefinition Width="140"/> <!--140-->
+            <ColumnDefinition Width="40"/> <!--140-->
             <!--sloupec 1-->
-            <ColumnDefinition Width="290"/> <!--290-->
+            <ColumnDefinition Width="390"/> <!--290-->
         </Grid.ColumnDefinitions>
 
         <Label Content="Název:" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0" Margin="15,15,15,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" />
@@ -47,9 +47,12 @@
                  Width="400" Height="300" Margin="15,0" />
 
 
-        <CheckBox x:Name="chckBxGlobalniSablona" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="5,10" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
-        <Label Content="Uložit jako globální šablonu" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0,5"  />
-        
+        <CheckBox x:Name="chckBxGlobalniSablona" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
+        <Label Content="Uložit jako globální šablonu" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0"  />
+
+        <CheckBox x:Name="chckBxZverejniVstupniSoubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
+        <Label Content="Zveřejnit vstupní soubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1" Margin="0"  />
+
         <!--<Label Content="Datum vytvoření:" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="75,5,0,5" HorizontalAlignment="Left"/>
         <Label Content="01.01.20224" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0,5"  />
 
@@ -57,9 +60,22 @@
         <Label Content="05.01.2024" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1" Margin="0,5" />-->
 
         <!--Tlačítka-->
-        <Button x:Name="btnSave" Content="Uložit jako..." Grid.Row="6" Grid.Column="0" Width="85" Height="25" Margin="0,15" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnSave_Click"/>
-        <Button x:Name="btnStorno" Content="Storno" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="0,15,80,15" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnStorno_Click"/>
+        <Button x:Name="btnSave" Content="Uložit ↓" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="20,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Left"
+                Panel.ZIndex="1" Click="btnSave_Click"/>
+        <ComboBox x:Name="cmbBxSave" IsDropDownOpen="False" Visibility="Collapsed" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="20,20,0,20" 
+                  Panel.ZIndex="0" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cmbBxSave_SelectionChanged">
+            <ComboBoxItem>Uložit</ComboBoxItem>
+            <ComboBoxItem>Uložit jako...</ComboBoxItem>
+        </ComboBox>
+        <!--<Popup x:Name="SaveOptionsPopup" PlacementTarget="{Binding ElementName=btnSave}" StaysOpen="False">
+            <ComboBox x:Name="cmbBxSave" Width="100" Height="60">
+                <ComboBoxItem>Uložit</ComboBoxItem>
+                <ComboBoxItem>Uložit jako...</ComboBoxItem>
+            </ComboBox>
+        </Popup>-->
 
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="0,15,80,15" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnStorno_Click"/>
+        
 
     </Grid>
 </Window>

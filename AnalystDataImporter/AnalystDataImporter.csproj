@@ -358,8 +358,5 @@
     <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif3.gif" />
     <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\gif5.gif" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Loading.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

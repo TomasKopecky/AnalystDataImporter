@@ -32,16 +32,16 @@
         </Grid.ColumnDefinitions>
 
         <RadioButton x:Name="rdBtnNenastaveno" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnNenastaveno_Click"/>
-        <Label Content="Nenastaveno" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" />
+        <Label Content="Nenastaveno" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" Margin="0,0,0,5" />
 
         <RadioButton x:Name="rdBtnJedenSloupec" Grid.Row="1" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" Click="rdBtnJedenSloupec_Click"/>
-        <Label Content="Jeden sloupec" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" />
+        <Label Content="Jeden sloupec" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1" Margin="0,0,0,5" />
         <ComboBox x:Name="cmbBxSloupecDatum" SelectedIndex="0" Width="300" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" IsEnabled="False">
-            <ComboBoxItem>1</ComboBoxItem>
-            <ComboBoxItem>2</ComboBoxItem>
-            <ComboBoxItem>3</ComboBoxItem>
-            <ComboBoxItem>4</ComboBoxItem>
-            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>[1]</ComboBoxItem>
+            <ComboBoxItem>[2]</ComboBoxItem>
+            <ComboBoxItem>[3]</ComboBoxItem>
+            <ComboBoxItem>[4]</ComboBoxItem>
+            <ComboBoxItem>[5]</ComboBoxItem>
         </ComboBox>
 
         <!--Tlačítka-->

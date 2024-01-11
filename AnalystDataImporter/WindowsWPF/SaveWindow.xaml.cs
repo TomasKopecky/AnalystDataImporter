@@ -43,6 +43,13 @@ namespace AnalystDataImporter.WindowsWPF
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            //// pro 
+            //SaveOptionsPopup.IsOpen = true;
+
+            // Zobrazte ComboBox
+            cmbBxSave.Visibility = Visibility.Visible;
+            cmbBxSave.IsDropDownOpen = true;
+
             // TODO: Uložení hodnot ze Šablony: 
             //txtBxNazev
             //txtBxPopis
@@ -53,6 +60,12 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // TODO: událost po zaškrtnutí CheckBoxu pro uložení Globální Šablony
             //chckBxGlobalniSablona
+        }
+
+        // obslužá metoda po změně prvku v ComboBoxu cmbBxSave - Uložit / Uložit jako...
+        private void cmbBxSave_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // TODO: dodělat metodu pro výběr "Uložit" nebo "Uložit jako..."
         }
     }
 }

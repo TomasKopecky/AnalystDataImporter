@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="LoadingWindow" Height="Auto" Width="Auto"
+        Title="LoadingWindow" Height="300" Width="400"
         WindowStyle="None"
-        >
+        ResizeMode="NoResize"
+        BorderThickness="0">
     <Grid>
         <!--<MediaElement x:Name="mdElmntLoadingGIF" Source="/WindowsWPF/SettingPagesWPF/Images/LOADING_GIFs/gif2.gif" LoadedBehavior="Play"/>-->
-        <Image x:Name="mdElmntLoadingGIF" Source="/WindowsWPF/SettingPagesWPF/Images/LOADING_GIFs/gif2.gif"/> 
+        <Image x:Name="mdElmntLoadingGIF" Source="/WindowsWPF/SettingPagesWPF/Images/LOADING_GIFs/gif2.gif"/>
     </Grid>
 </Window>
