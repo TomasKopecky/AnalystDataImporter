@@ -18,6 +18,8 @@ namespace AnalystDataImporter.Globals
 
         public const string DefaultElementTitle = "(identita není nastavena)";
 
+        public const int MaxLoadedCsvLines = 200;
+
         // Slovník ikon a tříd
         //public Dictionary<Icon, Class> IconClass { get; set; }
         // Seznam dostupných oddělovačů

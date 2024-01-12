@@ -6,13 +6,14 @@ using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
+using System.Windows.Shapes;
 
 namespace AnalystDataImporter.Behaviors
 {
     /// <summary>
     /// Chování pro správu událostí myši na objektu typu Line.
     /// </summary>
-    internal class LineBehavior : Behavior<UIElement>
+    internal class LineBehavior : Behavior<Line>
     {
         // Privátní proměnná pro service IMouseHandlingService
         private IMouseHandlingService _mouseHandlingService;

@@ -66,6 +66,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UtfUnknown, Version=2.0.0.0, Culture=neutral, PublicKeyToken=90217ce7a23260d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\UTF.Unknown.2.5.1\lib\net40\UtfUnknown.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -96,8 +99,11 @@
     <Compile Include="Models\Source.cs" />
     <Compile Include="Models\Specification.cs" />
     <Compile Include="Services\BehaviorServices.cs" />
+    <Compile Include="Services\CsvParsingService.cs" />
+    <Compile Include="Services\IMessageBoxService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\IMouseHandlingService.cs" />
+    <Compile Include="Services\MessageBoxService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\MouseCursorService.cs" />
     <Compile Include="Services\MouseHandlingService.cs" />
@@ -106,6 +112,7 @@
     <Compile Include="Behaviors\GridSizeBehavior.cs" />
     <Compile Include="Services\SharedCanvasPageItems.cs" />
     <Compile Include="Services\SharedStatesService.cs" />
+    <Compile Include="Utilities\EncodingDetector.cs" />
     <Compile Include="Utilities\InverseBooleanConverter.cs" />
     <Compile Include="Behaviors\LineBehavior.cs" />
     <Compile Include="Utilities\MousePositionInvokeCommandAction.cs" />

@@ -6,13 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 using System.Collections.Generic;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace AnalystDataImporter.Behaviors
 {
     /// <summary>
     /// Chování pro správu událostí myši na objektu typu Ellipse.
     /// </summary>
-    public class EllipseBehavior : Behavior<UIElement>
+    public class EllipseBehavior : Behavior<Ellipse>
     {
         private bool _isDragging; // ndikace zda je aktivní mód tažení elipsy
         private bool _isDrawing; // indikace zda je aktivní mód kreslení elipsy
