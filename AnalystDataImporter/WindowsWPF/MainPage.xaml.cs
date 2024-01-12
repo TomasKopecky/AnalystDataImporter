@@ -27,20 +27,16 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class MainPage : Page
     {
+        private PageImport1 pageImport1;
         private PageImport2 pageImport2;
         // Po nacteni Okna:
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'
-            Page page1 = new PageImport1();
-            frmImporter.Navigate(page1);
-        }
-
+        
         // konstruktor
-        public MainPage(PageImport2 pageImport2)
+        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2)
         {
             InitializeComponent(); // Inicializace komponent
-
+            this.pageImport1 = pageImport1;
+            this.pageImport2 = pageImport2;
             #region NAPLNĚNÍ STROMU TREE-VIEW:
             // TODO: dočasné řešení TreeView - TEST:
             var rootNode = new Node { Name = "název AKCE" };
@@ -52,6 +48,13 @@ namespace AnalystDataImporter.WindowsWPF
             trVwSablony.ItemsSource = new ObservableCollection<Node> { rootNode };
             this.pageImport2 = pageImport2;
             #endregion
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'
+            //Page page1 = new PageImport1();
+            frmImporter.Navigate(pageImport1);
         }
 
         // DROP do GRIDu
@@ -146,8 +149,8 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnImportZpet_Click(object sender, RoutedEventArgs e)
         {
             // Tlačítko 'Zpět' načte stránku 'PageImport1.xaml' do Frame 'frmImporter'
-            Page page1 = new PageImport1();
-            frmImporter.Navigate(page1);
+            //Page page1 = new PageImport1();
+            frmImporter.Navigate(pageImport1);
 
             // Tlačítka která budou v kroku 'Zpět' zakázána nebo povolena:
             btnImportZpet.IsEnabled = false; // Zpět zakázáno - nejde jít už o krok zpět!

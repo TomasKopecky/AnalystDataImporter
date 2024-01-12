@@ -90,6 +90,8 @@ namespace AnalystDataImporter.Behaviors
         {
             base.OnAttached();
             InitializeServices();
+
+            // TODO: pokusit se zjistit, zda tuto Behaviors třídu zakládám z PageImport1 nebo PageImport2 a podle toho přiřadit eventy. Když to bude PageImport1, tak například nepřiřazovat dragging eventy apod.
             AssociateEventHandlers();
         }
 

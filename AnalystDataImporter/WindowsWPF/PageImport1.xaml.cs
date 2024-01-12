@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -23,9 +24,13 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class PageImport1 : Page
     {
-        public PageImport1()
+        GridViewModel viewModel;
+        public PageImport1(GridViewModel gridViewModel)
         {
             InitializeComponent();
+            viewModel = gridViewModel;
+            DataContext = viewModel;
+            viewModel.LoadTestData();
         }
 
         private void Browse_Click(object sender, RoutedEventArgs e)
@@ -94,7 +99,7 @@ namespace AnalystDataImporter.WindowsWPF
                 }
             }
 
-            dtGrdTabulkaCsvSouboru1.ItemsSource = dataTable.DefaultView;
+            //dtGrdTabulkaCsvSouboru1.ItemsSource = dataTable.DefaultView;
         }
 
         // ZAŠKRTÁVACÍ POLÍČKA:

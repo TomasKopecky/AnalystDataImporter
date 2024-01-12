@@ -2,7 +2,9 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:behaviors="clr-namespace:AnalystDataImporter.Behaviors"
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -38,7 +40,78 @@
         <Button Content="Procházet..." HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Margin="5,10,5,5" Click="Browse_Click" Grid.Column="2"/>
 
         <!-- TABULKA s náhledem CSV s Oddělovači -->
-        <DataGrid x:Name="dtGrdTabulkaCsvSouboru1" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
+        <Grid x:Name="dtGrdTabulkaCsvSouboru2" Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
+            <!-- Scrollviewers s data grids -->
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!--Scrollviewer s heading data grid-->
+                <RowDefinition Height="*" />
+                <!--Scrollviewer s content data grid-->
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
+                <!--Height="26">-->
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Header DataGrid -->
+                    <DataGrid x:Name="HeadingDataGrid" Grid.Column="0" 
+                        AutoGenerateColumns="True" HeadersVisibility="Column"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
+                        CanUserResizeColumns="True" CanUserAddRows="False" 
+                        CanUserDeleteRows="False" CanUserResizeRows="False" 
+                        CanUserSortColumns="False" CanUserReorderColumns="False"
+                        RowHeight="0"
+                        ItemsSource="{Binding ColumnTable}">
+                        <b:Interaction.Behaviors>
+                            <behaviors:DataGridDragBehavior
+                                behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"
+                                behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"         />
+                        </b:Interaction.Behaviors>
+                    </DataGrid>
+                    <Border Grid.Column="1" Background="LightGray"/>
+                </Grid>
+                <!--<b:Interaction.Behaviors>
+                    <behaviors:DataContentScrollViewerBehavior
+               behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"/>
+                </b:Interaction.Behaviors>-->
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="DataGridsScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0" x:Name="ContentDataGrid"
+                           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
+                           CanUserAddRows="False" HeadersVisibility="None" 
+                           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
+                        <b:Interaction.Behaviors>
+                            <behaviors:DataGridDragBehavior
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
+                        </b:Interaction.Behaviors>
+                    </DataGrid>
+                    <Border Grid.Column="1" Background="LightGray"/>
+                </Grid>
+                <b:Interaction.Behaviors>
+                    <behaviors:DataContentScrollViewerBehavior
+                               behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"/>
+                </b:Interaction.Behaviors>
+            </ScrollViewer>
+            <!-- Content DataGrid -->
+        </Grid>
 
         <!-- Pomocný Grid pro Oddělovače a Záhlaví -->
         <Grid Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="3">
@@ -77,17 +150,17 @@
                         <!--řádek 1-->
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Čárka -->
                     <RadioButton x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />
                     <!--<CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />-->
                     <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
-                    
+
                     <!-- Středník -->
                     <RadioButton x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
                     <!--<CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />-->
                     <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
-                    
+
                     <!-- Svitlítko -->
                     <RadioButton x:Name="chckBxSvitlitko" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxSvitlitko_Checked" Unchecked="chckBxSvitlitko_Unchecked" />
                     <!--<CheckBox x:Name="chckBxJiny" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxJiny_Checked" Unchecked="chckBxJiny_Unchecked" />-->
@@ -97,7 +170,7 @@
                     <RadioButton x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />
                     <!--<CheckBox x:Name="chckBxTabulator" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxTabulator_Checked" Unchecked="chckBxTabulator_Unchecked" />-->
                     <Label Content="Tabulátor" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
-                    
+
                     <!-- Mezera -->
                     <RadioButton x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />
                     <!--<CheckBox x:Name="chckBxMezera" Grid.Row="1" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxMezera_Checked" Unchecked="chckBxMezera_Unchecked" />-->
@@ -134,9 +207,9 @@
 
 
         </Grid>
-        
-        
-        
+
+
+
 
         <!--<ComboBox Name="cbxDelimiter" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Margin="70,30,0,0" Grid.Row="2" Grid.ColumnSpan="3">
             <ComboBoxItem Content="Comma" IsSelected="True"/>
