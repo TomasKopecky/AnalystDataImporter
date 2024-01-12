@@ -152,6 +152,9 @@
       <DependentUpon>SaveWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\BaseSettingPage.cs" />
+    <Compile Include="WindowsWPF\SettingPagesWPF\LoadingPage.xaml.cs">
+      <DependentUpon>LoadingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WindowsWPF\SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\LoadingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
