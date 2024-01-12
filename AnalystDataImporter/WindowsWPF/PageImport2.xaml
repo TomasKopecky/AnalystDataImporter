@@ -3,10 +3,123 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
+      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:viewModel="clr-namespace:AnalystDataImporter.ViewModels"
+      xmlns:utilities="clr-namespace:AnalystDataImporter.Utilities"
+      xmlns:behaviors="clr-namespace:AnalystDataImporter.Behaviors"
+      xmlns:globals="clr-namespace:AnalystDataImporter.Globals"
+      x:Name="CurrentCanvasPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageImport2">
+      Title="PageImport2"
+      Cursor="{Binding CurrentCursor}"
+      >
+
+    <Page.Resources>
+        <Style x:Key="ToggleButtonBaseStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+        <!--<Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>-->
+
+        <DataTemplate x:Key="ElementTemplate" DataType="{x:Type viewModel:ElementViewModel}">
+
+            <Grid>
+                <!--Elipsa-->
+                <!-- Interaction Behavior for Grid Size -->
+                <b:Interaction.Behaviors>
+                    <behaviors:GridSizeBehavior
+                        ElementViewModel="{Binding}"
+                        behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
+                </b:Interaction.Behaviors>
+
+                <!-- Border inside the Grid -->
+                <Border BorderThickness="{x:Static globals:Constants.SelectBorderThicknes}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BorderBrush" Value="SkyBlue" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <!-- For buttons -->
+                            <RowDefinition Height="Auto" />
+                            <!-- For Canvas and DataGrid -->
+                            <!-- For Canvas and DataGrid -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Ellipse centered in the Inner Grid -->
+                        <Ellipse Grid.Row="0" Width="{x:Static globals:Constants.EllipseWidth}" Height="{x:Static globals:Constants.EllipseWidth}" Fill="White" Stroke="Black" StrokeThickness="2"
+                                 HorizontalAlignment="Center">
+                            <b:Interaction.Behaviors>
+                                <!--IsDraggingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"-->
+                                <!--IsDrawingElementEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDrawingElementModeActive}"
+                                IsDrawingRelationEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDrawingRelationModeActive}"-->
+                                <behaviors:EllipseBehavior
+                                    behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.ChangeCursorWhenOperatingElementCommand}"
+                                    FinishDrawingElementCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.FinishDrawingElementCommand}"
+                                    RelationStartOrEndElementSetCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.GetRelationStartOrEndElementCommand}"
+                                    GridViewColumnDraggedSetCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.GetGridViewColumnDraggedSetCommand}"
+                                    behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                    ParentGrid="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" />
+                            </b:Interaction.Behaviors>
+                        </Ellipse>
+
+
+                        <!-- TextBlock below the Ellipse in the Inner Grid -->
+                        <TextBlock Grid.Row="1" Text="{Binding Label}" HorizontalAlignment="Center"
+                                   VerticalAlignment="Top" Margin="0,5,0,0" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="RelationTemplate" DataType="{x:Type viewModel:RelationViewModel}">
+
+            <!--Vazba-->
+            <Line X1="{Binding X1}" Y1="{Binding Y1}"
+                  X2="{Binding X2}" Y2="{Binding Y2}"       
+                  IsHitTestVisible="{Binding IsFinished, FallbackValue=True}">
+                <Line.Style>
+                    <Style TargetType="Line">
+                        <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
+                        <Setter Property="Stroke" Value="{Binding ColorValue}" />
+                        <Setter Property="StrokeDashArray" Value="{Binding StyleValue}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Stroke" Value="DodgerBlue" />
+                                <Setter Property="StrokeThickness" Value="{Binding Thickness}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Line.Style>
+                <b:Interaction.Behaviors>
+                    <!--IsEnabled="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.IsDraggingElementModeActive}"-->
+                    <behaviors:LineBehavior
+                        RelationDeleteWhenOutsideCanvasCommand="{Binding ElementName=CurrentCanvasPage, Path=DataContext.CanvasViewModel.RelationDeleteWhenOutsideCanvasCommand}"
+                        behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}" />
+                </b:Interaction.Behaviors>
+            </Line>
+
+        </DataTemplate>
+
+        <utilities:MyTemplateSelector x:Key="MyTemplateSelector" 
+                                      ElementTemplate="{StaticResource ElementTemplate}"
+                                      RelationTemplate="{StaticResource RelationTemplate}" />
+    </Page.Resources>
 
     <Grid x:Name="grdPageImport2">
 
@@ -19,8 +132,86 @@
         </Grid.RowDefinitions>
 
         <!-- TABULKA s náhledem CSV s Oddělovači -->
-        <DataGrid x:Name="dtGrdTabulkaCsvSouboru2" Margin="10" Grid.Row="0" />
+        <Grid x:Name="dtGrdTabulkaCsvSouboru2" Grid.Row="0" Margin="10" >
+            <!-- Scrollviewers s data grids -->
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!--Scrollviewer s heading data grid-->
+                <RowDefinition Height="*" />
+                <!--Scrollviewer s content data grid-->
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="HeadingGridScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
+                <!--Height="26">-->
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Header DataGrid -->
+                    <DataGrid x:Name="HeadingDataGrid" Grid.Column="0" DataContext="{Binding GridViewModel}" 
+                        AutoGenerateColumns="True" HeadersVisibility="Column"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
+                        CanUserResizeColumns="True" CanUserAddRows="False" 
+                        CanUserDeleteRows="False" CanUserResizeRows="False" 
+                        CanUserSortColumns="False" CanUserReorderColumns="False"
+                        RowHeight="0"
+                        ItemsSource="{Binding ColumnTable}">
+                        <b:Interaction.Behaviors>
+                            <behaviors:DataGridDragBehavior
+                                GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
+                                behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"
+                                behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"         />
+                        </b:Interaction.Behaviors>
+                    </DataGrid>
+                    <Border Grid.Column="1" Background="LightGray"/>
+                </Grid>
+                <!--<b:Interaction.Behaviors>
+                    <behaviors:DataContentScrollViewerBehavior
+               behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"/>
+                </b:Interaction.Behaviors>-->
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="DataGridsScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Column="0" x:Name="ContentDataGrid" DataContext="{Binding GridViewModel}" 
+                           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
+                           CanUserAddRows="False" HeadersVisibility="None" 
+                           HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
+                        <b:Interaction.Behaviors>
+                            <behaviors:DataGridDragBehavior
+                                GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
+                                behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
+                                behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
+                                behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
+                        </b:Interaction.Behaviors>
+                    </DataGrid>
+                    <Border Grid.Column="1" Background="LightGray"/>
+                </Grid>
+                <b:Interaction.Behaviors>
+                    <behaviors:DataContentScrollViewerBehavior
+                               behaviors:SharedBehaviorProperties.HeadingScrollViewer="{Binding ElementName=HeadingGridScrollViewer}"/>
+                </b:Interaction.Behaviors>
+            </ScrollViewer>
+            <!-- Content DataGrid -->
+        </Grid>
+
+        
         <Grid Grid.Row="1">
             <!-- Definice řádků -->
             <Grid.RowDefinitions>
@@ -32,41 +223,350 @@
             <!--Definice sloupců-->
             <Grid.ColumnDefinitions>
                 <!--sloupec 0-->
-                <ColumnDefinition Width="2*"/>
+                <!--<ColumnDefinition Width="3*"/>-->
+                <ColumnDefinition Width="*"/>
                 <!--sloupec 1-->
-                <ColumnDefinition Width="1*"/>
+                <!--<ColumnDefinition Width="1*"/>-->
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Objekty a Vazby" Grid.RowSpan="2" Margin="0"/>
 
             <!-- Tlačítka Zpět,Další a Importovat -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,15,0,0" Grid.Column="0" Grid.Row="0">
-                <Button x:Name="btnImportNovyObjekt" Content="Přidat nový objekt" Width="130" Margin="5" IsEnabled="True" Click="btnImportNovyObjekt_Click"/>
-                <Button x:Name="btnImportNovaVazba" Content="Přidat novou vazbu" Width="130" Margin="5" IsEnabled="True" Click="btnImportNovaVazba_Click"/>
-                <Button x:Name="btnImportObjektOdstranit" Content="Odstranit" Width="130" Margin="5"  IsEnabled="True" Click="btnImportObjektOdstranit_Click"/>
+                <Button x:Name="btnImportNovyObjekt" Content="Přidat nový objekt" Width="130" Margin="5" IsEnabled="True"
+                        Command="{Binding CanvasViewModel.StartAddingElementCommand}">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SharedState.IsDrawingElementModeActive}" Value="True">
+                                    <Setter Property="Background" Value="DarkGray" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <Button x:Name="btnImportNovaVazba" Content="Přidat novou vazbu" Width="130" Margin="5" IsEnabled="True" 
+                        Command="{Binding CanvasViewModel.StartRelationCreatingCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ToggleButtonBaseStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SharedState.IsDrawingRelationModeActive}" Value="True">
+                                    <Setter Property="Background" Value="DarkGray" />
+                                    <Setter Property="BorderBrush" Value="Black" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <Button x:Name="btnImportObjektOdstranit" Content="Odstranit" Width="130" Margin="5"  IsEnabled="True" 
+                        Command="{Binding CanvasViewModel.DeleteSelectionCommand}" />
             </StackPanel>
 
-            <ScrollViewer Name="canvasScrollViewer" IsEnabled="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="7,0,7,10">
+            <ScrollViewer IsEnabled="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="7,0,7,10">
                 <!-- Okno s Kreslením a vytvářením obejktů -->
-                <Canvas x:Name="cnvsObjekty" Background="WhiteSmoke"  Width="2000" Height="1000"
-                        MouseLeftButtonDown="cnvsObjekty_MouseLeftButtonDown"
-                        MouseMove="cnvsObjekty_MouseMove"
-                        MouseLeftButtonUp="cnvsObjekty_MouseLeftButtonUp"
-                        >
-                    <!--<Button x:Name="btnImportNovyObjekt2" Content="Přidat nový objekt" Canvas.Left="10" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovyObjekt_Click"/>
-                    <Button x:Name="btnImportNovaVazba2" Content="Přidat novou vazbu" Canvas.Left="150" Width="130" Margin="5" IsEnabled="False" Click="btnImportNovaVazba_Click"/>
-                    <Button x:Name="btnImportObjektOdstranit2" Content="Odstranit" Canvas.Left="290" Width="130" Margin="5"  IsEnabled="False" Click="btnImportObjektOdstranit_Click"/>-->
+                <Canvas x:Name="ElementCanvas" Background="Transparent"  Width="2000" Height="1000">
+
+                    <!-- Interaction triggers -->
+
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseLeftButtonDown">
+                            <utilities:MousePositionInvokeCommandAction
+                                Command="{Binding CanvasViewModel.CanvasMouseLeftButtonDownCommand}"
+                                CommandParameter="{x:Reference Name=ElementCanvas}" />
+                        </b:EventTrigger>
+                        <b:EventTrigger EventName="MouseLeftButtonUp">
+                            <utilities:MousePositionInvokeCommandAction
+                                Command="{Binding CanvasViewModel.CanvasMouseLeftButtonUpCommand}"
+                                CommandParameter="{x:Reference Name=ElementCanvas}" />
+                        </b:EventTrigger>
+                        <b:EventTrigger EventName="MouseMove">
+                            <utilities:MousePositionInvokeCommandAction
+                                Command="{Binding CanvasViewModel.CanvasMouseMoveCommand}"
+                                CommandParameter="{x:Reference Name=ElementCanvas}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+
+
+                    <!-- ItemsControl for Canvas items -->
+                    <ItemsControl ItemsSource="{Binding CanvasViewModel.CanvasItems}"
+                                  ItemTemplateSelector="{StaticResource MyTemplateSelector}">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding XPosition}" />
+                                <Setter Property="Canvas.Top" Value="{Binding YPosition}" />
+                                <Setter Property="Panel.ZIndex" Value="{Binding ZIndex}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+
+                    </ItemsControl>
+
                 </Canvas>
                 <!--Grid.Row="1"-->
             </ScrollViewer>
 
-
-
+            <!-- PRÁZDNÉ MÍSTO na Tabulku s Vlastnostmi Obejktů -->
             <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-                <!-- TABULKA s Vlastnostmi Obejktů a Vazeb -->
-                <DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element" >
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="relation" >
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+                <Grid>
+                    <!--<Label Content="Chcete-li zobrazit vlastnosti objektu nebo vazby, vyberte je." HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+                    <Label Content="Chcete-li zobrazit vlastnosti objektu" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Label Content="nebo vazby, vyberte je." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0" />
+                </Grid>
             </GroupBox>
 
+            <!-- TABULKA s Vlastnostmi Obejktů -->
+            <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+
+                <Grid x:Name="grdTabulkaVlastnostiObejktu"
+                      Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                    <!--<Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>-->
+
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 2-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 3-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 4-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 5-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 6-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 7-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 8-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Definice sloupců-->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 1. Řádek 0-->
+                    <Label Content="Vlastnost" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="3" />
+                    <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
+                    <!-- 2. Řádek 1-->
+                    <TextBox Text="Typ (ikona)" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+                    <TextBox x:Name="txtEBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Class}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEIkonaTyp" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnEIkonaTyp_Click" />
+                    <!-- 3. Řádek 2-->
+                    <TextBox Text="Identita (id)" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEIdentita" Text="{Binding CanvasViewModel.SelectedSingleItem.Id}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Grid.ColumnSpan="2"/> <!--Grid.ColumnSpan="2"-->
+                    <!--<Button x:Name="btnEIdentita" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnEIdentita_Click" />-->
+                    <!-- 4. Řádek 3-->
+                    <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopisek" Text="(stejné jako identita)" Grid.Row="3" Grid.Column="1" IsReadOnly="True"  Grid.ColumnSpan="2"/> <!--{Binding CanvasViewModel.SelectedSingleItem.Label}-->
+                    <!--<Button x:Name="btnEPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" />-->
+                    <!-- 5. Řádek 4-->
+                    <TextBox Text="Datum" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEDatum" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEDatum" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 6. Řádek 5-->
+                    <TextBox Text="Čas" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxECas" Text="{Binding CanvasViewModel.SelectedSingleItem.Time}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnECas" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnCas_Click" />
+                    <!-- 7. Řádek 6-->
+                    <TextBox Text="Popis" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxEPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Title}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnEPopis" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnPopis_Click" />
+
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Vlastnosti" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+
+                <GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="relation">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style>
+
+                <!-- TABULKA s Vlastnostmi Vazeb -->
+                <Grid x:Name="grdTabulkaVlastnostiVazeb" 
+                      Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                   
+                    <!-- Definice řádků -->
+                    <Grid.RowDefinitions>
+                        <!--řádek 0-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 1-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 2-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 3-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 4-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 5-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 6-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 7-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 8-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 9-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 10-->
+                        <RowDefinition Height="auto"/>
+                        <!--řádek 11-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Definice sloupců-->
+                    <Grid.ColumnDefinitions>
+                        <!--sloupec 0-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 1-->
+                        <ColumnDefinition Width="*"/>
+                        <!--sloupec 2-->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 1. Řádek 0-->
+                    <Label Content="Vlastnost" Grid.Row="0" Grid.Column="0" BorderBrush="LightGray" BorderThickness="3" />
+                    <Label Content="Hodnota" Grid.Row="0" Grid.Column="1" BorderBrush="LightGray" BorderThickness="3" Grid.ColumnSpan="2" />
+                    <!-- 2. Řádek 1-->
+                    <TextBox Text="Násobnost propojení" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+                    <TextBox x:Name="txtRBxIkonaTyp" Text="{Binding CanvasViewModel.SelectedSingleItem.Multiplicity}" Grid.Row="1" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRNasobnost" Content="  ...  " Grid.Row="1" Grid.Column="3" Click="btnRNasobnost_Click" />
+                    <!-- 3. Řádek 2-->
+                    <TextBox Text="Barva" Grid.Row="2" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRBarva" Text="{Binding CanvasViewModel.SelectedSingleItem.ColorKey}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRBarva" Content="  ...  " Grid.Row="2" Grid.Column="3" Click="btnRBarva_Click" />
+                    <!-- 4. Řádek 3-->
+                    <TextBox Text="Popisek" Grid.Row="3" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopisek" Text="{Binding CanvasViewModel.SelectedSingleItem.Label}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRPopisek" Content="  ...  " Grid.Row="3" Grid.Column="3" Click="btnPopisek_Click" />
+                    <!-- 5. Řádek 4-->
+                    <TextBox Text="Směr" Grid.Row="4" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSmer" Text="{Binding CanvasViewModel.SelectedSingleItem.DirectionKey}" Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSmer" Content="  ...  " Grid.Row="4" Grid.Column="3" Click="btnRSmer_Click" />
+                    <!-- 6. Řádek 5-->
+                    <TextBox Text="Styl (Síla)" Grid.Row="5" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSila" Text="{Binding CanvasViewModel.SelectedSingleItem.StyleKey}" Grid.Row="5" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSila" Content="  ...  " Grid.Row="5" Grid.Column="3" Click="btnRSila_Click" />
+                    <!-- 7. Řádek 6-->
+                    <TextBox Text="Datum" Grid.Row="6" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRDatum" Text="{Binding CanvasViewModel.SelectedSingleItem.Date}" Grid.Row="6" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRDatum" Content="  ...  " Grid.Row="6" Grid.Column="3" Click="btnDatum_Click" />
+                    <!-- 8. Řádek 7-->
+                    <TextBox Text="Čas" Grid.Row="7" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRCas" Text="{Binding CanvasViewModel.SelectedSingleItem.Time}" Grid.Row="7" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRCasE" Content="  ...  " Grid.Row="7" Grid.Column="3" Click="btnCas_Click" />
+                    <!-- 9. Řádek 8-->
+                    <TextBox Text="Tloušťka (Šířka)" Grid.Row="8" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRSirka" Text="{Binding CanvasViewModel.SelectedSingleItem.Thickness}" Grid.Row="8" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRSirka" Content="  ...  " Grid.Row="8" Grid.Column="3" Click="btnRSirka_Click" />
+                    <!-- 10. Řádek 9-->
+                    <TextBox Text="Popis" Grid.Row="9" Grid.Column="0" IsReadOnly="True" />
+                    <TextBox x:Name="txtBxRPopis" Text="{Binding CanvasViewModel.SelectedSingleItem.Title}" Grid.Row="9" Grid.Column="1" IsReadOnly="True" />
+                    <Button x:Name="btnRPopis" Content="  ...  " Grid.Row="9" Grid.Column="3" Click="btnPopis_Click" />
+                </Grid>
+
+            </GroupBox>
+
+            <!--<DataGrid x:Name="dtGrdTabulkaVlastnostiObejktuAVazeb" AutoGenerateColumns="False" Margin="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" >
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CanvasViewModel.SelectedSingleItem.Type}" Value="element">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        Static text column
+                        <DataGridTextColumn Header="Popis"/>
+                        Binding="{Binding Label}"
+                        Column with TextBox and Button
+                        <DataGridTemplateColumn Header="Hodnota">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Text="asldfkj" Width="100"/>
+                                        Text="{Binding Value}"
+                                        <Button Content="..." Width="30" Click="Button_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>-->
+
+
+
+            <!--Selected Item Details-->
+            <!--<StackPanel Grid.Column="1" Margin="10,100,10,10" Background="Transparent">
+                <TextBlock Text="Selected item Title" FontWeight="Bold" />
+                <TextBlock Margin="5"
+                           Text="{Binding CanvasViewModel.SelectedSingleItem.Type, FallbackValue='No element selected'}" />
+                <Grid>
+
+                    <DataGrid>
+
+                    </DataGrid>
+                </Grid>
+            </StackPanel>-->
+            
         </Grid>
 
     </Grid>

@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -112,6 +113,9 @@
     <Compile Include="Behaviors\GridSizeBehavior.cs" />
     <Compile Include="Services\SharedCanvasPageItems.cs" />
     <Compile Include="Services\SharedStatesService.cs" />
+    <Compile Include="TOM_MainWindow.xaml.cs">
+      <DependentUpon>TOM_MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\EncodingDetector.cs" />
     <Compile Include="Utilities\InverseBooleanConverter.cs" />
     <Compile Include="Behaviors\LineBehavior.cs" />
@@ -136,12 +140,69 @@
     <Compile Include="Views\CanvasPage.xaml.cs">
       <DependentUpon>CanvasPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsWPF\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\MainPage_OLD.xaml.cs">
+      <DependentUpon>MainPage_OLD.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\Node.cs" />
     <Compile Include="WindowsWPF\Objekt.cs" />
     <Compile Include="WindowsWPF\PageImport1.xaml.cs">
       <DependentUpon>PageImport1.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\PageImport2.xaml.cs">
       <DependentUpon>PageImport2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\RowModel.cs" />
+    <Compile Include="WindowsWPF\SaveWindow.xaml.cs">
+      <DependentUpon>SaveWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\BaseSettingPage.cs" />
+    <Compile Include="WindowsWPF\SettingPagesWPF\LoadingPage.xaml.cs">
+      <DependentUpon>LoadingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml.cs">
+      <DependentUpon>PageBarva.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageCas.xaml.cs">
+      <DependentUpon>PageCas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageDatum.xaml.cs">
+      <DependentUpon>PageDatum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageIdentita.xaml.cs">
+      <DependentUpon>PageIdentita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageNasobnost.xaml.cs">
+      <DependentUpon>PageNasobnost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PagePopis.xaml.cs">
+      <DependentUpon>PagePopis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PagePopisek.xaml.cs">
+      <DependentUpon>PagePopisek.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSila.xaml.cs">
+      <DependentUpon>PageSila.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSirka.xaml.cs">
+      <DependentUpon>PageSirka.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageSmer.xaml.cs">
+      <DependentUpon>PageSmer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\PageTyp.xaml.cs">
+      <DependentUpon>PageTyp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsWPF\SettingPagesWPF\TestSettingPage.xaml.cs">
+      <DependentUpon>TestSettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\Vazba.cs" />
     <Page Include="MainWindow.xaml">
@@ -158,6 +219,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TOM_MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CanvasPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +234,86 @@
     <Page Include="WindowsWPF\PageImport2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\MainPage_OLD.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\PageImport1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\PageImport2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowsWPF\SaveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\LoadingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\LoadingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageBarva.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageCas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageDatum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageIdentita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageNasobnost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PagePopis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PagePopisek.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSila.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSirka.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageSmer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\PageTyp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsWPF\SettingPagesWPF\TestSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +357,38 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="dev_rules_cz_en.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaNasobna.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaJednoducha.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\VazbaSmerNapoveda.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

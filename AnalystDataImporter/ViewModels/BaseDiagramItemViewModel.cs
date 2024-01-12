@@ -6,6 +6,8 @@ namespace AnalystDataImporter.ViewModels
 {
     public abstract class BaseDiagramItemViewModel : INotifyPropertyChanged
     {
+        //protected string _type;
+
         protected bool _isSelected;
         // Pozice prvku na plátně
         protected double _xPosition;
@@ -19,6 +21,17 @@ namespace AnalystDataImporter.ViewModels
         protected TableColumnViewModel _gridTableColumn;
 
         // Common properties and methods for view models, such as IsSelected, PropertyChanged, etc.
+
+        //public string Type
+        //{
+        //    get => _type;
+        //    set
+        //    {
+        //        _type = value;
+        //        OnPropertyChanged(nameof(Type));
+        //    }
+        //}
+
         public virtual bool IsSelected
         {
             get => _isSelected;
@@ -29,7 +42,7 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public int Id
+        public string Id
         {
             get => _model.Id;
             set
@@ -57,15 +70,20 @@ namespace AnalystDataImporter.ViewModels
 
         public string Title
         {
-            get => _model.Title;
+            get => _model.Description;
             set
             {
-                if (_model.Title != value)
+                if (_model.Description != value)
                 {
-                    _model.Title = value;
+                    _model.Description = value;
                     OnPropertyChanged(nameof(Title));
                 }
             }
+        }
+
+        public BaseDiagramItem Model
+        { 
+            get => _model; 
         }
 
         public string Type
@@ -81,7 +99,20 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public DateTime Date
+        public string Class
+        {
+            get => _model.Class;
+            set
+            {
+                if (_model.Class != value)
+                {
+                    _model.Class = value;
+                    OnPropertyChanged(nameof(Class));
+                }
+            }
+        }
+
+        public string Date
         {
             get => _model.Date;
             set
@@ -90,6 +121,32 @@ namespace AnalystDataImporter.ViewModels
                 {
                     _model.Date = value;
                     OnPropertyChanged(nameof(Date));
+                }
+            }
+        }
+
+        public string Time
+        {
+            get => _model.Time;
+            set
+            {
+                if (_model.Time != value)
+                {
+                    _model.Time = value;
+                    OnPropertyChanged(nameof(Time));
+                }
+            }
+        }
+
+        public DateTime DateTimes
+        {
+            get => _model.DateTimes;
+            set
+            {
+                if (_model.DateTimes != value)
+                {
+                    _model.DateTimes = value;
+                    OnPropertyChanged(nameof(DateTimes));
                 }
             }
         }

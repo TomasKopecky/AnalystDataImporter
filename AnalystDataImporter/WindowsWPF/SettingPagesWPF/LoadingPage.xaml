@@ -1,0 +1,26 @@
+﻿<Page x:Class="AnalystDataImporter.WindowsWPF.SettingPagesWPF.LoadingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="330" d:DesignWidth="260"
+      Title="LoadingPage">
+
+    <Grid>
+        <!-- Definice řádků -->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 1-->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="AnimatedImage" Width="260" Height="300" Grid.Row="0"/>
+        <Label x:Name="lblLoading" Content="NAČÍTÁM" Grid.Row="1" HorizontalAlignment="Center"
+               FontSize="20"
+               FontWeight="Bold"
+               FontFamily="Calibri"/>
+    </Grid>
+</Page>

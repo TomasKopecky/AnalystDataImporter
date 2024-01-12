@@ -1,0 +1,81 @@
+﻿<Window x:Class="AnalystDataImporter.WindowsWPF.SaveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="SaveWindow_KeyDown"
+        Title="Uložit šablonu" Height="540" Width="445"
+        ResizeMode="NoResize"> 
+    <Grid>
+        <!-- Definice řádků -->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 1-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 2-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 3-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 4-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 5-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 6-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 7-->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Definice sloupců -->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition Width="40"/> <!--140-->
+            <!--sloupec 1-->
+            <ColumnDefinition Width="390"/> <!--290-->
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Název:" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0" Margin="15,15,15,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" />
+        <TextBox x:Name="txtBxNazev" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" BorderThickness="2"
+                 Width="400" Margin="15,0" Grid.ColumnSpan="2" />
+
+        <Label Content="Popis:" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Margin="15,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" />
+        <TextBox x:Name="txtBxPopis" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" BorderThickness="2" 
+                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Grid.ColumnSpan="2"
+                 Width="400" Height="300" Margin="15,0" />
+
+
+        <CheckBox x:Name="chckBxGlobalniSablona" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
+        <Label Content="Uložit jako globální šablonu" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0"  />
+
+        <CheckBox x:Name="chckBxZverejniVstupniSoubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
+        <Label Content="Zveřejnit vstupní soubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1" Margin="0"  />
+
+        <!--<Label Content="Datum vytvoření:" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="75,5,0,5" HorizontalAlignment="Left"/>
+        <Label Content="01.01.20224" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0,5"  />
+
+        <Label Content="Datum poslední změny:" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="0" Margin="75,5,0,5" HorizontalAlignment="Left" />
+        <Label Content="05.01.2024" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1" Margin="0,5" />-->
+
+        <!--Tlačítka-->
+        <Button x:Name="btnSave" Content="Uložit ↓" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="20,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Left"
+                Panel.ZIndex="1" Click="btnSave_Click"/>
+        <ComboBox x:Name="cmbBxSave" IsDropDownOpen="False" Visibility="Collapsed" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="20,20,0,20" 
+                  Panel.ZIndex="0" VerticalAlignment="Center" HorizontalAlignment="Left" SelectionChanged="cmbBxSave_SelectionChanged">
+            <ComboBoxItem>Uložit</ComboBoxItem>
+            <ComboBoxItem>Uložit jako...</ComboBoxItem>
+        </ComboBox>
+        <!--<Popup x:Name="SaveOptionsPopup" PlacementTarget="{Binding ElementName=btnSave}" StaysOpen="False">
+            <ComboBox x:Name="cmbBxSave" Width="100" Height="60">
+                <ComboBoxItem>Uložit</ComboBoxItem>
+                <ComboBoxItem>Uložit jako...</ComboBoxItem>
+            </ComboBox>
+        </Popup>-->
+
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="6" Grid.Column="1" Width="85" Height="25" Margin="0,15,80,15" VerticalAlignment="Center" HorizontalAlignment="Right" Click="btnStorno_Click"/>
+        
+
+    </Grid>
+</Window>

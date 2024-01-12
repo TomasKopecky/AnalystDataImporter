@@ -1,0 +1,51 @@
+﻿<Page x:Class="AnalystDataImporter.WindowsWPF.SettingPagesWPF.PageNasobnost"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
+      mc:Ignorable="d" 
+      Title="PageNasobnost"> <!--d:DesignHeight="450" d:DesignWidth="800"-->
+
+    <Grid>
+        <!-- Definice řádků -->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 1-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 2-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 3-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 4-->
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <!-- Definice sloupců -->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition Width="Auto"/>
+            <!--sloupec 1-->
+            <ColumnDefinition Width="Auto"/>
+            <!--sloupec 2-->
+            <ColumnDefinition Width="Auto"/>
+            <!--sloupec 3-->
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Jednoduché-->
+        <RadioButton x:Name="rdBtnVazbaJednoducha" Grid.Row="0" Grid.Column="0" IsChecked="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" />
+        <Label Content="Jednoduché" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="1" />
+        <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaJednoducha.png" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+        <!--Násobné-->
+        <RadioButton x:Name="rdBtnVazbaNasobna" Grid.Row="2" Grid.Column="0" IsChecked="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,5,5,5" />
+        <Label Content="Násobné" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" />
+        <Image Source="/WindowsWPF/SettingPagesWPF/Images/VazbaNasobna.png" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+        <!--Tlačítka-->
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="3" Width="85" Height="25" Margin="10,5" Click="btnOk_Click"/>
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="3" Width="85" Height="25"  Margin="10,5" VerticalAlignment="Top" Click="btnStorno_Click"/>
+        
+    </Grid>
+</Page>

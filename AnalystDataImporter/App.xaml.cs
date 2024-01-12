@@ -13,6 +13,8 @@ using AnalystDataImporter.Services;
 using AnalystDataImporter.Utilities;
 using AnalystDataImporter.ViewModels;
 using AnalystDataImporter.Views;
+using AnalystDataImporter.WindowsWPF;
+using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
 
 namespace AnalystDataImporter
 {
@@ -72,8 +74,11 @@ namespace AnalystDataImporter
             // Registrace Views.
             services.AddTransient<CanvasPage>();
             services.AddTransient<MainWindow>(); // Registrace hlavního okna.
-
             
+            services.AddSingleton<PageImport2>();
+            services.AddSingleton<MainPage>();
+            //services.AddTransient<SettingWindow>();
+
 
             services.AddTransient<MousePositionInvokeCommandAction>();
 

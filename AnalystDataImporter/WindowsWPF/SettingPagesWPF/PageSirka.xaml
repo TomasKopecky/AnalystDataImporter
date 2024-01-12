@@ -1,0 +1,46 @@
+﻿<Page x:Class="AnalystDataImporter.WindowsWPF.SettingPagesWPF.PageSirka"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
+      mc:Ignorable="d" 
+      Title="PageSirka"> <!--d:DesignHeight="450" d:DesignWidth="800"-->
+
+    <Grid>
+        <!-- Definice řádků -->
+        <Grid.RowDefinitions>
+            <!--řádek 0-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 1-->
+            <RowDefinition Height="Auto"/>
+            <!--řádek 3-->
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <!-- Definice sloupců -->
+        <Grid.ColumnDefinitions>
+            <!--sloupec 0-->
+            <ColumnDefinition Width="Auto"/>
+            <!--sloupec 1-->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Šířka:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" />
+        <ComboBox x:Name="cmbBxVazbaSirka" SelectedIndex="0" MinWidth="200" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0">
+            <!--<ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>4</ComboBoxItem>
+            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>6</ComboBoxItem>
+            <ComboBoxItem>7</ComboBoxItem>
+            <ComboBoxItem>8</ComboBoxItem>
+            <ComboBoxItem>9</ComboBoxItem>
+            <ComboBoxItem>10</ComboBoxItem>-->
+        </ComboBox>
+
+        <!--Tlačítka-->
+        <Button x:Name="btnOk" Content="OK" Grid.Row="0" Grid.Column="1" Width="85" Height="25" Margin="10,5" Click="btnOk_Click"/>
+        <Button x:Name="btnStorno" Content="Storno" Grid.Row="1" Grid.Column="1" Width="85" Height="25"  Margin="10,5" Click="btnStorno_Click"/>
+    </Grid>
+</Page>

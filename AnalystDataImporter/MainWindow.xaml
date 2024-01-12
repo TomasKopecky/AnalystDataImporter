@@ -1,8 +1,14 @@
 ﻿<Window x:Class="AnalystDataImporter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Frame x:Name="MainFrame" />
+        Title="MainWindow" 
+        MinHeight="450" MinWidth="680"
+        WindowStartupLocation="CenterScreen"
+        > <!--PreviewMouseDown="Window_PreviewMouseDown"-->
+
+    <Grid x:Name="MainGrid">
+
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" /> <!--HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"-->
+        
     </Grid>
 </Window>

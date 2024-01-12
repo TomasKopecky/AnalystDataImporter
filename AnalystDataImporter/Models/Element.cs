@@ -20,7 +20,7 @@ namespace AnalystDataImporter.Models
         public DateTime DateTo { get; set; }
 
         /// <summary>
-        /// Ikona reprezentující objekt. Může být jedna z definovaných ikon v aplikaci.
+        /// Ikona reprezentující objekt. Může být jedna z definovaných ikon v aplikaci Analyst. Každá ikona bude navázaná na konkrétní Analyst Data třídu.
         /// </summary>
         public Constants.Icons Icon { get; set; }
 
