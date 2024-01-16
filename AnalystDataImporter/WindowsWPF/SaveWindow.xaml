@@ -37,7 +37,7 @@
             <ColumnDefinition Width="390"/> <!--290-->
         </Grid.ColumnDefinitions>
 
-        <Label Content="Název:" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0" Margin="15,15,15,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" />
+        <Label Content="Název šablony:" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0" Margin="15,15,15,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" />
         <TextBox x:Name="txtBxNazev" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" BorderThickness="2"
                  Width="400" Margin="15,0" Grid.ColumnSpan="2" />
 
@@ -50,7 +50,7 @@
         <CheckBox x:Name="chckBxGlobalniSablona" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
         <Label Content="Uložit jako globální šablonu" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1" Margin="0"  />
 
-        <CheckBox x:Name="chckBxZverejniVstupniSoubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxGlobalniSablona_Checked"/>
+        <CheckBox x:Name="chckBxZverejniVstupniSoubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="0" Margin="5,5" HorizontalAlignment="Right" IsEnabled="False" Checked="chckBxZverejniVstupniSoubor_Checked"/>
         <Label Content="Zveřejnit vstupní soubor" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1" Margin="0"  />
 
         <!--<Label Content="Datum vytvoření:" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="0" Margin="75,5,0,5" HorizontalAlignment="Left"/>

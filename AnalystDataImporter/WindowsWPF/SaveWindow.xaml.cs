@@ -23,6 +23,8 @@ namespace AnalystDataImporter.WindowsWPF
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(SaveWindow_KeyDown);
+
+            txtBxNazev.Focus();
         }
 
 
@@ -60,6 +62,11 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // TODO: událost po zaškrtnutí CheckBoxu pro uložení Globální Šablony
             //chckBxGlobalniSablona
+        }
+        // obsulužná událost po zaškrtnutí CheckBoxu pro Zveřejnění vstupního souboru:
+        private void chckBxZverejniVstupniSoubor_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
 
         // obslužá metoda po změně prvku v ComboBoxu cmbBxSave - Uložit / Uložit jako...

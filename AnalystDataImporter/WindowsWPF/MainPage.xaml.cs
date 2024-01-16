@@ -178,6 +178,9 @@ namespace AnalystDataImporter.WindowsWPF
             //string filePath = txtFilePath.Text;
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
+
+            ImportWindow importWindow = new ImportWindow();
+            importWindow.ShowDialog();
         }
 
         #endregion
@@ -191,6 +194,17 @@ namespace AnalystDataImporter.WindowsWPF
             {
                 e.Cancel = true; // Zakázání navigace "Vpřed" a "Zpět"
             }
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            // Otevření URL v defaultním prohlížeči
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = e.Uri.AbsoluteUri,
+                UseShellExecute = true
+            });
+            e.Handled = true;
         }
     }
 }
