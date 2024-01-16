@@ -77,6 +77,8 @@
                             </b:Interaction.Behaviors>
                         </Ellipse>
 
+                        <!--ICO - ikona Elementu-->
+                        <Image x:Name="imgIcon" Source="{Binding IconSourcePath}" Width="{x:Static globals:Constants.EllipseWidth}" Height="{x:Static globals:Constants.EllipseWidth}" IsHitTestVisible="False" />
 
                         <!-- TextBlock below the Ellipse in the Inner Grid -->
                         <TextBlock Grid.Row="1" Text="{Binding Label}" HorizontalAlignment="Center"

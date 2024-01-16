@@ -28,6 +28,8 @@ namespace AnalystDataImporter.Globals
 
         public const int MaxLoadedCsvLines = 200;
 
+        private const string _iconPath = "/WindowsWPF/SettingPagesWPF/Images/ICON/";
+
         // Slovník ikon a tříd
         //public Dictionary<Icon, Class> IconClass { get; set; }
         // Seznam dostupných oddělovačů
@@ -48,23 +50,48 @@ namespace AnalystDataImporter.Globals
             SuperUser
         }
 
-        // implicitní ikony pro objekty
+        // implicitní třída pro objekty
         public static List<string> Classes = new List<string>{
             "Obecný objekt",
             "SIM karta",
             "IMEI",
-            "IMSI",
             "Osoba",
-            "Číslo jednací",
+            "Muž",
+            "Žena",
+            "Číslo jednací (spis)",
             "Doména",
-            "Email"
+            "Email",
+            "Klíč",
         };
 
-
-        public enum Icons
+        // implicitní cesta k ikonám dle třídy pro objekty
+        public static Dictionary<string, string> Icons = new Dictionary<string, string>
         {
-
-        }
+            {"Obecný objekt", ""},
+            {"SIM karta", _iconPath+"SIM.png"},
+            {"IMEI", _iconPath+"Mobil.png"},
+            {"Osoba", _iconPath+"Osoba.png"},
+            {"Muž", _iconPath+"Muž.png"},
+            {"Žena", _iconPath+"Žena.png"},
+            {"Číslo jednací (spis)", _iconPath+"Spis.png"},
+            {"Doména", _iconPath+"Doména.png"},
+            {"Email", _iconPath+"Mail.png"},
+            {"Klíč", _iconPath+"Klíč.png"},
+        };
+        // implicitní ikony dle třídy - cesta ke zdroji v Analyst Datau
+        public static Dictionary<string, string> AnalystDataIconsSource = new Dictionary<string, string>
+        {
+            {"Obecný objekt", ""},
+            {"SIM karta", "icon:object/simcard;"},
+            {"IMEI", "icon:object/cell_phone;"}, //icon:object/cell_phone;
+            {"Osoba", "icon:person/man_2;"}, //icon:person/man_2;
+            {"Muž", "icon:person/man;"}, //icon:person/man;
+            {"Žena", "icon:person/woman_1;"}, //icon:person/woman_1;
+            {"Číslo jednací (spis)", "icon:action/appointment;"},
+            {"Doména", "icon:object/computer;"},
+            {"Email", "icon:action/e mail;"},
+            {"Klíč", "icon:object/key;border-color:#7da409;border-width:2;" },
+        };
 
         //// implicitní směry vazeb - bez směru, od A k B, od B k A
         //public enum RelationDirections

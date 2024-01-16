@@ -27,9 +27,9 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class MainPage : Page
     {
+        private MainWindow mainWindow;
         private PageImport1 pageImport1;
         private PageImport2 pageImport2;
-        // Po nacteni Okna:
         
         // konstruktor
         public MainPage(PageImport1 pageImport1, PageImport2 pageImport2)
@@ -37,6 +37,7 @@ namespace AnalystDataImporter.WindowsWPF
             InitializeComponent(); // Inicializace komponent
             this.pageImport1 = pageImport1;
             this.pageImport2 = pageImport2;
+
             #region NAPLNĚNÍ STROMU TREE-VIEW:
             // TODO: dočasné řešení TreeView - TEST:
             var rootNode = new Node { Name = "název AKCE" };
@@ -50,6 +51,7 @@ namespace AnalystDataImporter.WindowsWPF
             #endregion
         }
 
+        // Po nacteni Stránky:
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'

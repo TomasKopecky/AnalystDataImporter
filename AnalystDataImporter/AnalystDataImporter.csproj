@@ -390,5 +390,36 @@
     <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load8.png" />
     <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load9.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Doména.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Mail.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Mobil.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Muž.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Osoba.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\SIM.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Spis.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Žena.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\ICON\Klíč.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

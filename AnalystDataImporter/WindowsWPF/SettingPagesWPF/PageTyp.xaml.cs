@@ -23,13 +23,15 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
     public partial class PageTyp : Page
     {
         public BaseSettingPage basicSettingPage;
-        
+        private ElementViewModel _elementViewModel;
+
         public PageTyp(CanvasViewModel canvasViewModel)
         {
             InitializeComponent();
             basicSettingPage = new BaseSettingPage(canvasViewModel);
             cmbBxTypElement.ItemsSource = Constants.Classes;
             cmbBxTypElement.Text = canvasViewModel.SelectedSingleItem.Class;
+            _elementViewModel = (ElementViewModel) canvasViewModel.SelectedSingleItem;
         }
 
         private void btnStorno_Click(object sender, RoutedEventArgs e)
@@ -41,6 +43,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
         {
             basicSettingPage.canvasViewModel.SelectedSingleItem.Class = cmbBxTypElement.Text;
             basicSettingPage.canvasViewModel.SelectedSingleItem.Label = cmbBxTypElement.Text;
+            _elementViewModel.IconSourcePath = Constants.Icons[cmbBxTypElement.Text];
             basicSettingPage.OnRequestClose();
         }
     }

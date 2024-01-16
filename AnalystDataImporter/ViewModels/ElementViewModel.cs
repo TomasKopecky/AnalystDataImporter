@@ -30,6 +30,7 @@ namespace AnalystDataImporter.ViewModels
             _model = _element;
             Type = "element";
             Class = Constants.Classes[0];
+            IconSourcePath = Constants.Icons.ElementAt(0).Value;
             Id = Label;
             Label = string.Empty; // Popisek
             Date = string.Empty; // Datum - prázdné (protože jde o sloupec!!)
@@ -95,15 +96,15 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        public Constants.Icons Icon
+        public string IconSourcePath
         {
-            get => _element.Icon;
+            get => _element.IconSourcePath;
             set
             {
-                if (_element.Icon == value) return;
+                if (_element.IconSourcePath == value) return;
 
-                _element.Icon = value;
-                OnPropertyChanged(nameof(Icon));
+                _element.IconSourcePath = value;
+                OnPropertyChanged(nameof(IconSourcePath));
             }
         }
 

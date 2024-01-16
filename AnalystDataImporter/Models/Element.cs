@@ -22,7 +22,7 @@ namespace AnalystDataImporter.Models
         /// <summary>
         /// Ikona reprezentující objekt. Může být jedna z definovaných ikon v aplikaci Analyst. Každá ikona bude navázaná na konkrétní Analyst Data třídu.
         /// </summary>
-        public Constants.Icons Icon { get; set; }
+        public string IconSourcePath { get; set; }
 
         /// <summary>
         /// Určuje, zda objekt má vizuální rámeček.
