@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
       mc:Ignorable="d" 
-      d:DesignHeight="330" d:DesignWidth="260"
+      d:DesignHeight="205" d:DesignWidth="260"
       Title="LoadingPage">
 
     <Grid>
@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Image x:Name="AnimatedImage" Width="260" Height="300" Grid.Row="0"/>
+        <Image x:Name="AnimatedImage" Width="260" Height="171" Grid.Row="0"/>
         <Label x:Name="lblLoading" Content="NAČÍTÁM" Grid.Row="1" HorizontalAlignment="Center"
                FontSize="20"
                FontWeight="Bold"

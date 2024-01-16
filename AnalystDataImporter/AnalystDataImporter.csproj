@@ -366,21 +366,29 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load0.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load1.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load10.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load11.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load12.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load13.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load14.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load15.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load16.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load17.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load18.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load19.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load2.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load20.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load21.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load22.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load3.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load4.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load5.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load6.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load7.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load8.png" />
+    <Resource Include="WindowsWPF\SettingPagesWPF\Images\LOADING_GIFs\Load9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF.SettingPagesWPF"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="LoadingWindow" Height="330" Width="260"
+        Title="LoadingWindow" Height="205" Width="260"
         WindowStyle="None"
         ResizeMode="NoResize"
         BorderThickness="0">
@@ -20,8 +20,8 @@
         </Grid.RowDefinitions>
         
         <!--<MediaElement x:Name="mdElmntLoadingGIF" Source="/WindowsWPF/SettingPagesWPF/Images/LOADING_GIFs/gif2.gif" LoadedBehavior="Play"/>-->
-        <Image x:Name="AnimatedImage" Width="260" Height="300" Grid.Row="0"/>
-        <Label x:Name="lblLoading" Content="NAČÍTÁM" Grid.Row="1" HorizontalAlignment="Center"
+        <Image x:Name="AnimatedImage" Width="260" Height="171" Grid.Row="0"/>
+        <Label x:Name="lblLoading" Content="NAČÍTÁM" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"
                FontSize="20"
                FontWeight="Bold"
                FontFamily="Calibri"/>

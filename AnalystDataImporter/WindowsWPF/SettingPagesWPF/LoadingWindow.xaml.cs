@@ -31,7 +31,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             InitializeComponent();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.1); // nastavit interval pro změnu obrázků
+            timer.Interval = TimeSpan.FromSeconds(0.02); // nastavit interval pro změnu obrázků
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -41,7 +41,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             var imageUri = new Uri($"pack://application:,,,/AnalystDataImporter;component/WindowsWPF/SettingPagesWPF/Images/LOADING_GIFs/Load{imageIndex}.png", UriKind.Absolute);
             AnimatedImage.Source = new BitmapImage(imageUri);
 
-            imageIndex = (imageIndex + 1) % 5; // Přepne na další obrázek, vrátí se na začátek po dosažení posledního
+            imageIndex = (imageIndex + 1) % 23; // Přepne na další obrázek, vrátí se na začátek po dosažení posledního
         }
 
     }
