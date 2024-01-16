@@ -36,6 +36,8 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
                 rdBtnPopisekSloupec_Click(null, null);
             }
 
+            txtBxPopisek.Focus();
+
             //TEST:
             List<string> items = new List<string>() { "1", "2", "3" };
             cmbBxSloupec.ItemsSource = items;

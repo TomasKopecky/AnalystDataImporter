@@ -35,6 +35,8 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
                 fillData();
             }
 
+            txtBxPopis.Focus();
+
             //TEST:
             List<string> items = new List<string>() { "1", "2", "3" };
             cmbBxSloupec.ItemsSource = items;

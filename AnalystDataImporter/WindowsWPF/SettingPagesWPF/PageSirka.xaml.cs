@@ -34,6 +34,7 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             cmbBxVazbaSirka.Text = _relationViewModel.Thickness.ToString();
             //cmbBxVazbaSirka.Text = Constants.Thickness.FirstOrDefault(thickness => thickness.Value.ToString() == _relationViewModel.ColorValue.ToString()).Key;
 
+            cmbBxVazbaSirka.Focus();
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)

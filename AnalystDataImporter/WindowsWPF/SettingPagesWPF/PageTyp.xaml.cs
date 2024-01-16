@@ -32,6 +32,8 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             cmbBxTypElement.ItemsSource = Constants.Classes;
             cmbBxTypElement.Text = canvasViewModel.SelectedSingleItem.Class;
             _elementViewModel = (ElementViewModel) canvasViewModel.SelectedSingleItem;
+
+            cmbBxTypElement.Focus();
         }
 
         private void btnStorno_Click(object sender, RoutedEventArgs e)

@@ -32,6 +32,8 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             cmbBxVazbaSmer.ItemsSource = Constants.RelationDirections.Keys;
             _relationViewModel = (RelationViewModel)canvasViewModel.SelectedSingleItem;
             cmbBxVazbaSmer.Text = Constants.RelationDirections.FirstOrDefault(direction => direction.Value.ToString() == _relationViewModel.DirectionValue.ToString()).Key;
+
+            cmbBxVazbaSmer.Focus();
         }
 
         private void btnStorno_Click(object sender, RoutedEventArgs e)

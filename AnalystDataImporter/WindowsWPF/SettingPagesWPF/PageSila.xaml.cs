@@ -32,6 +32,8 @@ namespace AnalystDataImporter.WindowsWPF.SettingPagesWPF
             cmbBxVazbaSila.ItemsSource = Constants.Style.Keys;
             _relationViewModel = (RelationViewModel)canvasViewModel.SelectedSingleItem;
             cmbBxVazbaSila.Text = Constants.Style.FirstOrDefault(styl => styl.Value.ToString() == _relationViewModel.StyleValue.ToString()).Key;
+
+            cmbBxVazbaSila.Focus();
         }
 
         private void btnStorno_Click(object sender, RoutedEventArgs e)
