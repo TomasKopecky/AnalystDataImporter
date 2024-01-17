@@ -1,9 +1,10 @@
 ﻿<Window x:Class="AnalystDataImporter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" 
+        Title="Analyst Data Importer" 
         MinHeight="450" MinWidth="680"
         WindowStartupLocation="CenterScreen"
+        Icon="/WindowsWPF/SettingPagesWPF/Images/ICON/analystDataImporterIcon.png"
         > <!--PreviewMouseDown="Window_PreviewMouseDown"-->
 
     <Grid x:Name="MainGrid">

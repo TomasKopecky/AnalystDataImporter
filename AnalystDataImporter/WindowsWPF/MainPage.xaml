@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:AnalystDataImporter.WindowsWPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPage" Loaded="Page_Loaded">
+      Title="Analyst Data Importer" Loaded="Page_Loaded">
 
     <Grid x:Name="grdMainWindow" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver" ShowGridLines="False">
 
@@ -22,7 +22,9 @@
 
         <!-- Title Bar -->
         <Border Background="Gray" Height="40" VerticalAlignment="Top" Grid.ColumnSpan="3">
-            <TextBlock Text="Analyst Data Importer" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="ANALYST DATA - I m p o r t e r" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontSize="19"
+                       FontFamily="Calibri"/> <!--FontWeight="Bold"-->
         </Border>
 
         <!-- Záložky - Taby -->
