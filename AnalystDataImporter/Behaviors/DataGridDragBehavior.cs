@@ -39,10 +39,23 @@ namespace AnalystDataImporter.Behaviors
                 typeof(DataGridDragBehavior),
                 new PropertyMetadata(null));
 
+        public static readonly DependencyProperty IsDataGridInCanvasViewProperty =
+            DependencyProperty.Register(
+                nameof(IsDataGridInCanvasView), 
+                typeof(bool),
+                typeof(DataGridDragBehavior),
+                new PropertyMetadata(null));
+
         public ICommand GetDraggedGridViewColumnCommand
         {
             get => (ICommand)GetValue(GetDraggedGridViewColumnCommandProperty);
             set => SetValue(GetDraggedGridViewColumnCommandProperty, value);
+        }
+
+        public bool IsDataGridInCanvasView
+        {
+            get => (bool)GetValue(IsDataGridInCanvasViewProperty);
+            set => SetValue(IsDataGridInCanvasViewProperty, value);
         }
 
         /// <summary>
@@ -421,7 +434,7 @@ namespace AnalystDataImporter.Behaviors
             {
                 _mouseHandlingService.EndDragOperation();
                 Point mousePosition = e.GetPosition(ParentCanvas);
-                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas))
+                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas) || !IsDataGridInCanvasView)
                 {
                     SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
                 }

@@ -151,6 +151,7 @@ namespace AnalystDataImporter.Services
         /// <returns>True, pokud se kurzor nachází v rámci plátna.</returns>
         public bool IsMouseInCanvas(Point mousePosition, Canvas canvas)
         {
+            if (canvas == null) return false;
             return mousePosition.X >= 0 && mousePosition.X <= canvas.ActualWidth &&
                    mousePosition.Y >= 0 && mousePosition.Y <= canvas.ActualHeight;
         }

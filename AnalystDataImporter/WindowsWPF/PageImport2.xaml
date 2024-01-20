@@ -168,6 +168,7 @@
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
                                 GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                IsDataGridInCanvasView ="True"
                                 behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
                                 behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
                                 behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
@@ -197,6 +198,7 @@
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
                                 GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
+                                IsDataGridInCanvasView ="True"
                                 behaviors:SharedBehaviorProperties.ChangeCursorCommand="{Binding ChangeCursorWhenOperatingGridCommand}"
                                 behaviors:SharedBehaviorProperties.ParentCanvas="{Binding ElementName=ElementCanvas}"
                                 behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"

@@ -73,6 +73,7 @@
                         ItemsSource="{Binding ColumnTable}">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
+                                IsDataGridInCanvasView ="False"
                                 behaviors:SharedBehaviorProperties.ContentDataGrid="{Binding ElementName=ContentDataGrid}"
                                 behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
                                 behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"
@@ -99,6 +100,7 @@
                            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
+                                IsDataGridInCanvasView ="False"
                                 behaviors:SharedBehaviorProperties.HeadingDataGrid="{Binding ElementName=HeadingDataGrid}"
                                 behaviors:SharedBehaviorProperties.ScrollViewerWithDataGrids="{Binding ElementName=DataGridsScrollViewer}"/>
                         </b:Interaction.Behaviors>

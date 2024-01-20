@@ -26,6 +26,13 @@
                        FontSize="19"
                        FontFamily="Calibri"/> <!--FontWeight="Bold"-->
         </Border>
+        <TextBlock Text="Uživatel: user" Margin="10" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left"
+                       FontSize="15"
+                       FontFamily="Calibri"/>
+
+        <TextBlock Text="Role: Uživatel" Margin="10" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       FontSize="15"
+                       FontFamily="Calibri"/>
 
         <!-- Záložky - Taby -->
         <TabControl Margin="10" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" SelectionChanged="TabControl_SelectionChanged">
