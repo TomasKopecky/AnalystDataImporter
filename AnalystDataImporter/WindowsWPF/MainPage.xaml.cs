@@ -27,7 +27,7 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class MainPage : Page
     {
-        private MainWindow mainWindow;
+        //private MainWindow mainWindow;
         private PageImport1 pageImport1;
         private PageImport2 pageImport2;
         

@@ -49,6 +49,8 @@ namespace AnalystDataImporter
         private void ConfigureDi(IServiceCollection services)
         {
             // Registrace továrny a manažera v kontejneru DI.
+            
+
             services.AddSingleton<IElementViewModelFactory, ElementViewModelFactory>();
             services.AddSingleton<IElementManager, ElementManager>();
             services.AddSingleton<IRelationViewModelFactory, RelationViewModelFactory>();
@@ -85,8 +87,9 @@ namespace AnalystDataImporter
 
             services.AddSingleton<IMessageService, MessageService>();
 
-            services.AddSingleton<IMessageBoxService,MessageBoxService>();
+            services.AddSingleton<IMessageBoxService, MessageBoxService>();
 
+            services.AddSingleton<CsvParserService, CsvParserService>();
             // Pokud máte služby nebo repozitáře, registrujte je zde.
             // services.AddTransient<IMyService, MyServiceImplementation>();
         }

@@ -9,11 +9,12 @@ namespace AnalystDataImporter
 {
     public partial class MainWindow
     {
-        private MainPage mainPage;
+        private readonly MainPage mainPage;
 
         public MainWindow(MainPage mainPage)
         {
             InitializeComponent();
+            this.mainPage = mainPage;
 
             //// VÝŠKA A ŠÍŘKA OKNA DLE MONITORU
             // Získání výšky monitoru

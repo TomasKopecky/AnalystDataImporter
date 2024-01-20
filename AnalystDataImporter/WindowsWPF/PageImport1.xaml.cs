@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AnalystDataImporter.Services;
 using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF
@@ -24,13 +25,19 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class PageImport1 : Page
     {
-        GridViewModel viewModel;
-        public PageImport1(GridViewModel gridViewModel)
+        private readonly GridViewModel viewModel;
+        private readonly IMessageBoxService messageBoxService;
+        private readonly CsvParserService csvParserService;
+        private char selectedDelimiter = ';';
+        public PageImport1(GridViewModel gridViewModel, IMessageBoxService messageBoxService, CsvParserService csvParserService)
         {
             InitializeComponent();
             viewModel = gridViewModel;
             DataContext = viewModel;
-            viewModel.LoadTestData();
+            this.messageBoxService = messageBoxService;
+            this.csvParserService = csvParserService;
+            //viewModel.LoadTestingDataNew();
+            //viewModel.LoadTestData();
         }
 
         private void Browse_Click(object sender, RoutedEventArgs e)
@@ -49,7 +56,7 @@ namespace AnalystDataImporter.WindowsWPF
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
+                if (files != null && files.Length == 1 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
                 {
                     e.Effects = DragDropEffects.Copy;
                 }
@@ -67,39 +74,33 @@ namespace AnalystDataImporter.WindowsWPF
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null && files.Length > 0 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
+                if (files != null && files.Length == 1 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
                 {
                     txtCestaKSouboru.Text = files[0];
                     LoadFile(files[0]);
+                }
+                else
+                {
+                    messageBoxService.ShowError("Nepodporovaný formát souboru nebo načítáte více souborů najednou, což nelze");
                 }
             }
         }
 
         private void LoadFile(string filePath)
         {
-            //char delimiter = GetSelectedDelimiter(); // TODO: Opravit Delimiter
-            DataTable dataTable = new DataTable();
-
-            using (StreamReader sr = new StreamReader(filePath))
+            if (File.Exists(filePath))
             {
-                string line = sr.ReadLine();
-                if (line != null)
-                {
-                    // TODO: Opravit Delimiter a headers:
-                    //string[] headers = line.Split(delimiter); // TODO: Opravit Delimiter
-                    //foreach (string header in headers) // TODO: Opravit headers
-                    //{
-                    //    dataTable.Columns.Add(header); // TODO: Opravit header
-                    //}
+                //if (viewModel?.ProcesCsvCommand.CanExecute(bool) == true)
+                //{
+                    Tuple<string,char> parameters = new Tuple<string,char>(filePath,selectedDelimiter);
+                    viewModel.ProcesCsvCommand.Execute(parameters);
+                //}
 
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        //dataTable.Rows.Add(line.Split(delimiter)); // TODO: Opravit Delimiter:
-                    }
-                }
+                //if (csvParserService.IsValidCsvStructure(filePath,selectedDelimiter))
+                //{
+                //    var parsedCsv = csvParserService.ParseCsv(filePath, Encoding.UTF8, selectedDelimiter);
+                //}
             }
-
-            //dtGrdTabulkaCsvSouboru1.ItemsSource = dataTable.DefaultView;
         }
 
         // ZAŠKRTÁVACÍ POLÍČKA:
@@ -108,6 +109,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void chckBxCarka_Checked(object sender, RoutedEventArgs e)
         {
             // TODO: po zaškrtnutí políčka pro Oddělovač: Čárka
+            selectedDelimiter = ',';
         }
         private void chckBxCarka_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -118,6 +120,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void chckBxStrednik_Checked(object sender, RoutedEventArgs e)
         {
             // TODO: po zaškrtnutí políčka pro Oddělovač: Středník
+            selectedDelimiter = ';';
         }
         private void chckBxStrednik_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -128,6 +131,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void chckBxSvitlitko_Checked(object sender, RoutedEventArgs e)
         {
             // TODO: po zaškrtnutí políčka pro Oddělovač: Svislítko
+            selectedDelimiter = '|';
         }
         private void chckBxSvitlitko_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -138,6 +142,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void chckBxTabulator_Checked(object sender, RoutedEventArgs e)
         {
             // TODO: po zaškrtnutí políčka pro Oddělovač: Tabulátor
+            selectedDelimiter = 't';
         }
         private void chckBxTabulator_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -148,6 +153,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void chckBxMezera_Checked(object sender, RoutedEventArgs e)
         {
             // TODO: po zaškrtnutí políčka pro Oddělovač: Mezera
+            selectedDelimiter = ' ';
         }
         private void chckBxMezera_Unchecked(object sender, RoutedEventArgs e)
         {

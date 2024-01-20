@@ -19,7 +19,7 @@ namespace AnalystDataImporter.WindowsWPF
             _canvasViewModel = viewModel.CanvasViewModel;
             viewModel.CanvasViewModel.TestingMode = false;
             viewModel.CanvasViewModel.AddTestingElementsAndRelation();
-            viewModel.GridViewModel.LoadTestData();
+            //viewModel.GridViewModel.LoadTestData();
         }
 
         private void btnEIkonaTyp_Click(object sender, System.Windows.RoutedEventArgs e)

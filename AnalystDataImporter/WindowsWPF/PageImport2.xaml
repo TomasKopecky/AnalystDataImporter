@@ -164,7 +164,7 @@
                         CanUserDeleteRows="False" CanUserResizeRows="False" 
                         CanUserSortColumns="False" CanUserReorderColumns="False"
                         RowHeight="0"
-                        ItemsSource="{Binding ColumnTable}">
+                        ItemsSource="{Binding HeadingTable}">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
                                 GetDraggedGridViewColumnCommand="{Binding GetDraggedGridViewColumnCommand}"
@@ -192,7 +192,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid Grid.Column="0" x:Name="ContentDataGrid" DataContext="{Binding GridViewModel}" 
-                           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
+                           ItemsSource="{Binding ContentTable}" AutoGenerateColumns="True" 
                            CanUserAddRows="False" HeadersVisibility="None" 
                            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
                         <b:Interaction.Behaviors>

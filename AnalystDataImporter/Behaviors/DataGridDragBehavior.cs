@@ -195,6 +195,8 @@ namespace AnalystDataImporter.Behaviors
         {
             if (!(sender is DataGrid datagrid)) return;
 
+            if (datagrid.Columns.Count == 0) return;
+
             if (datagrid.Items.Count == 0)
                 _isHeadingGrid = true;
             else
@@ -208,7 +210,7 @@ namespace AnalystDataImporter.Behaviors
             }
 
             // když je prvek content data grid - nastav width sloupců heading data grid podle prvotní šířky content data grid sloupců
-            if (AssociatedObject.DataContext is GridViewModel gridViewModel && gridViewModel.Columns.Count == datagrid.Columns.Count && !_isHeadingGrid)
+            if (AssociatedObject.DataContext is GridViewModel gridViewModel && gridViewModel.TableColumnsViewModel.Count == datagrid.Columns.Count && !_isHeadingGrid)
             {
                 int i = 0;
                 foreach (var column in datagrid.Columns)
@@ -434,9 +436,10 @@ namespace AnalystDataImporter.Behaviors
             {
                 _mouseHandlingService.EndDragOperation();
                 Point mousePosition = e.GetPosition(ParentCanvas);
-                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas) || !IsDataGridInCanvasView)
+                if (!_mouseHandlingService.IsMouseInCanvas(mousePosition, ParentCanvas)) // podmínka !IsDataGridInCanvasView zaručí, že se nebude volat zbytečně změna kurzoru v PageImport1
                 {
-                    SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
+                    if (IsDataGridInCanvasView)
+                        SharedBehaviorProperties.UpdateCursor(ChangeCursorCommand, "GridViewLeaveCursor");
                 }
                 else
                 {

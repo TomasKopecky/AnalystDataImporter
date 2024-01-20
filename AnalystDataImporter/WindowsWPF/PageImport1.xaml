@@ -70,7 +70,7 @@
                         CanUserDeleteRows="False" CanUserResizeRows="False" 
                         CanUserSortColumns="False" CanUserReorderColumns="False"
                         RowHeight="0"
-                        ItemsSource="{Binding ColumnTable}">
+                        ItemsSource="{Binding HeadingTable}">
                         <b:Interaction.Behaviors>
                             <behaviors:DataGridDragBehavior
                                 IsDataGridInCanvasView ="False"
@@ -95,7 +95,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid Grid.Column="0" x:Name="ContentDataGrid"
-                           ItemsSource="{Binding Table}" AutoGenerateColumns="True" 
+                           ItemsSource="{Binding ContentTable}" AutoGenerateColumns="True" 
                            CanUserAddRows="False" HeadersVisibility="None" 
                            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ColumnWidth="Auto">
                         <b:Interaction.Behaviors>
@@ -153,15 +153,15 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
+                    <!-- Středník -->
+                    <RadioButton x:Name="chckBxStrednik" IsChecked="True" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
+                    <!--<CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />-->
+                    <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
+
                     <!-- Čárka -->
                     <RadioButton x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />
                     <!--<CheckBox x:Name="chckBxCarka" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Checked="chckBxCarka_Checked" Unchecked="chckBxCarka_Unchecked" />-->
                     <Label Content="Čárka" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
-
-                    <!-- Středník -->
-                    <RadioButton x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />
-                    <!--<CheckBox x:Name="chckBxStrednik" Grid.Row="0" Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="chckBxStrednik_Checked" Unchecked="chckBxStrednik_Unchecked" />-->
-                    <Label Content="Středník" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
 
                     <!-- Svitlítko -->
                     <RadioButton x:Name="chckBxSvitlitko" Grid.Row="0" Grid.Column="4" Margin="5" VerticalAlignment="Center" Checked="chckBxSvitlitko_Checked" Unchecked="chckBxSvitlitko_Unchecked" />
