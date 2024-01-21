@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +14,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
+using AnalystDataImporter.Managers;
+using AnalystDataImporter.Services;
+using Newtonsoft.Json;
+using System.IO.Packaging;
+using System.Net.NetworkInformation;
+using System.Runtime.Remoting.Contexts;
+using static AnalystDataImporter.Globals.Constants;
+using AnalystDataImporter.Models;
+using AnalystDataImporter.Globals;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -19,9 +32,15 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class SaveWindow : Window
     {
-        public SaveWindow()
+        private readonly IMessageBoxService _messageBoxService;
+        private readonly IElementManager _elementManager;
+        private readonly CsvParserService _csvParserService;
+        public SaveWindow(IMessageBoxService messageBoxService, IElementManager elementManager, CsvParserService csvParserService)
         {
             InitializeComponent();
+            _messageBoxService = messageBoxService;
+            _elementManager = elementManager;
+            _csvParserService = csvParserService;
             this.KeyDown += new KeyEventHandler(SaveWindow_KeyDown);
 
             txtBxNazev.Focus();
@@ -52,11 +71,75 @@ namespace AnalystDataImporter.WindowsWPF
             cmbBxSave.Visibility = Visibility.Visible;
             cmbBxSave.IsDropDownOpen = true;
 
+            if (txtBxNazev.Text == null || txtBxNazev.Text == "")
+                _messageBoxService.ShowError("Zadejte název ukládané šablony");
+
+            else
+                SaveTemplateFile(txtBxNazev.Text);
+
             // TODO: Uložení hodnot ze Šablony: 
             //txtBxNazev
             //txtBxPopis
             //chckBxGlobalniSablona
         }
+
+        public string GetSaveFolderPath()
+        {
+            // Append your specific folder name
+            //string saveFolderPath = System.IO.Path.Combine(Constants.templateFolderPath, "analyst_data_importer_templates");
+
+            // Check if the folder exists, and if not, create it
+            if (!Directory.Exists(Constants.templateFolderPath))
+            {
+                Directory.CreateDirectory(Constants.templateFolderPath);
+            }
+
+            return Constants.templateFolderPath;
+        }
+
+        public void SaveTemplateFile(string fileName)
+        {
+            string folderPath = GetSaveFolderPath();
+            // Ensure the folder exists
+            Directory.CreateDirectory(folderPath);
+
+            // Combine the folder path and file name
+            string filePath = System.IO.Path.Combine(folderPath, fileName+".template");
+
+            string content = JsonConvert.SerializeObject(_elementManager.Elements, Newtonsoft.Json.Formatting.Indented);
+
+            // Check if the file exists
+            if (File.Exists(filePath))
+            {
+                // Ask the user if they want to overwrite
+                MessageBoxResult messageBoxResult = MessageBox.Show(
+                    "The file already exists. Do you want to overwrite it?",
+                    "Overwrite File",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                // If the user chooses not to overwrite, just return
+                if (messageBoxResult != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            string metadata = $"// Description: {txtBxPopis.Text}\n" +
+                      $"// Date: {DateTime.Now.Date}\n" +
+                      $"// Input File Path: {_csvParserService.inputFilePath}\n" +
+                      $"// First Row Heading: {_csvParserService.isFirstRowHeading}\n" +
+                      $"// Delimiter: {_csvParserService.delimiter}\n";
+
+            string contentToSave = metadata + txtBxPopis.Text + Environment.NewLine + content;
+            // Save the content to the file
+            File.WriteAllText(filePath, contentToSave);
+
+            _messageBoxService.ShowInformation("Šablona úspěšně uložena");
+
+            Close();
+        }
+
         // obsulužná událost po zaškrtnutí CheckBoxu pro uložení Globální Šablony:
         private void chckBxGlobalniSablona_Checked(object sender, RoutedEventArgs e)
         {

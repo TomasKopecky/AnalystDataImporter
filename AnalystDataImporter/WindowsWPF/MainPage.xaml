@@ -49,12 +49,12 @@
                     </Grid.RowDefinitions>
 
                     <!-- Seznam zdrojů - tabulka/strom Zdroje -->
-                    <TreeView x:Name="trVwZdroje"  Margin="10">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TreeView x:Name="trVwZdroje" Margin="10" FontWeight="ExtraLight">
+                        <!--<TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate>
                                 <TextBlock Text="{Binding Name}" />
                             </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
+                        </TreeView.ItemTemplate>-->
                     </TreeView>
                     <!--<DataGrid x:Name="dtGrdZdroje"  Margin="10"/>-->
 

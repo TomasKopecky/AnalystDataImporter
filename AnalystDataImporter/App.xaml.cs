@@ -80,6 +80,7 @@ namespace AnalystDataImporter
             services.AddSingleton<PageImport1>();
             services.AddSingleton<PageImport2>();
             services.AddSingleton<MainPage>();
+
             //services.AddTransient<SettingWindow>();
 
 
@@ -90,6 +91,8 @@ namespace AnalystDataImporter
             services.AddSingleton<IMessageBoxService, MessageBoxService>();
 
             services.AddSingleton<CsvParserService, CsvParserService>();
+
+            services.AddSingleton<SqliteDbService>();
             // Pokud máte služby nebo repozitáře, registrujte je zde.
             // services.AddTransient<IMyService, MyServiceImplementation>();
         }

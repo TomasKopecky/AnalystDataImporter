@@ -10,9 +10,15 @@ namespace AnalystDataImporter.Services
 {
     public class CsvParserService
     {
-
+        public string inputFilePath { get; set; }
+        public char delimiter { get; set; }
+        public bool isFirstRowHeading { get; set; }
         public List<string[]> ParseCsv(string filePath, Encoding encoding, char delimiter, int maxLines = Constants.MaxLoadedCsvLines)
         {
+            inputFilePath = filePath;
+            this.delimiter = delimiter;
+            //this.isFirstRowHeading = true;
+
             List<string[]> result = new List<string[]>();
             if (!File.Exists(filePath))
             {

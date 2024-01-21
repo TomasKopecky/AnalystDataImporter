@@ -29,6 +29,11 @@ namespace AnalystDataImporter.Globals
         public const int MaxLoadedCsvLines = 200;
 
         private const string _iconPath = "/WindowsWPF/SettingPagesWPF/Images/ICON/";
+        // Get the path to the user's Documents folder
+        public static string documentsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        public static string templateFolderPath = System.IO.Path.Combine(Constants.documentsFolderPath, "analyst_data_importer_templates");
+
 
         // Slovník ikon a tříd
         //public Dictionary<Icon, Class> IconClass { get; set; }

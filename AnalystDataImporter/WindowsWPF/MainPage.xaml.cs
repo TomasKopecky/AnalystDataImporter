@@ -19,6 +19,12 @@ using AnalystDataImporter.WindowsWPF;
 using System.Collections.ObjectModel;
 using AnalystDataImporter.ViewModels;
 using AnalystDataImporter.WindowsWPF.SettingPagesWPF;
+using AnalystDataImporter.Services;
+using AnalystDataImporter.Managers;
+using AnalystDataImporter.Models;
+using Newtonsoft.Json;
+using AnalystDataImporter.Globals;
+using System.Runtime.ExceptionServices;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -30,25 +36,137 @@ namespace AnalystDataImporter.WindowsWPF
         //private MainWindow mainWindow;
         private PageImport1 pageImport1;
         private PageImport2 pageImport2;
+        private readonly IMessageBoxService _messageBoxService;
+        private readonly IElementManager _elementManager;
+        private readonly CsvParserService _csvParserService;
+        private readonly SqliteDbService _sqliteDbService;
         
         // konstruktor
-        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2)
+        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2, IMessageBoxService messageBoxService, IElementManager elementManager, CsvParserService csvParserService, SqliteDbService sqliteDbService)
         {
             InitializeComponent(); // Inicializace komponent
             this.pageImport1 = pageImport1;
             this.pageImport2 = pageImport2;
+            _messageBoxService = messageBoxService;
+            _elementManager = elementManager;
+            _csvParserService = csvParserService;
+            _sqliteDbService = sqliteDbService;
+
+            this.Loaded += LoadIndexActions;
 
             #region NAPLNĚNÍ STROMU TREE-VIEW:
             // TODO: dočasné řešení TreeView - TEST:
-            var rootNode = new Node { Name = "název AKCE" };
-            rootNode.Children.Add(new Node { Name = "Datum: 2024-01-02" });
-            rootNode.Children.Add(new Node { Name = "Popis: Akce Kyštof - pachatel ujel v Labu" });
-            // přidání zdroje dat to TreeView pro Zdroje:
-            trVwZdroje.ItemsSource = new ObservableCollection<Node> { rootNode };
+
+            LoadTemplates();
+
+            //var rootNode = new Node { Name = "název AKCE" };
+            //rootNode.Children.Add(new Node { Name = "Datum: 2024-01-02" });
+            //rootNode.Children.Add(new Node { Name = "Popis: Akce Kyštof - pachatel ujel v Labu" });
+            //// přidání zdroje dat to TreeView pro Zdroje:
+            //trVwZdroje.ItemsSource = new ObservableCollection<Node> { rootNode };
             // přidání zdroje dat to TreeView pro Šablony:
-            trVwSablony.ItemsSource = new ObservableCollection<Node> { rootNode };
+            //trVwSablony.ItemsSource = new ObservableCollection<Node> { rootNode };
             this.pageImport2 = pageImport2;
             #endregion
+        }
+
+        private async void LoadIndexActions(object sender, RoutedEventArgs e)
+        {
+            List<IndexAction> actions = await _sqliteDbService.GetAllActionsAsync();
+            if (actions != null && actions.Count > 0)
+            {
+                foreach (IndexAction action in actions)
+                {
+                    // Create the main node for the action name
+                    TextBlock actionTextBlock = new TextBlock
+                    {
+                        Text = action.Name,
+                        FontWeight = FontWeights.Bold
+                    };
+
+                    // Create the main node for the action name with the TextBlock as header
+                    TreeViewItem actionNode = new TreeViewItem { Header = actionTextBlock };
+
+                    // Create and add child nodes
+                    actionNode.Items.Add(new TreeViewItem { Header = $"Popis: {action.Description}" });
+                    actionNode.Items.Add(new TreeViewItem { Header = $"Vytvořeno: {action.Created:d}" });
+
+                    // Add the main node to the TreeView
+                    trVwZdroje.Items.Add(actionNode);
+                }
+            }
+        }
+
+        private async void CreateIndexAction(object sender, RoutedEventArgs e)
+        {
+            IndexAction indexAction = new IndexAction();
+            indexAction.ActionId = 54;
+            indexAction.Name = "flasjflksdf";
+            indexAction.Description = "fladsjfalksjfklsd";
+            await _sqliteDbService.CreateActionAsync(indexAction);
+        }
+
+        private void LoadTemplates()
+        {
+            trVwSablony.Items.Clear();
+            string[] fileEntries = Directory.GetFiles(Constants.templateFolderPath, "*.template");
+
+            foreach (string filePath in fileEntries)
+            {
+                string fileName = System.IO.Path.GetFileName(filePath);
+
+                // Load the metadata (assuming the LoadTemplateFile method is available)
+                var metadata = LoadTemplateFile(filePath);
+
+                // Create the main node for the file
+                TreeViewItem fileNode = new TreeViewItem { Header = fileName.Replace(".template","") };
+
+                // Add description and date as child nodes
+                fileNode.Items.Add(new TreeViewItem { Header = "Popis: " + metadata[0] });
+                fileNode.Items.Add(new TreeViewItem { Header = "Datum: " + metadata[1] });
+
+                // Add the file node to the TreeView
+                trVwSablony.Items.Add(fileNode);
+            }
+        }
+
+        public string[] LoadTemplateFile(string filePath)
+        {
+            string description = "";
+            string date = "";
+            string inputFilePath = "";
+            string firstRowHeading = ""; // Use string to store the boolean value temporarily
+            string delimiter = ""; // Use string to store the char value temporarily
+
+            var lines = File.ReadAllLines(filePath);
+
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("// Description:"))
+                    description = line.Substring("// Description:".Length).Trim();
+                else if (line.StartsWith("// Date:"))
+                    date = line.Substring("// Date:".Length).Trim();
+                else if (line.StartsWith("// Input File Path:"))
+                    inputFilePath = line.Substring("// Input File Path:".Length).Trim();
+                else if (line.StartsWith("// First Row Heading:"))
+                    firstRowHeading = line.Substring("// First Row Heading:".Length).Trim();
+                else if (line.StartsWith("// Delimiter:"))
+                    delimiter = line.Substring("// Delimiter:".Length).Trim();
+                else if (!line.StartsWith("//"))
+                    break; // Stop reading lines if it's no longer metadata
+            }
+
+            return new string[] { description, date, inputFilePath, firstRowHeading, delimiter };
+        }
+
+
+
+        public void LoadTemplateFile()
+        {
+
+            // načíst obsah souboru dané akce
+            string content = " ";
+            var elements = JsonConvert.DeserializeObject<IEnumerable<Element>>(content);
         }
 
         // Po nacteni Stránky:
@@ -74,23 +192,38 @@ namespace AnalystDataImporter.WindowsWPF
         // Metoda - co se stane po přepnutí záložky
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Pokud bych tu chtěl něco, co se stane po přepnutí záložky...
+            if (e.Source is TabControl)
+            {
+                // Check if the newly selected item is the tab you are interested in
+                TabControl tabControl = (TabControl)sender;
 
-            //try
-            //{
-            //    // Získání vybrané záložky
-            //    TabItem selectedTab = (TabItem)e.AddedItems[0];
+                if (tabControl.SelectedItem is TabItem selectedTab)
+                {
+                    // Check if it's the specific tab
+                    if (selectedTab.Header.ToString() == "Šablony")
+                    {
+                        // Run your method here
+                        LoadTemplates();
+                    }
+                }
+            }
+                    // Pokud bych tu chtěl něco, co se stane po přepnutí záložky...
 
-            //    // Podle vybrané záložky načíst příslušnou stránku do Frame
-            //    if (selectedTab.Header.ToString() == "ANALYST DATA Importer")
-            //    {
-            //        Page page1 = new PageImport1();
-            //        frmImporter.Navigate(page1);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{ }
-        }
+                    //try
+                    //{
+                    //    // Získání vybrané záložky
+                    //    TabItem selectedTab = (TabItem)e.AddedItems[0];
+
+                    //    // Podle vybrané záložky načíst příslušnou stránku do Frame
+                    //    if (selectedTab.Header.ToString() == "ANALYST DATA Importer")
+                    //    {
+                    //        Page page1 = new PageImport1();
+                    //        frmImporter.Navigate(page1);
+                    //    }
+                    //}
+                    //catch (Exception ex)
+                    //{ }
+                }
 
 
         // TLAČÍTKA:
@@ -102,8 +235,8 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnZdrojeAktualizovat_Click(object sender, RoutedEventArgs e)
         {
             // TODO: funkce Tlačítka Aktualizovat
-            LoadingWindow loadingWindow = new LoadingWindow();
-            loadingWindow.ShowDialog();
+            //LoadingWindow loadingWindow = new LoadingWindow();
+            //loadingWindow.ShowDialog();
         }
         #endregion
 
@@ -165,7 +298,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void btnImportUlozit_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Dodělat funkci Tlačítka 'Uložit'
-            SaveWindow saveWindow = new SaveWindow();
+            SaveWindow saveWindow = new SaveWindow(_messageBoxService, _elementManager, _csvParserService);
             saveWindow.ShowDialog();
         }
 

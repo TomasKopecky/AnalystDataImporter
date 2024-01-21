@@ -93,53 +93,23 @@ namespace AnalystDataImporter.ViewModels
             {
                 Heading.Columns.Add(column.ToString());
                 Content.Columns.Add(column.ToString());
-                foreach (string[] values in inputString) 
+            }
+
+            foreach (string[] values in inputString)
+            {
+                DataRow newRow = Content.NewRow();
+                foreach (string value in values)
                 {
-                    DataRow newRow = Content.NewRow();
-                    foreach (string value in values)
+                    foreach (var column in Content.Columns)
                     {
                         newRow[column.ToString()] = value;
                     }
-                    Content.Rows.Add(newRow);
                 }
+                Content.Rows.Add(newRow);
             }
 
-            //HeadingTable = new DataTable();
-
-            //GenerateTestDataGridContent();
-
-            //TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
-            //tableColumn.Heading = "pokus";
-            //tableColumn.Index = 1;
-            //Columns.Add(tableColumn);
-
-            //TableColumnViewModel tableColumn2 = _tableColumnViewModelFactory.Create();
-            //tableColumn2.Heading = "pokus";
-            //tableColumn2.Index = 1;
-            //Columns.Add(tableColumn2);
-
-            //// Add corresponding column in DataTable
-            //NewTable.Columns.Add(tableColumn.Heading, typeof(string));
-            ////NewTable.Columns.Add(tableColumn.Heading, typeof(string));
-
-            //List<string> rowValues = new List<string>();
-            //DataRow tableRow = NewTable.NewRow();
-            //DataRow tableRow2 = NewTable.NewRow();
-            //DataRow tableRow3 = NewTable.NewRow();
-
-            //tableRow[0] = "sadf";
-            //tableRow2[0] = "sadf";
-            //tableRow3[0] = "sadf";
-
-            //NewTable.Rows.Add(tableRow);
-            //NewTable.Rows.Add(tableRow2);
-            //NewTable.Rows.Add(tableRow3);
-
-            HeadingTable = Heading;
             ContentTable = Content;
-
-
-
+            HeadingTable = Heading;
         }
 
         //public ObservableCollection<TableColumnViewModel> ColumnTable
