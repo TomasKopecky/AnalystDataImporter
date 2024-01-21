@@ -5,6 +5,7 @@ using System.Windows.Documents;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
+using System.IO;
 
 namespace AnalystDataImporter.Globals
 {
@@ -150,6 +151,21 @@ namespace AnalystDataImporter.Globals
         {
            1,2,3,4,5,6,7,8,9,10
         };
+
+
+        public static string CreateAndGetTemplateSaveFolderPath()
+        {
+            // Append your specific folder name
+            //string saveFolderPath = System.IO.Path.Combine(Constants.templateFolderPath, "analyst_data_importer_templates");
+
+            // Check if the folder exists, and if not, create it
+            if (!Directory.Exists(Constants.templateFolderPath))
+            {
+                Directory.CreateDirectory(Constants.templateFolderPath);
+            }
+
+            return Constants.templateFolderPath;
+        }
     }
 
     // pomocná třída pro možnost uchování oddělovačů v datové struktuře Enum

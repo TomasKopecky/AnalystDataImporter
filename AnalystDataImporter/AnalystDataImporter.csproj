@@ -164,8 +164,8 @@
     <Compile Include="Views\CanvasPage.xaml.cs">
       <DependentUpon>CanvasPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsWPF\ImportWindow.xaml.cs">
-      <DependentUpon>ImportWindow.xaml</DependentUpon>
+    <Compile Include="WindowsWPF\ImportToActionWindow.xaml.cs">
+      <DependentUpon>ImportToActionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -182,8 +182,8 @@
       <DependentUpon>PageImport2.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\RowModel.cs" />
-    <Compile Include="WindowsWPF\SaveWindow.xaml.cs">
-      <DependentUpon>SaveWindow.xaml</DependentUpon>
+    <Compile Include="WindowsWPF\SaveTemplateWindow.xaml.cs">
+      <DependentUpon>SaveTemplateWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsWPF\SettingPagesWPF\BaseSettingPage.cs" />
     <Compile Include="WindowsWPF\SettingPagesWPF\LoadingPage.xaml.cs">
@@ -254,7 +254,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsWPF\ImportWindow.xaml">
+    <Page Include="WindowsWPF\ImportToActionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -274,7 +274,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsWPF\SaveWindow.xaml">
+    <Page Include="WindowsWPF\SaveTemplateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

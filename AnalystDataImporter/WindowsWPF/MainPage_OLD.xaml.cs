@@ -108,7 +108,7 @@ namespace AnalystDataImporter.WindowsWPF
         }
         #endregion
 
-        // Záložka IMPORT:
+        // Záložka IMPORT:f
         #region IMPORT
         // Po kliknutí na Tlačítko 'Ďalší' v záložce 'ANALYST DATA Import'
         private void btnImportDalsi_Click(object sender, RoutedEventArgs e)

@@ -83,25 +83,10 @@ namespace AnalystDataImporter.WindowsWPF
             //chckBxGlobalniSablona
         }
 
-        public string GetSaveFolderPath()
-        {
-            // Append your specific folder name
-            //string saveFolderPath = System.IO.Path.Combine(Constants.templateFolderPath, "analyst_data_importer_templates");
-
-            // Check if the folder exists, and if not, create it
-            if (!Directory.Exists(Constants.templateFolderPath))
-            {
-                Directory.CreateDirectory(Constants.templateFolderPath);
-            }
-
-            return Constants.templateFolderPath;
-        }
-
         public void SaveTemplateFile(string fileName)
         {
-            string folderPath = GetSaveFolderPath();
+            string folderPath = Constants.CreateAndGetTemplateSaveFolderPath();
             // Ensure the folder exists
-            Directory.CreateDirectory(folderPath);
 
             // Combine the folder path and file name
             string filePath = System.IO.Path.Combine(folderPath, fileName+".template");

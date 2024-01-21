@@ -80,7 +80,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Seznam Šablon - tabulka/strom Šablony-->
-                    <TreeView x:Name="trVwSablony"  Margin="10">
+                    <TreeView x:Name="trVwSablony" Margin="10" FontWeight="ExtraLight">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                 <TextBlock Text="{Binding Name}" />

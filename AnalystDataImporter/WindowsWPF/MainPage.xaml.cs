@@ -25,6 +25,7 @@ using AnalystDataImporter.Models;
 using Newtonsoft.Json;
 using AnalystDataImporter.Globals;
 using System.Runtime.ExceptionServices;
+using static System.Collections.Specialized.BitVector32;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -52,7 +53,7 @@ namespace AnalystDataImporter.WindowsWPF
             _csvParserService = csvParserService;
             _sqliteDbService = sqliteDbService;
 
-            this.Loaded += LoadIndexActions;
+            //this.Loaded += Load;
 
             #region NAPLNĚNÍ STROMU TREE-VIEW:
             // TODO: dočasné řešení TreeView - TEST:
@@ -70,8 +71,13 @@ namespace AnalystDataImporter.WindowsWPF
             #endregion
         }
 
-        private async void LoadIndexActions(object sender, RoutedEventArgs e)
+        private async void Load(object sender, RoutedEventArgs e)
         {
+            await LoadIndexActions();
+        }
+        private async Task LoadIndexActions()
+        {
+            trVwZdroje.Items.Clear();
             List<IndexAction> actions = await _sqliteDbService.GetAllActionsAsync();
             if (actions != null && actions.Count > 0)
             {
@@ -109,7 +115,7 @@ namespace AnalystDataImporter.WindowsWPF
         private void LoadTemplates()
         {
             trVwSablony.Items.Clear();
-            string[] fileEntries = Directory.GetFiles(Constants.templateFolderPath, "*.template");
+            string[] fileEntries = Directory.GetFiles(Constants.CreateAndGetTemplateSaveFolderPath(), "*.template");
 
             foreach (string filePath in fileEntries)
             {
@@ -118,8 +124,14 @@ namespace AnalystDataImporter.WindowsWPF
                 // Load the metadata (assuming the LoadTemplateFile method is available)
                 var metadata = LoadTemplateFile(filePath);
 
+                TextBlock actionTextBlock = new TextBlock
+                {
+                    Text = fileName.Replace(".template", ""),
+                    FontWeight = FontWeights.Bold
+                };
+
                 // Create the main node for the file
-                TreeViewItem fileNode = new TreeViewItem { Header = fileName.Replace(".template","") };
+                TreeViewItem fileNode = new TreeViewItem { Header = actionTextBlock };
 
                 // Add description and date as child nodes
                 fileNode.Items.Add(new TreeViewItem { Header = "Popis: " + metadata[0] });
@@ -190,7 +202,7 @@ namespace AnalystDataImporter.WindowsWPF
         }
 
         // Metoda - co se stane po přepnutí záložky
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl)
             {
@@ -202,8 +214,13 @@ namespace AnalystDataImporter.WindowsWPF
                     // Check if it's the specific tab
                     if (selectedTab.Header.ToString() == "Šablony")
                     {
-                        // Run your method here
                         LoadTemplates();
+                    }
+
+                    if (selectedTab.Header.ToString() == "Akce")
+                    {
+                        // Run your method here
+                        await LoadIndexActions();
                     }
                 }
             }
@@ -312,7 +329,7 @@ namespace AnalystDataImporter.WindowsWPF
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
 
-            ImportWindow importWindow = new ImportWindow();
+            ImportWindow importWindow = new ImportWindow(_sqliteDbService, _messageBoxService);
             importWindow.ShowDialog();
         }
 
