@@ -14,12 +14,12 @@ namespace AnalystDataImporter.Services
         public char delimiter { get; set; }
         public bool isFirstRowHeading { get; set; }
 
-        public bool parsingSuccessful { get; set; }
-        public List<string[]> ParseCsv(string filePath, Encoding encoding, char delimiter, int maxLines = Constants.MaxLoadedCsvLines)
+        public List<string[]> ParseCsv(string filePath, Encoding encoding, char delimiter, List<int> columnIndexes, int maxLines = Constants.MaxLoadedCsvLines)
         {
             inputFilePath = filePath;
             this.delimiter = delimiter;
-            //this.isFirstRowHeading = true;
+            if (encoding == null)
+                encoding = Encoding.UTF8;
 
             List<string[]> result = new List<string[]>();
             if (!File.Exists(filePath))
@@ -29,12 +29,32 @@ namespace AnalystDataImporter.Services
 
             try
             {
-                var lines = File.ReadLines(filePath, encoding).Take(maxLines);
+                IEnumerable<string> lines;
+
+                // If columnIndexes is not null and has elements, read all lines; otherwise, read up to maxLines
+                if (columnIndexes != null && columnIndexes.Count > 0)
+                {
+                    lines = File.ReadLines(filePath, encoding);
+                }
+                else
+                {
+                    lines = File.ReadLines(filePath, encoding).Take(maxLines);
+                }
 
                 foreach (var line in lines)
                 {
                     var values = line.Split(delimiter);
-                    result.Add(values);
+
+                    // If columnIndexes is null or empty, add all values; otherwise, add only selected columns
+                    if (columnIndexes == null || columnIndexes.Count == 0)
+                    {
+                        result.Add(values);
+                    }
+                    else
+                    {
+                        var selectedValues = columnIndexes.Select(index => values.Length > index ? values[index] : "").ToArray();
+                        result.Add(selectedValues);
+                    }
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -47,6 +67,7 @@ namespace AnalystDataImporter.Services
             }
             return result;
         }
+
 
         public bool IsValidCsvStructure(string filePath, char delimiter, int maxLines = Constants.MaxLoadedCsvLines)
         {

@@ -28,10 +28,12 @@ namespace AnalystDataImporter.WindowsWPF
         private readonly GridViewModel _viewModel;
         private readonly IMessageBoxService _messageBoxService;
         private readonly CsvParserService _csvParserService;
-        private char selectedDelimiter = ';';
-        private bool isFirstRowHeading;
         private bool isFileLoaded;
-        private string loadedFilePath;
+
+        public char selectedDelimiter = ';';
+        public string loadedFilePath;
+        public bool isFirstRowHeading;
+
         public PageImport1(GridViewModel gridViewModel, IMessageBoxService messageBoxService, CsvParserService csvParserService)
         {
             InitializeComponent();

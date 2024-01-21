@@ -87,7 +87,7 @@ namespace AnalystDataImporter.Globals
         // implicitní ikony dle třídy - cesta ke zdroji v Analyst Datau
         public static Dictionary<string, string> AnalystDataIconsSource = new Dictionary<string, string>
         {
-            {"Obecný objekt", ""},
+            {"Obecný objekt", "icon:object/circle;"},
             {"SIM karta", "icon:object/simcard;"},
             {"IMEI", "icon:object/cell_phone;"}, //icon:object/cell_phone;
             {"Osoba", "icon:person/man_2;"}, //icon:person/man_2;

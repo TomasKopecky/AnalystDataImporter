@@ -124,6 +124,7 @@
     <Compile Include="Models\Specification.cs" />
     <Compile Include="Services\BehaviorServices.cs" />
     <Compile Include="Services\CsvParsingService.cs" />
+    <Compile Include="Services\DataImportService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\IMouseHandlingService.cs" />

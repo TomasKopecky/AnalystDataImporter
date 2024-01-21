@@ -69,7 +69,7 @@ namespace AnalystDataImporterTestsProject
         public void loadBasicUzcCsvFileWithValidStructure()
         {
             CsvParserService csvParserService = new CsvParserService();
-            var currentJsonResult = csvParserService.ParseCsv(_utf8ParsingBasicUzcFileWithValidStructure, Encoding.UTF8, ';');
+            var currentJsonResult = csvParserService.ParseCsv(_utf8ParsingBasicUzcFileWithValidStructure, Encoding.UTF8, ';',null);
             int i = 0;
             foreach ( var line in currentJsonResult ) 
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AnalystDataImporter.Managers;
 using AnalystDataImporter.Models;
 using AnalystDataImporter.Services;
+using AnalystDataImporter.ViewModels;
 
 namespace AnalystDataImporter.WindowsWPF
 {
@@ -23,15 +26,28 @@ namespace AnalystDataImporter.WindowsWPF
     {
         private readonly SqliteDbService _sqliteDbService;
         private readonly IMessageBoxService _messageBoxService;
-        public ImportWindow(SqliteDbService sqliteDbService, IMessageBoxService messageBoxService)
+        private readonly CsvParserService _csvParserService;
+        private readonly GridViewModel _gridViewModel;
+        private readonly IElementManager _elementManager;
+        private readonly string _csvFilePath;
+        private readonly char _delimiter;
+        private readonly bool _isFirstRowHeading;
+        public ImportWindow(SqliteDbService sqliteDbService, IMessageBoxService messageBoxService, CsvParserService csvParserService, GridViewModel gridViewModel, IElementManager elementManager, string csvFilePath, char delimiter, bool isFirstRowHeading)
         {
             InitializeComponent();
             _sqliteDbService = sqliteDbService;
             _messageBoxService = messageBoxService;
+            _csvParserService = csvParserService;
+            _gridViewModel = gridViewModel;
+            _elementManager = elementManager;
+            _csvFilePath = csvFilePath;
+            _isFirstRowHeading = isFirstRowHeading;
+            _delimiter = delimiter;
             this.KeyDown += new KeyEventHandler(SaveWindow_KeyDown);
             Loaded += LoadActions;
 
             rdBtnNovaAkce.IsChecked = true;
+            _csvParserService = csvParserService;
         }
 
         // metoda pro odchytávání stisknutých kláves na klávesnici
@@ -108,8 +124,87 @@ namespace AnalystDataImporter.WindowsWPF
 
         private async Task ImportDataToAction(IndexAction action)
         {
+            List<int> columnIndexes = new List<int>();
 
+            foreach (BaseDiagramItemViewModel element in _elementManager.Elements)
+                columnIndexes.Add(element.GridTableColumn.Index);
+
+            if (columnIndexes.Count > 0)
+            {
+
+                List<string[]> result = _csvParserService.ParseCsv(_csvFilePath, null, _delimiter, columnIndexes);
+                if (_isFirstRowHeading)
+                    result.RemoveAt(0);
+
+                Dictionary<List<string>, ElementViewModel> stringAndElements = new Dictionary<List<string>, ElementViewModel>();
+
+                List<string[]> transposedData = TransposeCsvData(result);
+
+                int i = 0;
+                foreach (ElementViewModel elementViewModel in _elementManager.Elements)
+                {
+                    List<string> stringList = transposedData[i].ToList();
+                    List<int> newInsertedObjectIds = await _sqliteDbService.InsertElementsGlobalAndUserAsync(stringList, elementViewModel, action);
+                    await CreateObjectInsertAnalystDataFile();
+                    i++;
+                }
+
+                //List<string> stringList = result.SelectMany(array => array).ToList();
+
+                //await _sqliteDbService.InsertElementsIntoGlobalAsync(stringList);
+
+                //await _sqliteDbService.InsertIntoUserObjectsAsync();
+
+                //await _sqliteDbService.InsertElementsGlobalAndUserAsync(stringList, elementViewModel, action);
+            }
         }
 
+        public List<string[]> TransposeCsvData(List<string[]> csvData)
+        {
+            if (csvData == null || csvData.Count == 0)
+                return new List<string[]>();
+
+            int rowCount = csvData.Count;
+            int colCount = csvData[0].Length;
+
+            var transposedData = new List<string[]>(colCount);
+
+            for (int col = 0; col < colCount; col++)
+            {
+                var columnData = new string[rowCount];
+                for (int row = 0; row < rowCount; row++)
+                {
+                    columnData[row] = csvData[row].Length > col ? csvData[row][col] : "";
+                }
+                transposedData.Add(columnData);
+            }
+
+            return transposedData;
+        }
+
+        private async void CreateObjectInsertAnalystDataFile(List<int> ids, IndexAction action)
+        {
+            string filePath = @"\\ServerName\SharedFolder\outputFile.txt";
+            using (var writer = new StreamWriter(filePath, append: true))
+            {
+                foreach (int id in ids)
+                {
+                    var data = await _sqliteDbService.FetchObjectDataAsync(id);
+                    if (!string.IsNullOrEmpty(data.Key))
+                    {
+                        await writer.WriteLineAsync($"Key: {data.Key}");
+                        await writer.WriteLineAsync($"Class: {data.Class}");
+                        await writer.WriteLineAsync($"Title: {data.Title}");
+                        await writer.WriteLineAsync($"style: {data.Style}");
+                        // TODO: akce
+                        await writer.WriteLineAsync("<<EOD>>");
+                    }
+                }
+            }
+
+
+
+
+
+        }
     }
-}

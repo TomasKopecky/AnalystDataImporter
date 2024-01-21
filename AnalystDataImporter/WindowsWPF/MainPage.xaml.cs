@@ -35,23 +35,25 @@ namespace AnalystDataImporter.WindowsWPF
     public partial class MainPage : Page
     {
         //private MainWindow mainWindow;
-        private PageImport1 pageImport1;
-        private PageImport2 pageImport2;
+        private readonly PageImport1 _pageImport1;
+        private readonly PageImport2 _pageImport2;
         private readonly IMessageBoxService _messageBoxService;
         private readonly IElementManager _elementManager;
         private readonly CsvParserService _csvParserService;
         private readonly SqliteDbService _sqliteDbService;
+        private readonly GridViewModel _gridViewModel;
         
         // konstruktor
-        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2, IMessageBoxService messageBoxService, IElementManager elementManager, CsvParserService csvParserService, SqliteDbService sqliteDbService)
+        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2, IMessageBoxService messageBoxService, IElementManager elementManager, CsvParserService csvParserService, SqliteDbService sqliteDbService, GridViewModel gridViewModel)
         {
             InitializeComponent(); // Inicializace komponent
-            this.pageImport1 = pageImport1;
-            this.pageImport2 = pageImport2;
+            _pageImport1 = pageImport1;
+            _pageImport2 = pageImport2;
             _messageBoxService = messageBoxService;
             _elementManager = elementManager;
             _csvParserService = csvParserService;
             _sqliteDbService = sqliteDbService;
+            _gridViewModel = gridViewModel;
 
             //this.Loaded += Load;
 
@@ -67,7 +69,7 @@ namespace AnalystDataImporter.WindowsWPF
             //trVwZdroje.ItemsSource = new ObservableCollection<Node> { rootNode };
             // přidání zdroje dat to TreeView pro Šablony:
             //trVwSablony.ItemsSource = new ObservableCollection<Node> { rootNode };
-            this.pageImport2 = pageImport2;
+            this._pageImport2 = pageImport2;
             #endregion
         }
 
@@ -186,7 +188,7 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // Načíst stránku PageImport1 do Frame v záložce 'Analyst Data Importer'
             //Page page1 = new PageImport1();
-            frmImporter.Navigate(pageImport1);
+            frmImporter.Navigate(_pageImport1);
         }
 
         // DROP do GRIDu
@@ -288,7 +290,7 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // Tlačítko 'Ďalší' načte stránku 'PageImport2.xaml' do Frame 'frmImporter'
             //Page page2 = new PageImport2();
-            frmImporter.Navigate(pageImport2);
+            frmImporter.Navigate(_pageImport2);
 
             // Tlačítka která budou v kroku 'Další' povolena nebo zakázána:
             btnImportZpet.IsEnabled = true; // Zpět povoleno - chceme se dostat na krok jedna
@@ -302,7 +304,7 @@ namespace AnalystDataImporter.WindowsWPF
         {
             // Tlačítko 'Zpět' načte stránku 'PageImport1.xaml' do Frame 'frmImporter'
             //Page page1 = new PageImport1();
-            frmImporter.Navigate(pageImport1);
+            frmImporter.Navigate(_pageImport1);
 
             // Tlačítka která budou v kroku 'Zpět' zakázána nebo povolena:
             btnImportZpet.IsEnabled = false; // Zpět zakázáno - nejde jít už o krok zpět!
@@ -329,7 +331,7 @@ namespace AnalystDataImporter.WindowsWPF
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
 
-            ImportWindow importWindow = new ImportWindow(_sqliteDbService, _messageBoxService);
+            ImportWindow importWindow = new ImportWindow(_sqliteDbService, _messageBoxService, _csvParserService, _gridViewModel, _elementManager, _pageImport1.loadedFilePath, _pageImport1.selectedDelimiter, _pageImport1.isFirstRowHeading);
             importWindow.ShowDialog();
         }
 

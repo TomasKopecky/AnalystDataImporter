@@ -62,7 +62,7 @@ namespace AnalystDataImporter.ViewModels
             {
                 if (_csvParserService.IsValidCsvStructure(tuple.Item1, tuple.Item2))
                 {
-                    List<string[]> parsedCsvString = _csvParserService.ParseCsv(tuple.Item1, Encoding.UTF8, tuple.Item2);
+                    List<string[]> parsedCsvString = _csvParserService.ParseCsv(tuple.Item1, Encoding.UTF8,tuple.Item2,null);
                     LoadData(parsedCsvString, tuple.Item3);
                 }
                 else
