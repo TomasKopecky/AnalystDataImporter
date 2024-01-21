@@ -25,17 +25,20 @@ namespace AnalystDataImporter.WindowsWPF
     /// </summary>
     public partial class PageImport1 : Page
     {
-        private readonly GridViewModel viewModel;
-        private readonly IMessageBoxService messageBoxService;
-        private readonly CsvParserService csvParserService;
+        private readonly GridViewModel _viewModel;
+        private readonly IMessageBoxService _messageBoxService;
+        private readonly CsvParserService _csvParserService;
         private char selectedDelimiter = ';';
+        private bool isFirstRowHeading;
+        private bool isFileLoaded;
+        private string loadedFilePath;
         public PageImport1(GridViewModel gridViewModel, IMessageBoxService messageBoxService, CsvParserService csvParserService)
         {
             InitializeComponent();
-            viewModel = gridViewModel;
-            DataContext = viewModel;
-            this.messageBoxService = messageBoxService;
-            this.csvParserService = csvParserService;
+            _viewModel = gridViewModel;
+            DataContext = _viewModel;
+            _messageBoxService = messageBoxService;
+            _csvParserService = csvParserService;
             //viewModel.LoadTestingDataNew();
             //viewModel.LoadTestData();
         }
@@ -47,7 +50,7 @@ namespace AnalystDataImporter.WindowsWPF
             if (openFileDialog.ShowDialog() == true)
             {
                 txtCestaKSouboru.Text = openFileDialog.FileName;
-                LoadFile(openFileDialog.FileName);
+                LoadFile(openFileDialog.FileName, isFirstRowHeading);
             }
         }
 
@@ -77,23 +80,32 @@ namespace AnalystDataImporter.WindowsWPF
                 if (files != null && files.Length == 1 && (files[0].EndsWith(".txt") || files[0].EndsWith(".csv")))
                 {
                     txtCestaKSouboru.Text = files[0];
-                    LoadFile(files[0]);
+                    LoadFile(files[0], isFirstRowHeading);
                 }
                 else
                 {
-                    messageBoxService.ShowError("Nepodporovaný formát souboru nebo načítáte více souborů najednou, což nelze");
+                    _messageBoxService.ShowError("Nepodporovaný formát souboru nebo načítáte více souborů najednou, což nelze");
                 }
             }
         }
 
-        private void LoadFile(string filePath)
+        private void LoadFile(string filePath, bool isFirstRowHeading)
         {
             if (File.Exists(filePath))
             {
                 //if (viewModel?.ProcesCsvCommand.CanExecute(bool) == true)
                 //{
-                    Tuple<string,char> parameters = new Tuple<string,char>(filePath,selectedDelimiter);
-                    viewModel.ProcesCsvCommand.Execute(parameters);
+                Tuple<string, char, bool> parameters = new Tuple<string, char, bool>(filePath, selectedDelimiter, isFirstRowHeading);
+                _viewModel.ProcesCsvCommand.Execute(parameters);
+                if (HeadingDataGrid.ItemsSource != null)
+                {
+                    isFileLoaded = true;
+                    loadedFilePath = filePath;
+                }
+                else
+                {
+                    _messageBoxService.ShowError($"Nepodařilo se načíst a zobrazit soubor {filePath}");
+                }
                 //}
 
                 //if (csvParserService.IsValidCsvStructure(filePath,selectedDelimiter))
@@ -163,11 +175,19 @@ namespace AnalystDataImporter.WindowsWPF
         // Zaškrtávací pole pro Záhlaví: 
         private void chckBxZahlavi_Checked(object sender, RoutedEventArgs e)
         {
-            // TODO: po zaškrtnutí políčka pro Záhlaví: 
+            // TODO: po zaškrtnutí políčka pro Záhlaví:
+            isFirstRowHeading = true;
+
+            if (isFileLoaded && loadedFilePath != null && loadedFilePath != "")
+                LoadFile(loadedFilePath, isFirstRowHeading);
         }
         private void chckBxZahlavi_Unchecked(object sender, RoutedEventArgs e)
         {
             // TODO: po odškrtnutí políčka pro Záhlaví: 
+            isFirstRowHeading = false;
+
+            if (isFileLoaded && loadedFilePath != null && loadedFilePath != "")
+                LoadFile(loadedFilePath, isFirstRowHeading);
         }
 
         // Zaškrtávací pole pro Oddělovač: Jiný

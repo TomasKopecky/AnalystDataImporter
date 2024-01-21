@@ -13,6 +13,8 @@ namespace AnalystDataImporter.Services
         public string inputFilePath { get; set; }
         public char delimiter { get; set; }
         public bool isFirstRowHeading { get; set; }
+
+        public bool parsingSuccessful { get; set; }
         public List<string[]> ParseCsv(string filePath, Encoding encoding, char delimiter, int maxLines = Constants.MaxLoadedCsvLines)
         {
             inputFilePath = filePath;

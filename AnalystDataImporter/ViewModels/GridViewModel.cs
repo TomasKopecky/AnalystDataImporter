@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Windows.Controls;
@@ -57,12 +58,18 @@ namespace AnalystDataImporter.ViewModels
 
         private void ProcesCsv(object parameters)
         {
-            if (parameters is Tuple<string, char> tuple) 
+            if (parameters is Tuple<string, char, bool> tuple)
             {
                 if (_csvParserService.IsValidCsvStructure(tuple.Item1, tuple.Item2))
                 {
                     List<string[]> parsedCsvString = _csvParserService.ParseCsv(tuple.Item1, Encoding.UTF8, tuple.Item2);
-                    LoadData(parsedCsvString);
+                    LoadData(parsedCsvString, tuple.Item3);
+                }
+                else
+                {
+                    ContentTable = null;
+                    HeadingTable = null;
+                    TableColumnsViewModel = null;
                 }
             }
         }
@@ -77,7 +84,7 @@ namespace AnalystDataImporter.ViewModels
             GenerateTestDataGridContentNew();
         }
 
-        private void LoadData(List<string[]> inputString)
+        private void LoadData(List<string[]> inputString, bool isFirstRowHeading)
         {
             DataTable Content = new DataTable();
 
@@ -91,21 +98,43 @@ namespace AnalystDataImporter.ViewModels
 
             for (int column = 0; column < columns; column++)
             {
-                Heading.Columns.Add(column.ToString());
+                TableColumnViewModel tableColumn = _tableColumnViewModelFactory.Create();
+                tableColumn.Index = column;
+
+                if (isFirstRowHeading)
+                {
+                    tableColumn.Heading = inputString[0][column];
+                    Heading.Columns.Add(inputString[0][column]);
+                }
+                else
+                {
+                    tableColumn.Heading = "[" + column.ToString() + "]";
+                    Heading.Columns.Add(column.ToString());
+                }
+
+                TableColumnsViewModel.Add(tableColumn);
                 Content.Columns.Add(column.ToString());
             }
 
-            foreach (string[] values in inputString)
+            int i = 0;
+            int j = 0;
+            foreach (string[] rowValues in inputString)
             {
-                DataRow newRow = Content.NewRow();
-                foreach (string value in values)
+                if (isFirstRowHeading && i == 0)
                 {
-                    foreach (var column in Content.Columns)
-                    {
-                        newRow[column.ToString()] = value;
-                    }
+                    i++;
+                    continue;
+                }
+
+                DataRow newRow = Content.NewRow();
+                foreach (string cellValue in rowValues)
+                {
+                    newRow[Content.Columns[j]] = cellValue;
+                    j++;
                 }
                 Content.Rows.Add(newRow);
+                i++;
+                j = 0;
             }
 
             ContentTable = Content;
@@ -253,7 +282,7 @@ namespace AnalystDataImporter.ViewModels
                 ContentTable.Rows.Add(tableRow); // Add the DataRow to the DataTable's Rows collection
                 Rows.Add(rowValues); // This line maintains your list of rows, assuming it's needed elsewhere
             }
- 
+
         }
 
         public void LoadTestData()
@@ -310,7 +339,6 @@ namespace AnalystDataImporter.ViewModels
 
         private void GetDraggedGridViewColumnIndex(object parameter)
         {
-
             if (parameter is int columnIndex)
             {
                 _sharedCanvasPageItems.TableColumn = TableColumnsViewModel[columnIndex];
@@ -329,7 +357,7 @@ namespace AnalystDataImporter.ViewModels
             }
         }
 
-        
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
