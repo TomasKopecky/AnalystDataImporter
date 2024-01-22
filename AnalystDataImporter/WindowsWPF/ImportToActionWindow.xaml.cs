@@ -29,10 +29,11 @@ namespace AnalystDataImporter.WindowsWPF
         private readonly CsvParserService _csvParserService;
         private readonly GridViewModel _gridViewModel;
         private readonly IElementManager _elementManager;
+        private readonly IRelationManager _relationManager;
         private readonly string _csvFilePath;
         private readonly char _delimiter;
         private readonly bool _isFirstRowHeading;
-        public ImportWindow(SqliteDbService sqliteDbService, IMessageBoxService messageBoxService, CsvParserService csvParserService, GridViewModel gridViewModel, IElementManager elementManager, string csvFilePath, char delimiter, bool isFirstRowHeading)
+        public ImportWindow(SqliteDbService sqliteDbService, IMessageBoxService messageBoxService, CsvParserService csvParserService, GridViewModel gridViewModel, IElementManager elementManager, IRelationManager relationManager, string csvFilePath, char delimiter, bool isFirstRowHeading)
         {
             InitializeComponent();
             _sqliteDbService = sqliteDbService;
@@ -40,6 +41,7 @@ namespace AnalystDataImporter.WindowsWPF
             _csvParserService = csvParserService;
             _gridViewModel = gridViewModel;
             _elementManager = elementManager;
+            _relationManager = relationManager;
             _csvFilePath = csvFilePath;
             _isFirstRowHeading = isFirstRowHeading;
             _delimiter = delimiter;
@@ -109,8 +111,15 @@ namespace AnalystDataImporter.WindowsWPF
                 indexActionToImport = newAction;
             }
             else
+            {
                 indexActionToImport = cmbBxExistujiciAkce.SelectedItem as IndexAction;
 
+                if (indexActionToImport == null)
+                {
+                    _messageBoxService.ShowError("Je třeba vybrat existující akci či založit novou");
+                    return;
+                }
+            }
 
             await ImportDataToAction(indexActionToImport);
 
@@ -136,19 +145,48 @@ namespace AnalystDataImporter.WindowsWPF
                 if (_isFirstRowHeading)
                     result.RemoveAt(0);
 
-                Dictionary<List<string>, ElementViewModel> stringAndElements = new Dictionary<List<string>, ElementViewModel>();
+                //Dictionary<List<string>, ElementViewModel> stringAndElements = new Dictionary<List<string>, ElementViewModel>();
 
                 List<string[]> transposedData = TransposeCsvData(result);
 
                 int i = 0;
+                List<int> newInsertedObjectIds = new List<int>();
                 foreach (ElementViewModel elementViewModel in _elementManager.Elements)
                 {
                     List<string> stringList = transposedData[i].ToList();
-                    List<int> newInsertedObjectIds = await _sqliteDbService.InsertElementsGlobalAndUserAsync(stringList, elementViewModel, action);
-                    await CreateObjectInsertAnalystDataFile();
+
+                    newInsertedObjectIds.AddRange(await _sqliteDbService.InsertElementsGlobalAndUserAsync(stringList, elementViewModel, action));
+
                     i++;
                 }
 
+                List<Tuple<int, int>> relationColumnIndexes = new List<Tuple<int, int>>();
+                foreach (RelationViewModel relationViewModel in _relationManager.Relations)
+                {
+                    try
+                    {
+                        int key = _csvParserService.recalculatedColumnIndexes[relationViewModel.ObjectFrom.GridTableColumn.Index];
+                        int value = _csvParserService.recalculatedColumnIndexes[relationViewModel.ObjectTo.GridTableColumn.Index];
+                        relationColumnIndexes.Add(new Tuple<int,int>(key, value));
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+
+                List<int> newInsertedRelations = await _sqliteDbService.InsertRelationsAsync(relationColumnIndexes, result, action);
+
+                if (newInsertedObjectIds.Count > 0 || newInsertedRelations.Count > 0)
+                {
+                    await CreateObjectInsertAnalystDataFile(newInsertedObjectIds, newInsertedRelations, action);
+                    _messageBoxService.ShowInformation("Import úspěšně proveden, data vložena do dané akce");
+                }
+
+                else
+                    _messageBoxService.ShowInformation("Import úspěšně proveden, avšak nebyla nalezena žádná nová data, která by již v akci nebyla obsažena");
+
+                Close();
                 //List<string> stringList = result.SelectMany(array => array).ToList();
 
                 //await _sqliteDbService.InsertElementsIntoGlobalAsync(stringList);
@@ -182,29 +220,41 @@ namespace AnalystDataImporter.WindowsWPF
             return transposedData;
         }
 
-        private async void CreateObjectInsertAnalystDataFile(List<int> ids, IndexAction action)
+        private async Task CreateObjectInsertAnalystDataFile(List<int> objectIds, List<int> relationIds, IndexAction action)
         {
-            string filePath = @"\\ServerName\SharedFolder\outputFile.txt";
+            string filePath = @"\\IP_ADDRESS\analyst_data_importer\input_files\inputFile.txt";
             using (var writer = new StreamWriter(filePath, append: true))
             {
-                foreach (int id in ids)
+                foreach (int id in objectIds)
                 {
                     var data = await _sqliteDbService.FetchObjectDataAsync(id);
                     if (!string.IsNullOrEmpty(data.Key))
                     {
                         await writer.WriteLineAsync($"Key: {data.Key}");
+                        await writer.WriteLineAsync($"Action: {action.ActionId}");
+                        await writer.WriteLineAsync($"itemType: 1");
                         await writer.WriteLineAsync($"Class: {data.Class}");
                         await writer.WriteLineAsync($"Title: {data.Title}");
-                        await writer.WriteLineAsync($"style: {data.Style}");
-                        // TODO: akce
+                        await writer.WriteLineAsync($"Style: {data.Style}");
+                        await writer.WriteLineAsync("<<EOD>>");
+                    }
+                }
+
+                foreach (int id in relationIds)
+                {
+                    var data = await _sqliteDbService.FetchRelationDataAsync(id);
+                    if (!string.IsNullOrEmpty(data.ObjectFromKey))
+                    {
+                        await writer.WriteLineAsync($"Key: {data.ObjectFromKey}_{data.ObjectToKey}");
+                        await writer.WriteLineAsync($"Action: {action.ActionId}");
+                        await writer.WriteLineAsync($"itemType: 2");
+                        await writer.WriteLineAsync($"Class: vazba");
+                        await writer.WriteLineAsync($"Node1: {data.ObjectFromKey}");
+                        await writer.WriteLineAsync($"Node2: {data.ObjectToKey}");
                         await writer.WriteLineAsync("<<EOD>>");
                     }
                 }
             }
-
-
-
-
-
         }
     }
+}

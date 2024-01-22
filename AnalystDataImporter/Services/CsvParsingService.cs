@@ -14,8 +14,13 @@ namespace AnalystDataImporter.Services
         public char delimiter { get; set; }
         public bool isFirstRowHeading { get; set; }
 
+        public Dictionary<int, int> recalculatedColumnIndexes = new Dictionary<int, int>();
+
         public List<string[]> ParseCsv(string filePath, Encoding encoding, char delimiter, List<int> columnIndexes, int maxLines = Constants.MaxLoadedCsvLines)
         {
+            if (recalculatedColumnIndexes != null && recalculatedColumnIndexes.Count > 0)
+                recalculatedColumnIndexes.Clear();
+
             inputFilePath = filePath;
             this.delimiter = delimiter;
             if (encoding == null)
@@ -65,6 +70,11 @@ namespace AnalystDataImporter.Services
             {
                 // Handle other I/O errors
             }
+
+            if (columnIndexes != null && columnIndexes.Count > 0)
+                for (int i = 0; i < columnIndexes.Count; i++)
+                    recalculatedColumnIndexes.Add(columnIndexes[i], i);
+
             return result;
         }
 

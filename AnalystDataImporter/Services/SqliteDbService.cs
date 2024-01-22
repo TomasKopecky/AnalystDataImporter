@@ -406,7 +406,7 @@ namespace AnalystDataImporter.Services
                                 Key: reader["ObjectKey"].ToString(),
                                 Class: reader["Class"].ToString(),
                                 Title: reader["Title"].ToString(),
-                                Style: $"icon:object/{reader["Icon"]};"
+                                Style: reader["Icon"].ToString()
                             );
                         }
                     }
@@ -415,6 +415,165 @@ namespace AnalystDataImporter.Services
             return default;
         }
 
+        public async Task<(string ObjectFromKey, string ObjectToKey, string ActionName)> FetchRelationDataAsync(int relationId)
+        {
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                await conn.OpenAsync();
+                string sql = @"
+            SELECT 
+                goFrom.ObjectKey AS ObjectFromKey, 
+                goTo.ObjectKey AS ObjectToKey, 
+                act.Name AS ActionName
+            FROM 
+                user_relations ur
+                JOIN global_objects goFrom ON ur.ObjectFrom = goFrom.PrimaryKey
+                JOIN global_objects goTo ON ur.ObjectTo = goTo.PrimaryKey
+                JOIN actions act ON ur.ActionId = act.ActionId
+            WHERE ur.PrimaryKey = @RelationId;";
+
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RelationId", relationId);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return (
+                                ObjectFromKey: reader["ObjectFromKey"].ToString(),
+                                ObjectToKey: reader["ObjectToKey"].ToString(),
+                                ActionName: reader["ActionName"].ToString()
+                            );
+                        }
+                    }
+                }
+            }
+            return default;
+        }
+
+
+        //public async Task<int> InsertRelationsAsync(Dictionary<int, int> columnRelations, List<string[]> csvData, IndexAction action)
+        //{
+        //    List<int> newRelationsCount = new List<int>();
+
+        //    using (var conn = new SQLiteConnection(_connectionString))
+        //    {
+        //        await conn.OpenAsync();
+        //        using (var transaction = conn.BeginTransaction())
+        //        {
+        //            foreach (var row in csvData)
+        //            {
+        //                foreach (var relation in columnRelations)
+        //                {
+        //                    int objectFromId = GetPrimaryKey(conn, row[relation.Key]);
+        //                    int objectToId = GetPrimaryKey(conn, row[relation.Value]);
+
+        //                    // Check if the relation already exists
+        //                    string checkRelationSql = @"
+        //                SELECT 1 FROM user_relations
+        //                WHERE ObjectFrom = @ObjectFrom AND ObjectTo = @ObjectTo AND ActionId = @ActionId;";
+        //                    using (var checkCmd = new SQLiteCommand(checkRelationSql, conn))
+        //                    {
+        //                        checkCmd.Parameters.AddWithValue("@ObjectFrom", objectFromId);
+        //                        checkCmd.Parameters.AddWithValue("@ObjectTo", objectToId);
+        //                        checkCmd.Parameters.AddWithValue("@ActionId", action.ActionId);
+        //                        var exists = await checkCmd.ExecuteScalarAsync();
+
+        //                        if (exists == null)
+        //                        {
+        //                            // Insert new relation
+        //                            string insertRelationSql = @"
+        //                        INSERT INTO user_relations (ObjectFrom, ObjectTo, ActionId, DateOfInsert)
+        //                        VALUES (@ObjectFrom, @ObjectTo, @ActionId, @DateOfInsert);";
+        //                            using (var insertCmd = new SQLiteCommand(insertRelationSql, conn))
+        //                            {
+        //                                insertCmd.Parameters.AddWithValue("@ObjectFrom", objectFromId);
+        //                                insertCmd.Parameters.AddWithValue("@ObjectTo", objectToId);
+        //                                insertCmd.Parameters.AddWithValue("@ActionId", action.ActionId);
+        //                                insertCmd.Parameters.AddWithValue("@DateOfInsert", DateTime.Now.Date);
+        //                                await insertCmd.ExecuteNonQueryAsync();
+        //                                newRelationsCount.Add();
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            transaction.Commit();
+        //        }
+        //    }
+
+        //    return newRelationsCount;
+        //}
+
+        public async Task<List<int>> InsertRelationsAsync(List<Tuple<int, int>> columnRelations, List<string[]> csvData, IndexAction action)
+        {
+            List<int> newRelationIds = new List<int>();
+
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                await conn.OpenAsync();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    foreach (var row in csvData)
+                    {
+                        foreach (var relation in columnRelations)
+                        {
+                            int objectFromId = GetPrimaryKey(conn, row[relation.Item1]);
+                            int objectToId = GetPrimaryKey(conn, row[relation.Item2]);
+
+                            // Check if the relation already exists
+                            string checkRelationSql = @"
+                        SELECT 1 FROM user_relations
+                        WHERE ObjectFrom = @ObjectFrom AND ObjectTo = @ObjectTo AND ActionId = @ActionId;";
+                            using (var checkCmd = new SQLiteCommand(checkRelationSql, conn))
+                            {
+                                checkCmd.Parameters.AddWithValue("@ObjectFrom", objectFromId);
+                                checkCmd.Parameters.AddWithValue("@ObjectTo", objectToId);
+                                checkCmd.Parameters.AddWithValue("@ActionId", action.ActionId);
+                                var exists = await checkCmd.ExecuteScalarAsync();
+
+                                if (exists == null)
+                                {
+                                    // Insert new relation and get the primary key
+                                    string insertRelationSql = @"
+                                INSERT INTO user_relations (ObjectFrom, ObjectTo, ActionId, DateOfInsert)
+                                VALUES (@ObjectFrom, @ObjectTo, @ActionId, @DateOfInsert);
+                                SELECT last_insert_rowid();";
+                                    using (var insertCmd = new SQLiteCommand(insertRelationSql, conn))
+                                    {
+                                        insertCmd.Parameters.AddWithValue("@ObjectFrom", objectFromId);
+                                        insertCmd.Parameters.AddWithValue("@ObjectTo", objectToId);
+                                        insertCmd.Parameters.AddWithValue("@ActionId", action.ActionId);
+                                        insertCmd.Parameters.AddWithValue("@DateOfInsert", DateTime.Now.Date);
+                                        var newId = Convert.ToInt32(await insertCmd.ExecuteScalarAsync());
+                                        newRelationIds.Add(newId);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+            }
+
+            return newRelationIds;
+        }
+
+
+        private int GetPrimaryKey(SQLiteConnection conn, string objectKey)
+        {
+            string getPrimaryKeySql = "SELECT PrimaryKey FROM global_objects WHERE ObjectKey = @ObjectKey;";
+            using (var cmd = new SQLiteCommand(getPrimaryKeySql, conn))
+            {
+                cmd.Parameters.AddWithValue("@ObjectKey", objectKey);
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    return Convert.ToInt32(result);
+                }
+            }
+            throw new InvalidOperationException("ObjectKey not found in global_objects table.");
+        }
 
 
 

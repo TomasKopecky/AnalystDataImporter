@@ -42,9 +42,10 @@ namespace AnalystDataImporter.WindowsWPF
         private readonly CsvParserService _csvParserService;
         private readonly SqliteDbService _sqliteDbService;
         private readonly GridViewModel _gridViewModel;
+        private readonly IRelationManager _relationManager;
         
         // konstruktor
-        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2, IMessageBoxService messageBoxService, IElementManager elementManager, CsvParserService csvParserService, SqliteDbService sqliteDbService, GridViewModel gridViewModel)
+        public MainPage(PageImport1 pageImport1, PageImport2 pageImport2, IMessageBoxService messageBoxService, IElementManager elementManager, IRelationManager relationManager, CsvParserService csvParserService, SqliteDbService sqliteDbService, GridViewModel gridViewModel)
         {
             InitializeComponent(); // Inicializace komponent
             _pageImport1 = pageImport1;
@@ -54,6 +55,7 @@ namespace AnalystDataImporter.WindowsWPF
             _csvParserService = csvParserService;
             _sqliteDbService = sqliteDbService;
             _gridViewModel = gridViewModel;
+            _relationManager = relationManager;
 
             //this.Loaded += Load;
 
@@ -331,7 +333,7 @@ namespace AnalystDataImporter.WindowsWPF
             //// Process the file using the specified mappings and perform the import.
             //MessageBox.Show("Import complete!");
 
-            ImportWindow importWindow = new ImportWindow(_sqliteDbService, _messageBoxService, _csvParserService, _gridViewModel, _elementManager, _pageImport1.loadedFilePath, _pageImport1.selectedDelimiter, _pageImport1.isFirstRowHeading);
+            ImportWindow importWindow = new ImportWindow(_sqliteDbService, _messageBoxService, _csvParserService, _gridViewModel, _elementManager, _relationManager, _pageImport1.loadedFilePath, _pageImport1.selectedDelimiter, _pageImport1.isFirstRowHeading);
             importWindow.ShowDialog();
         }
 
